@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0d10" />
+    <meta
+      name="description"
+      content="DEX//SCULPT — a local-first, rig-safe 3D character foundry: sculpt, customize and export rigged humanoids without losing skeletons, skin weights, morph targets or animation."
+    />
+    <title>DEX//SCULPT — Character Foundry</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0d10'/%3E%3Cpath d='M9 24V8h6.2a8 8 0 0 1 0 16H9Z' fill='none' stroke='%235ee0c2' stroke-width='2.4'/%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="app" class="app" data-mode="setup">
+      <header class="topbar">
+        <div class="topbar__brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">DEX<span class="brand-slash">//</span>SCULPT</span>
+          <span class="brand-tag">Character Foundry</span>
+        </div>
+
+        <div class="topbar__project">
+          <label class="sr-only" for="projectName">Project name</label>
+          <input id="projectName" class="project-name" value="Untitled character" spellcheck="false" autocomplete="off" />
+          <span class="project-dirty" id="dirtyFlag" title="Unsaved changes" hidden>●</span>
+        </div>
+
+        <nav class="modes" id="modeNav" role="tablist" aria-label="Workspace mode">
+          <button class="mode" role="tab" data-mode="setup" aria-selected="true">Setup</button>
+          <button class="mode" role="tab" data-mode="sculpt" aria-selected="false">Sculpt</button>
+          <button class="mode" role="tab" data-mode="animate" aria-selected="false">Animate</button>
+        </nav>
+
+        <div class="topbar__actions">
+          <button class="icon-btn" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo" disabled></button>
+          <button class="icon-btn" id="redoBtn" title="Redo (Ctrl+Shift+Z)" aria-label="Redo" disabled></button>
+          <span class="divider" aria-hidden="true"></span>
+          <button class="btn btn--ghost" id="saveBtn" title="Save project (Ctrl+S)">Save</button>
+          <button class="btn btn--primary" id="exportBtn" title="Export GLB and validate">Export GLB</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="rail" id="libraryRail" aria-label="Character library">
+          <div class="rail__head">
+            <h2>Characters</h2>
+            <button class="icon-btn icon-btn--sm" id="railClose" aria-label="Close library" hidden></button>
+          </div>
+          <div class="rail__search">
+            <span class="search-icon" aria-hidden="true"></span>
+            <input id="librarySearch" type="search" placeholder="Search fixtures, sources, families…" aria-label="Search character library" />
+          </div>
+          <div class="rail__filters" id="libraryFilters" role="group" aria-label="Library filters"></div>
+          <div class="rail__body" id="libraryBody"></div>
+          <div class="rail__foot">
+            <button class="btn btn--block" id="importBtn">Import local GLB…</button>
+            <input id="fileInput" type="file" accept=".glb,model/gltf-binary" hidden />
+            <p class="rail__note">
+              Library records are <strong>metadata only</strong>. Model binaries are never bundled — relink a local file, or import your own.
+            </p>
+          </div>
+        </aside>
+
+        <section class="stage" id="stage">
+          <canvas id="viewport" aria-label="3D character viewport"></canvas>
+
+          <div class="stage__chips" id="characterChips" aria-live="polite"></div>
+
+          <div class="stage__views" id="viewControls" role="toolbar" aria-label="View controls"></div>
+
+          <div class="stage__notice" id="stageNotice" hidden></div>
+
+          <div class="stage__compare">
+            <button class="btn btn--compare" id="compareBtn" title="Hold to preview the source geometry (B)" disabled>
+              <span class="compare-dot" aria-hidden="true"></span>
+              <span id="compareLabel">Before</span>
+            </button>
+          </div>
+
+          <div class="stage__perf" id="perfReadout" aria-hidden="true"></div>
+
+          <div class="dock" id="toolDock" hidden></div>
+
+          <div class="stage__loading" id="loadingOverlay" hidden>
+            <div class="loader">
+              <div class="loader__bar"><span id="loadingBar"></span></div>
+              <p id="loadingText">Preparing workspace…</p>
+            </div>
+          </div>
+
+          <div class="stage__empty" id="emptyState">
+            <div class="empty-card">
+              <p class="eyebrow">Rig-safe character authoring</p>
+              <h1>Craft a character<br />without breaking its rig.</h1>
+              <p class="empty-copy">
+                Import a rigged GLB, shape it with real geometry brushes, and export a game-ready file whose skeleton, skin
+                weights, morph targets and clips are still intact. Everything runs locally in this tab.
+              </p>
+              <div class="empty-actions">
+                <button class="btn btn--primary" id="emptyStart">Load the foundry humanoid</button>
+                <button class="btn btn--ghost" id="emptyImport">Import a GLB…</button>
+              </div>
+              <ul class="empty-facts">
+                <li><strong>No upload</strong> — files never leave your device</li>
+                <li><strong>Verified round-trip</strong> — export is structurally validated, then re-imported</li>
+                <li><strong>Tablet ready</strong> — pen pressure, palm rejection, two-finger navigation</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="stage__context" id="tabletToggles">
+            <button class="rail-toggle" id="railToggle" aria-label="Open character library">Library</button>
+            <button class="rail-toggle" id="inspectorToggle" aria-label="Open inspector">Inspector</button>
+          </div>
+        </section>
+
+        <aside class="inspector" id="inspector" aria-label="Inspector">
+          <div class="inspector__tabs" id="inspectorTabs" role="tablist" aria-label="Inspector sections">
+            <button role="tab" data-tab="appearance" aria-selected="true">Appearance</button>
+            <button role="tab" data-tab="rig" aria-selected="false">Rig</button>
+            <button role="tab" data-tab="animate" aria-selected="false">Animate</button>
+            <button role="tab" data-tab="attach" aria-selected="false">Attach</button>
+            <button role="tab" data-tab="project" aria-selected="false">Project</button>
+          </div>
+          <div class="inspector__body" id="inspectorBody"></div>
+        </aside>
+      </main>
+
+      <footer class="statusbar">
+        <div class="statusbar__message" id="statusMessage" role="status">Ready</div>
+        <div class="statusbar__meta">
+          <span id="statusHistory">No history</span>
+          <span class="dot-sep" aria-hidden="true">·</span>
+          <span id="statusStore">Local storage</span>
+          <span class="dot-sep" aria-hidden="true">·</span>
+          <span id="statusVersion">v0.1.0</span>
+        </div>
+      </footer>
+
+      <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+      <div class="modal-root" id="modalRoot" hidden></div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
