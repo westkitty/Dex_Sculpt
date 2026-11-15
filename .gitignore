@@ -1,0 +1,13 @@
+node_modules/
+dist/
+dist-e2e/
+artifacts/e2e/**
+!artifacts/e2e/.gitkeep
+.vite/
+tools/headless-browser/.cache/
+tools/headless-browser/bin/
+*.log
+.DS_Store
+test-results/
+playwright-report/
+tools/headless-browser/out/
