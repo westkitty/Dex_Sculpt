@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-e2e
+dist-pages
+artifacts
+test-results
+playwright-report
+.DS_Store
+*.local

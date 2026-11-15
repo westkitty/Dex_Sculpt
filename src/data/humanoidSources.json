@@ -1,0 +1,583 @@
+{
+  "schema_version": "2.0.0",
+  "sources": [
+    {
+      "id": "microsoft-rocketbox",
+      "name": "Microsoft Rocketbox Avatar Library",
+      "kind": "prebuilt humanoid avatars",
+      "official_url": "https://github.com/microsoft/Microsoft-Rocketbox",
+      "license": "MIT",
+      "license_url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md",
+      "formats": [
+        "FBX",
+        "TGA"
+      ],
+      "advertised_content": "115 rigged avatars and animation directories"
+    },
+    {
+      "id": "kaykit-adventurers",
+      "name": "KayKit Character Pack: Adventurers (2.0 FREE)",
+      "kind": "prebuilt stylized low-poly rigged humanoid characters and accessories",
+      "official_url": "https://kaylousberg.itch.io/kaykit-adventurers",
+      "license": "CC0-1.0 (verified in License.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB",
+        "FBX",
+        "OBJ",
+        "glTF+BIN+PNG (accessories)"
+      ],
+      "advertised_content": "5 free rigged animated characters (Barbarian, Knight, Mage, Ranger, Rogue + Rogue_Hooded variant), accessories, CC0"
+    },
+    {
+      "id": "kaykit-skeletons",
+      "name": "KayKit Character Pack: Skeletons (1.1 FREE)",
+      "kind": "specialized stylized skeletal humanoid characters and accessories",
+      "official_url": "https://kaylousberg.itch.io/kaykit-skeletons",
+      "license": "CC0-1.0 (verified in License.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB",
+        "FBX",
+        "OBJ",
+        "glTF+BIN+PNG (accessories)"
+      ],
+      "advertised_content": "4 free rigged skeleton characters, basic animations, accessories, CC0"
+    },
+    {
+      "id": "kaykit-character-animations",
+      "name": "KayKit Character Animations (1.1 FREE)",
+      "kind": "stylized humanoid animation library and test mannequins",
+      "official_url": "https://kaylousberg.itch.io/kaykit-character-animations",
+      "license": "CC0-1.0 (verified in License.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB",
+        "FBX"
+      ],
+      "advertised_content": "161 animations across publisher's offering; Rig_Medium and Rig_Large compatibility families, CC0"
+    },
+    {
+      "id": "quaternius-universal-base-characters-standard",
+      "name": "Quaternius Universal Base Characters Standard",
+      "kind": "prebuilt stylized humanoid bases",
+      "official_url": "https://quaternius.com/packs/universalbasecharacters.html",
+      "license": "CC0-1.0 (verified in License_Standard.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF (.gltf + .bin + .png)",
+        "FBX"
+      ],
+      "advertised_content": "Full pack advertises 6 bases and 20 hairstyles; Standard ZIP contains only a subset"
+    },
+    {
+      "id": "quaternius-ual1-standard",
+      "name": "Quaternius Universal Animation Library Standard",
+      "kind": "humanoid animation pack",
+      "official_url": "https://quaternius.itch.io/universal-animation-library",
+      "license": "CC0-1.0 (verified in License.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB",
+        "FBX"
+      ],
+      "advertised_content": "45 animations advertised on pack page"
+    },
+    {
+      "id": "quaternius-ual2-standard",
+      "name": "Quaternius Universal Animation Library 2 Standard",
+      "kind": "humanoid animation pack",
+      "official_url": "https://quaternius.itch.io/universal-animation-library-2",
+      "license": "CC0-1.0 (verified in License.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB",
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": "Additional universal animation library clips plus Female Mannequin"
+    },
+    {
+      "id": "quaternius-modular-character-outfits-fantasy-standard",
+      "name": "Quaternius Modular Character Outfits - Fantasy (Standard)",
+      "kind": "modular humanoid clothing and body outfit parts compatible with Universal Base Characters",
+      "official_url": "https://quaternius.com/packs/modularcharacteroutfitsfantasy.html",
+      "license": "CC0-1.0 (verified in License_Standard.txt inside downloaded ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF (.gltf + .bin + .png)",
+        "FBX"
+      ],
+      "advertised_content": "Full Source pack advertises 12 outfits, 62 modular components, texture variations; Standard contains a subset"
+    },
+    {
+      "id": "quaternius-ultimate-modular-women",
+      "name": "Quaternius Ultimate Modular Women",
+      "kind": "stylized low-poly modular and individual female humanoid characters with embedded animations",
+      "official_url": "https://quaternius.com/packs/ultimatemodularwomen.html",
+      "license": "CC0-1.0 (verified in License.txt inside publisher Google Drive folder)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF (individual characters, 10)",
+        "FBX (all-together, humanoid rigs, individual, separate modular parts + Animations.fbx + Gun.fbx + Sword.fbx)",
+        "Blend"
+      ],
+      "advertised_content": "10 character designs, 24 animations, interchangeable body/head/legs/feet modular sections, FBX/glTF/Blender, CC0"
+    },
+    {
+      "id": "quaternius-rpg-characters",
+      "name": "Quaternius RPG Characters",
+      "kind": "stylized fantasy RPG humanoid characters with embedded weapon/class animations",
+      "official_url": "https://quaternius.com/packs/rpgcharacters.html",
+      "license": "CC0-1.0 (verified in License.txt inside publisher Google Drive folder)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF (6 characters with embedded images/buffers)",
+        "FBX (characters, Humanoid Rig Versions, Only Weapons)",
+        "OBJ",
+        "Blend",
+        "PNG textures"
+      ],
+      "advertised_content": "6 rigged and animated fantasy characters, CC0"
+    },
+    {
+      "id": "polygonalmind-100-avatars-r1",
+      "name": "Polygonal Mind 100 Avatars - Round 1",
+      "kind": "rigged voxel/stylized VRM humanoid avatars",
+      "official_url": "https://github.com/PolygonalMind/initiative-opensource-release/releases/tag/230412.1",
+      "license": "CC0-1.0 (verified in License.md inside 2003_100AvatarsR1AssetPack.zip)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "VRM (converted cleanly to glTF 2.0 GLB with vrm_meta.humanoid_bone_map)"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "polygonalmind-100-avatars-r2",
+      "name": "Polygonal Mind 100 Avatars - Round 2",
+      "kind": "rigged stylized VRM humanoid avatars",
+      "official_url": "https://github.com/PolygonalMind/initiative-opensource-release/releases/tag/230412.2",
+      "license": "CC0-1.0 (verified in License.md inside 2103_100AvatarsR2AssetPack.zip)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "VRM (converted cleanly to glTF 2.0 GLB with vrm_meta.humanoid_bone_map)"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "polygonalmind-xyz-creatures",
+      "name": "Polygonal Mind XYZ Character Collection (Humanoid Subset)",
+      "kind": "stylized bipedal creature humanoids filtered from 60 mixed creature rigs",
+      "official_url": "https://github.com/PolygonalMind/initiative-opensource-release/releases/tag/230526",
+      "license": "CC0-1.0 (verified in License.md inside 2006_XYZAssetPack.zip)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX (converted via Blender to GLB)"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "kenney-mini-characters",
+      "name": "Kenney Mini Characters",
+      "kind": "Kenney CC0 character assets",
+      "official_url": "https://kenney.nl/assets/mini-characters",
+      "license": "CC0-1.0 (verified in License.txt inside ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "kenney-blocky-characters",
+      "name": "Kenney Blocky Characters",
+      "kind": "Kenney CC0 character assets",
+      "official_url": "https://kenney.nl/assets/blocky-characters",
+      "license": "CC0-1.0 (verified in License.txt inside ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "GLB"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "kenney-animated-protagonists",
+      "name": "Kenney Animated Characters - Protagonists",
+      "kind": "Kenney CC0 character assets",
+      "official_url": "https://kenney.nl/assets/animated-characters-protagonists",
+      "license": "CC0-1.0 (verified in License.txt inside ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX + PNG skins"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "kenney-animated-retro",
+      "name": "Kenney Animated Characters - Retro",
+      "kind": "Kenney CC0 character assets",
+      "official_url": "https://kenney.nl/assets/animated-characters-retro",
+      "license": "CC0-1.0 (verified in License.txt inside ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX + PNG skins"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "kenney-animated-survivors",
+      "name": "Kenney Animated Characters - Survivors",
+      "kind": "Kenney CC0 character assets",
+      "official_url": "https://kenney.nl/assets/animated-characters-survivors",
+      "license": "CC0-1.0 (verified in License.txt inside ZIP)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX + PNG skins"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-ultimate-animated-character",
+      "name": "Quaternius Ultimate Animated Character Pack",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/ultimatedanimatedcharacter.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX",
+        "glTF",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-ultimate-modular-men",
+      "name": "Quaternius Ultimate Modular Men",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/ultimatemodularcharacters.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-background-posed-humans",
+      "name": "Quaternius Background Posed Humans",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/backgroundposedhumans.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-men",
+      "name": "Quaternius Animated Men Pack",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedmen.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-women",
+      "name": "Quaternius Animated Women Pack",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedwomen.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-man",
+      "name": "Quaternius Animated Man",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedman.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-woman",
+      "name": "Quaternius Animated Woman",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedwoman.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-knight",
+      "name": "Quaternius Animated Knight",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedknight.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-zombie",
+      "name": "Quaternius Animated Zombie",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedzombie.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-robot",
+      "name": "Quaternius Animated Robot",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedrobot.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-animated-alien",
+      "name": "Quaternius Animated Alien",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/animatedalien.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "FBX",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-pirate-kit",
+      "name": "Quaternius Pirate Kit",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/piratekit.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-zombie-apocalypse-kit",
+      "name": "Quaternius Zombie Apocalypse Kit",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/zombieapocalypsekit.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-toon-shooter-kit",
+      "name": "Quaternius Toon Shooter Game Kit",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/toonshooter.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-cyberpunk-kit",
+      "name": "Quaternius Cyberpunk Game Kit",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/cyberpunkgamekit.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-ultimate-space-kit",
+      "name": "Quaternius Ultimate Space Kit",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/ultimatespacekit.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-cube-world-kit",
+      "name": "Quaternius Cube World Kit",
+      "kind": "Quaternius CC0 asset pack",
+      "official_url": "https://quaternius.com/packs/cubeworldkit.html",
+      "license": "CC0-1.0 (verified against publisher License.txt where included)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "quaternius-sci-fi-essentials-kit",
+      "name": "Quaternius Sci-Fi Essentials Kit (Standard)",
+      "kind": "modular sci-fi prop and non-humanoid enemy kit",
+      "official_url": "https://quaternius.com/packs/scifiessentials.html",
+      "license": "CC0-1.0 (verified Standard tier archive archived privately)",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "glTF",
+        "FBX",
+        "OBJ"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "blender-human-base-meshes",
+      "name": "Blender Studio Human Base Meshes",
+      "kind": "sculpt/base humanoid meshes",
+      "official_url": "https://www.blender.org/download/demo-files/",
+      "license": "CC0-1.0 advertised on blender.org",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [],
+      "advertised_content": null
+    },
+    {
+      "id": "barnabe-wild-lowpoly-character",
+      "name": "Barnabe Wild Low-Poly Rigged Character",
+      "kind": "stylized low-poly Blend character with IK and Mixamo mocap rigs",
+      "official_url": "https://barnabe-wild.itch.io/low-poly-rigged-character",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "Blend (converted via Blender to GLB)"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "oga-rigged-fps-arms",
+      "name": "OpenGameArt Rigged FPS Arms",
+      "kind": "first-person partial rigged arms (partial_humanoid_fps_arms)",
+      "official_url": "https://opengameart.org/content/rigged-fps-arms",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "formats": [
+        "Blend (converted via Blender to GLB)"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "gdquest-open-3d-mannequin",
+      "name": "GDQuest Open 3D Mannequin",
+      "kind": "open-source game mannequin characters and rig-free base mesh",
+      "official_url": "https://github.com/gdquest-demos/godot-3d-mannequin",
+      "license": "CC-BY-4.0 (attribution required: GDQuest and contributors; verified in LICENSE)",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "formats": [
+        "GLB",
+        "Blend"
+      ],
+      "advertised_content": null
+    },
+    {
+      "id": "makehuman",
+      "name": "MakeHuman / MPFB",
+      "kind": "character generator, not prebuilt library",
+      "official_url": "https://www.makehumancommunity.org/",
+      "license": "Core exported assets generally CC0; community assets vary",
+      "license_url": "https://www.makehumancommunity.org/content/license.html",
+      "formats": [
+        "FBX",
+        "DAE",
+        "Blender intermediary"
+      ],
+      "advertised_content": "Custom body and face generator; no pre-generated avatar ZIP cataloged"
+    },
+    {
+      "id": "vroid-studio",
+      "name": "VRoid Studio",
+      "kind": "character generator, not prebuilt library",
+      "official_url": "https://vroid.com/en/studio",
+      "license": "User-created VRM rights and third-party wardrobe terms are item-dependent",
+      "license_url": "https://vroid.com/en/studio",
+      "formats": [
+        "VRM"
+      ],
+      "advertised_content": "Anime-style avatar creation"
+    },
+    {
+      "id": "adobe-mixamo",
+      "name": "Adobe Mixamo",
+      "kind": "account-gated animations and characters",
+      "official_url": "https://www.mixamo.com/",
+      "license": "Adobe/Mixamo terms: finished projects yes; stand-alone raw asset redistribution restricted",
+      "license_url": "https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html",
+      "formats": [
+        "FBX"
+      ],
+      "advertised_content": "Character and animation selection service; no finite complete ZIP defined"
+    }
+  ]
+}
