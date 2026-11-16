@@ -7,3 +7,10 @@ test-results
 playwright-report
 .DS_Store
 *.local
+
+# private source material (never commit)
+google_drive/
+# regenerable e2e fixtures/exports (evidence PNGs + pixel-evidence.json are tracked)
+e2e-artifacts/journey-export.glb
+e2e-artifacts/bad-recipe.json
+e2e-artifacts/journey-recipe-v2.dexsculpt.json

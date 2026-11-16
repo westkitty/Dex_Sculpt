@@ -115,7 +115,7 @@ export class StudioViewport {
     return Math.max(1, Math.min(dpr, 3, cap));
   }
 
-  constructor(public readonly host: HTMLElement) {
+  constructor(public host: HTMLElement) {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       powerPreference: 'high-performance',
@@ -235,12 +235,30 @@ export class StudioViewport {
     });
 
     this.resize();
-    if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(() => this.resize());
-      this.resizeObserver.observe(host);
-    }
+    this.observeHost();
 
     this.startLoop();
+  }
+
+  /**
+   * Re-parent the render canvas into its real layout host and re-arm size
+   * tracking. The constructor may receive a detached staging element; the
+   * visual shell adopts the canvas once its layout exists. Without this the
+   * ResizeObserver would watch a detached 0x0 node and the WebGL buffer would
+   * silently stay 1x1 (a blank "rendered" viewport).
+   */
+  attach(el: HTMLElement): void {
+    el.appendChild(this.renderer.domElement);
+    this.host = el;
+    this.observeHost();
+    this.resize();
+  }
+
+  private observeHost(): void {
+    if (typeof ResizeObserver === 'undefined') return;
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(this.host);
   }
 
   resize(): void {
@@ -321,6 +339,24 @@ export class StudioViewport {
     this.focusCenter.copy(center);
     this.focusRadius = radius;
     this.setViewPreset('threeQuarter');
+  }
+
+  /**
+   * Deterministic pixel capture: renders synchronously and reads the drawing
+   * buffer in the same task (required with `preserveDrawingBuffer: false`).
+   */
+  renderToPng(): string {
+    // Canonical capture: transient brush cursor overlays are excluded so pixel
+    // diffs reflect geometry/material state only, never pointer hover position.
+    const cursorWas = this.cursor.visible;
+    const mirrorWas = this.mirrorCursor.visible;
+    this.cursor.visible = false;
+    this.mirrorCursor.visible = false;
+    this.renderer.render(this.scene, this.camera);
+    const url = this.renderer.domElement.toDataURL('image/png');
+    this.cursor.visible = cursorWas;
+    this.mirrorCursor.visible = mirrorWas;
+    return url;
   }
 
   setLightingPreset(preset: LightingPresetId): void {

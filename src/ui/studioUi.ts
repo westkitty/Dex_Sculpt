@@ -10,17 +10,17 @@ import {
 } from '../catalog/catalogService';
 import { IMPORT_ACCEPT } from '../io/glbPipeline';
 import { parseRecipeJson, serializeRecipeJson } from '../io/projectStorage';
-import type { CharacterSession } from '../app/characterSession';
+import type { CharacterSession, VariantPreviewCapture } from '../app/characterSession';
 import type { SculptTool } from '../app/sculptTool';
 import type { CameraViewPreset, LightingPresetId, StudioViewport } from '../app/viewport';
 
-type InspectorTab = 'shape' | 'materials' | 'rig' | 'assemble' | 'catalog';
+type InspectorTab = 'shape' | 'layers' | 'variants' | 'materials' | 'rig' | 'assemble' | 'catalog';
 
 export class StudioUI {
   private activeTab: InspectorTab = 'shape';
   private leftOpen = false;
   private rightOpen = false;
-  private modalKind: 'none' | 'export' | 'shortcuts' | 'tablet' = 'none';
+  private modalKind: 'none' | 'export' | 'shortcuts' | 'tablet' | 'compare' = 'none';
   private toast: { msg: string; tone: 'info' | 'warn' | 'error' | 'ok'; timer?: number } | null = null;
   private catalogQuery = '';
   private catalogSource = '';
@@ -48,6 +48,8 @@ export class StudioUI {
   private accessoryInput!: HTMLInputElement;
   private animScrubInput: HTMLInputElement | null = null;
   private animScrubLabel: HTMLElement | null = null;
+  private compareCaptures: [VariantPreviewCapture, VariantPreviewCapture] | null = null;
+  private compareDiff: { changedRatio: number; maxChannelDelta: number } | null = null;
 
   constructor(
     private rootEl: HTMLElement,
@@ -99,7 +101,7 @@ export class StudioUI {
       if (!file) return;
       try {
         const recipe = parseRecipeJson(await file.text());
-        const res = await this.session.loadRecipe(recipe);
+        const res = await this.session.loadProjectRecipe(recipe);
         if (res.needsRelink) {
           this.showToast(
             `Recipe loaded — please relink "${recipe.source.fileName}" to reconstruct mesh.`,
@@ -241,7 +243,7 @@ export class StudioUI {
     // Center Viewport Stage
     const stage = document.createElement('main');
     stage.className = 'viewport-stage';
-    stage.appendChild(this.vp.renderer.domElement);
+    this.vp.attach(stage);
 
     this.hudOverlayEl = document.createElement('div');
     this.hudOverlayEl.className = 'viewport-hud-top';
@@ -256,6 +258,8 @@ export class StudioUI {
     tabBar.className = 'tab-bar';
     const tabs: Array<{ id: InspectorTab; label: string }> = [
       { id: 'shape', label: 'Shape' },
+      { id: 'layers', label: 'Layers' },
+      { id: 'variants', label: 'Variants' },
       { id: 'materials', label: 'Material' },
       { id: 'rig', label: 'Rig' },
       { id: 'assemble', label: 'Assemble' },
@@ -554,6 +558,8 @@ export class StudioUI {
     this.animScrubLabel = null;
     this.inspectorBodyEl.innerHTML = '';
     if (this.activeTab === 'shape') this.renderShapeTab();
+    else if (this.activeTab === 'layers') this.renderLayersTab();
+    else if (this.activeTab === 'variants') this.renderVariantsTab();
     else if (this.activeTab === 'materials') this.renderMaterialsTab();
     else if (this.activeTab === 'rig') this.renderRigTab();
     else if (this.activeTab === 'assemble') this.renderAssembleTab();
@@ -643,6 +649,368 @@ export class StudioUI {
       }
       this.inspectorBodyEl.appendChild(warnCard);
     }
+  }
+
+  private renderLayersTab(): void {
+    const session = this.session;
+    const variant = session.activeVariant;
+
+    // --- History feedback card ---
+    const histCard = document.createElement('div');
+    histCard.className = 'card';
+    const hDepth = session.history.depth;
+    const rDepth = session.history.redoDepth;
+    histCard.innerHTML = `
+      <div class="card-title">
+        <span>Undo / Redo</span>
+        <span class="badge">${hDepth} undoable · ${rDepth} redoable</span>
+      </div>
+    `;
+    const histRow = document.createElement('div');
+    histRow.style.display = 'flex';
+    histRow.style.gap = '6px';
+    histRow.style.alignItems = 'center';
+    const undoBtn = this.btn('Undo', () => {
+      session.history.undo();
+      this.refresh();
+    });
+    undoBtn.disabled = !session.history.canUndo;
+    undoBtn.dataset.testid = 'btn-layer-undo';
+    const redoBtn = this.btn('Redo', () => {
+      session.history.redo();
+      this.refresh();
+    });
+    redoBtn.disabled = !session.history.canRedo;
+    redoBtn.dataset.testid = 'btn-layer-redo';
+    const lastEl = document.createElement('span');
+    lastEl.style.fontSize = '11px';
+    lastEl.style.color = 'var(--text-secondary)';
+    lastEl.dataset.testid = 'history-last-action';
+    lastEl.textContent = session.history.canUndo
+      ? `Last: ${session.history.peekLabel()}`
+      : session.history.canRedo
+        ? `Next: ${session.history.peekRedoLabel()}`
+        : 'No edits yet';
+    histRow.append(undoBtn, redoBtn, lastEl);
+    histCard.appendChild(histRow);
+    this.inspectorBodyEl.appendChild(histCard);
+
+    // --- Sculpt layers card ---
+    const card = document.createElement('div');
+    card.className = 'card';
+    const header = document.createElement('div');
+    header.className = 'card-title';
+    header.innerHTML = `<span>Sculpt Layers</span><span class="badge ${variant ? 'ok' : 'warn'}">${variant ? this.escape(variant.name) : 'No character'}</span>`;
+    const addBtn = this.btn('Add Layer', () => {
+      session.createLayer(`Sculpt ${session.activeVariant!.layers.length + 1}`);
+      this.refresh();
+    }, 'primary');
+    addBtn.dataset.testid = 'btn-add-layer';
+    addBtn.disabled = !variant;
+    header.appendChild(addBtn);
+    card.appendChild(header);
+
+    if (!variant || variant.layers.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-note';
+      empty.textContent =
+        'No sculpt layers yet. Add a layer, or just sculpt — an implicit layer becomes your editing target automatically. Layer edits are stored as non-destructive deltas against the immutable source.';
+      card.appendChild(empty);
+    } else {
+      for (const layer of variant.layers) {
+        const row = document.createElement('div');
+        row.className = `layer-row${layer.id === session.activeLayerId ? ' active' : ''}`;
+        row.dataset.testid = `layer-row/${layer.id}`;
+
+        const top = document.createElement('div');
+        top.style.display = 'flex';
+        top.style.alignItems = 'center';
+        top.style.gap = '6px';
+
+        const pick = this.btn(layer.id === session.activeLayerId ? '\u25cf' : '\u25cb', () => {
+          session.selectLayer(layer.id);
+          this.refresh();
+        });
+        pick.title = 'Select as active sculpt layer';
+        pick.dataset.testid = `btn-layer-select/${layer.id}`;
+        pick.style.minWidth = '30px';
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.value = layer.name;
+        nameInput.dataset.testid = `layer-name/${layer.id}`;
+        nameInput.style.flex = '1';
+        nameInput.style.minWidth = '0';
+        nameInput.addEventListener('change', () => {
+          try {
+            session.renameLayer(layer.id, nameInput.value);
+          } catch (err) {
+            this.showToast((err as Error).message, 'error');
+          }
+          this.refresh();
+        });
+
+        const visBtn = this.btn(layer.visible ? 'Hide' : 'Show', () => {
+          session.toggleLayerVisible(layer.id);
+          this.refresh();
+        });
+        visBtn.dataset.testid = `btn-layer-visible/${layer.id}`;
+        visBtn.setAttribute('aria-pressed', String(layer.visible));
+
+        top.append(pick, nameInput, visBtn);
+        row.appendChild(top);
+
+        const strengthRow = this.slider(
+          `Strength${layer.id === session.activeLayerId ? ' (active target)' : ''}`,
+          0,
+          1,
+          0.05,
+          layer.strength,
+          () => {},
+          (v) => {
+            session.setLayerStrength(layer.id, v);
+            this.refresh();
+          }
+        );
+        strengthRow.querySelector('input')!.dataset.testid = `layer-strength/${layer.id}`;
+        row.appendChild(strengthRow);
+
+        const actions = document.createElement('div');
+        actions.style.display = 'flex';
+        actions.style.gap = '6px';
+        const dupBtn = this.btn('Duplicate', () => {
+          session.duplicateLayer(layer.id);
+          this.refresh();
+        });
+        dupBtn.dataset.testid = `btn-layer-duplicate/${layer.id}`;
+        const resetBtn = this.btn('Reset', () => {
+          session.resetLayer(layer.id);
+          this.refresh();
+        });
+        resetBtn.dataset.testid = `btn-layer-reset/${layer.id}`;
+        const delBtn = this.btn('Delete', () => {
+          if (window.confirm(`Delete layer "${layer.name}"? Its sculpt edits will be removed (undoable).`)) {
+            session.deleteLayer(layer.id);
+            this.refresh();
+          }
+        });
+        delBtn.dataset.testid = `btn-layer-delete/${layer.id}`;
+        actions.append(dupBtn, resetBtn, delBtn);
+        row.appendChild(actions);
+        card.appendChild(row);
+      }
+    }
+    this.inspectorBodyEl.appendChild(card);
+
+    const note = document.createElement('div');
+    note.className = 'card';
+    note.innerHTML = `
+      <div class="card-title"><span>How layers work</span></div>
+      <div style="font-size:11px;color:var(--text-secondary)">
+        The visible character is recomputed deterministically from the immutable source positions plus each enabled layer's stored deltas (scaled by its strength). Hiding a layer never deletes its edits. Skeleton, skin weights, UVs, morph targets and animations are never rewritten.
+      </div>
+    `;
+    this.inspectorBodyEl.appendChild(note);
+  }
+
+  private renderVariantsTab(): void {
+    const session = this.session;
+    const dna = session.dna;
+
+    // --- Character variants card ---
+    const card = document.createElement('div');
+    card.className = 'card';
+    const header = document.createElement('div');
+    header.className = 'card-title';
+    header.innerHTML = `<span>Character Variants</span><span class="badge">${dna ? dna.variants.length : 0} named</span>`;
+    const newBtn = this.btn('New Variant', () => {
+      session.createVariant(`Variant ${session.dna!.variants.length + 1}`);
+      this.refresh();
+    }, 'primary');
+    newBtn.dataset.testid = 'btn-new-variant';
+    newBtn.disabled = !dna;
+    header.appendChild(newBtn);
+    card.appendChild(header);
+
+    if (dna) {
+      for (const v of dna.variants) {
+        const row = document.createElement('div');
+        row.className = `variant-row${v.id === dna.activeId ? ' active' : ''}`;
+        row.dataset.testid = `variant-row/${v.id}`;
+
+        const top = document.createElement('div');
+        top.style.display = 'flex';
+        top.style.alignItems = 'center';
+        top.style.gap = '6px';
+
+        const pick = this.btn(v.id === dna.activeId ? '\u25cf' : '\u25cb', () => {
+          if (v.id !== session.dna!.activeId) {
+            session.switchVariant(v.id);
+            this.refresh();
+          }
+        });
+        pick.title = 'Switch to this variant';
+        pick.dataset.testid = `btn-variant-switch/${v.id}`;
+        pick.style.minWidth = '30px';
+
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.value = v.name;
+        nameInput.dataset.testid = `variant-name/${v.id}`;
+        nameInput.style.flex = '1';
+        nameInput.style.minWidth = '0';
+        nameInput.addEventListener('change', () => {
+          try {
+            session.renameVariant(v.id, nameInput.value);
+          } catch (err) {
+            this.showToast((err as Error).message, 'error');
+          }
+          this.refresh();
+        });
+
+        top.append(pick, nameInput);
+        row.appendChild(top);
+
+        const meta = document.createElement('div');
+        meta.style.fontSize = '11px';
+        meta.style.color = 'var(--text-secondary)';
+        meta.textContent = `${v.layers.length} layer${v.layers.length === 1 ? '' : 's'} · ${Object.keys(v.morphWeights).length} morphs · ${Object.keys(v.materialOverrides).length} material edits`;
+        row.appendChild(meta);
+
+        const actions = document.createElement('div');
+        actions.style.display = 'flex';
+        actions.style.gap = '6px';
+        const dupBtn = this.btn('Duplicate', () => {
+          session.duplicateVariant(v.id);
+          this.refresh();
+        });
+        dupBtn.dataset.testid = `btn-variant-duplicate/${v.id}`;
+        const resetBtn = this.btn('Reset', () => {
+          if (window.confirm(`Reset variant "${v.name}" to the unedited source?`)) {
+            session.resetVariant(v.id);
+            this.refresh();
+          }
+        });
+        resetBtn.dataset.testid = `btn-variant-reset/${v.id}`;
+        const delBtn = this.btn('Delete', () => {
+          if (window.confirm(`Delete variant "${v.name}"?`)) {
+            try {
+              session.deleteVariant(v.id);
+            } catch (err) {
+              this.showToast((err as Error).message, 'error');
+            }
+            this.refresh();
+          }
+        });
+        delBtn.dataset.testid = `btn-variant-delete/${v.id}`;
+        actions.append(dupBtn, resetBtn, delBtn);
+        row.appendChild(actions);
+        card.appendChild(row);
+      }
+    }
+    this.inspectorBodyEl.appendChild(card);
+
+    // --- A/B comparison card ---
+    const compareCard = document.createElement('div');
+    compareCard.className = 'card';
+    compareCard.innerHTML = `<div class="card-title"><span>A/B Comparison</span></div>`;
+    const compareRow = document.createElement('div');
+    compareRow.style.display = 'flex';
+    compareRow.style.gap = '6px';
+    compareRow.style.alignItems = 'center';
+    const selA = document.createElement('select');
+    selA.dataset.testid = 'select-compare-a';
+    const selB = document.createElement('select');
+    selB.dataset.testid = 'select-compare-b';
+    if (dna) {
+      for (const v of dna.variants) {
+        for (const sel of [selA, selB]) {
+          const opt = document.createElement('option');
+          opt.value = v.id;
+          opt.textContent = v.name;
+          sel.appendChild(opt);
+        }
+      }
+      selA.value = dna.activeId;
+      selB.value = dna.variants.find((v) => v.id !== dna.activeId)?.id ?? dna.activeId;
+    }
+    compareRow.append(selA, selB);
+    compareCard.appendChild(compareRow);
+    const compareBtn = this.btn('Compare A/B', async () => {
+      try {
+        const [a, b] = session.captureVariantPreviews(selA.value, selB.value);
+        const diff = await session.diffPngDataUrls(a.dataUrl, b.dataUrl);
+        this.compareCaptures = [a, b];
+        this.compareDiff = diff;
+        this.modalKind = 'compare';
+        this.renderModal();
+      } catch (err) {
+        this.showToast(`Comparison failed: ${(err as Error).message}`, 'error');
+      }
+    }, 'primary');
+    compareBtn.dataset.testid = 'btn-compare-ab';
+    compareBtn.style.marginTop = '8px';
+    compareBtn.disabled = !dna || dna.variants.length < 1;
+    compareCard.appendChild(compareBtn);
+    const compareNote = document.createElement('div');
+    compareNote.style.fontSize = '11px';
+    compareNote.style.color = 'var(--text-secondary)';
+    compareNote.style.marginTop = '6px';
+    compareNote.textContent =
+      'Both variants are rendered with identical canonical camera framing and studio lighting; the pixel-difference statistics prove real geometry/appearance differences.';
+    compareCard.appendChild(compareNote);
+    this.inspectorBodyEl.appendChild(compareCard);
+
+    this.renderProjectStatusCard();
+  }
+
+  private renderProjectStatusCard(): void {
+    const session = this.session;
+    const st = session.getStatus();
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="card-title"><span>Project Status</span><span class="badge ${st.requiresSourceRelink ? 'warn' : 'ok'}">${st.requiresSourceRelink ? 'RELINK NEEDED' : 'RECOVERABLE'}</span></div>`;
+
+    const grid = document.createElement('div');
+    grid.className = 'stat-grid';
+    const autosaveText = st.autosave
+      ? `Saved ${new Date(st.autosave.lastSavedAt).toLocaleTimeString()} (slot ${st.autosave.slot}, #${st.autosave.seq}${st.autosave.cachedSourceBytes ? ', source cached' : ''})`
+      : 'No autosave yet';
+    grid.innerHTML = `
+      <div class="stat-box"><div class="k">Autosave</div><div class="v" data-testid="status-autosave" style="font-size:10px">${autosaveText}</div></div>
+      <div class="stat-box"><div class="k">Recoverability</div><div class="v" data-testid="status-recover" style="font-size:10px">${st.requiresSourceRelink ? 'Awaiting source relink' : 'Full (source + edits)'}</div></div>
+      <div class="stat-box"><div class="k">Active Variant</div><div class="v" data-testid="status-variant" style="font-size:10px">${this.escape(st.activeVariantName || '—')}</div></div>
+      <div class="stat-box"><div class="k">Active Layer</div><div class="v" data-testid="status-layer" style="font-size:10px">${this.escape(st.activeLayerName || '—')}</div></div>
+    `;
+    card.appendChild(grid);
+
+    const relink = document.createElement('div');
+    relink.dataset.testid = 'status-relink';
+    relink.style.fontSize = '11px';
+    relink.style.marginTop = '6px';
+    if (st.requiresSourceRelink && session.pendingRecipeAwaitingRelink) {
+      relink.style.color = 'var(--amber)';
+      relink.textContent = `Source relink required for "${session.pendingRecipeAwaitingRelink.title}" (expected SHA-256: ${session.pendingRecipeAwaitingRelink.source.sha256.slice(0, 12)}\u2026). The current character remains loaded and untouched.`;
+    } else {
+      relink.style.color = 'var(--text-secondary)';
+      relink.textContent = 'No source relink pending. Source identity verified by cryptographic SHA-256.';
+    }
+    card.appendChild(relink);
+
+    const errors = document.createElement('div');
+    errors.dataset.testid = 'status-errors';
+    errors.style.fontSize = '11px';
+    errors.style.marginTop = '6px';
+    const allWarnings = [...st.warnings, ...session.dnaWarnings];
+    if (allWarnings.length > 0) {
+      errors.style.color = 'var(--amber)';
+      errors.textContent = `Validation notes (${allWarnings.length}): ${allWarnings.join(' | ')}`;
+    } else {
+      errors.style.color = 'var(--ok)';
+      errors.textContent = 'No validation errors.';
+    }
+    card.appendChild(errors);
+    this.inspectorBodyEl.appendChild(card);
   }
 
   private renderMaterialsTab(): void {
@@ -1151,7 +1519,7 @@ export class StudioUI {
   }
 
   private downloadRecipe(): void {
-    const recipe = this.session.buildRecipe();
+    const recipe = this.session.buildProjectRecipe();
     const json = serializeRecipeJson(recipe);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -1184,7 +1552,35 @@ export class StudioUI {
     const card = document.createElement('div');
     card.className = 'modal-card';
 
-    if (this.modalKind === 'export' && this.session.lastExportResult) {
+    if (this.modalKind === 'compare' && this.compareCaptures) {
+      const [a, b] = this.compareCaptures;
+      const d = this.compareDiff;
+      card.innerHTML = `
+        <div class="card-title">
+          <span>A/B Variant Comparison — Canonical Frame</span>
+          <span class="badge ${d && d.changedRatio > 0.0005 ? 'ok' : 'warn'}">${d ? `${(d.changedRatio * 100).toFixed(2)}% pixels differ` : 'no data'}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+          <div>
+            <div style="font-size:12px;margin-bottom:4px"><strong>A:</strong> ${this.escape(a.variantName)}</div>
+            <img data-testid="compare-img-a" src="${a.dataUrl}" style="width:100%;border-radius:8px;background:#0f1115" alt="Variant A capture"/>
+          </div>
+          <div>
+            <div style="font-size:12px;margin-bottom:4px"><strong>B:</strong> ${this.escape(b.variantName)}</div>
+            <img data-testid="compare-img-b" src="${b.dataUrl}" style="width:100%;border-radius:8px;background:#0f1115" alt="Variant B capture"/>
+          </div>
+        </div>
+        <div data-testid="compare-stat" style="font-size:12px;color:${d && d.changedRatio > 0.0005 ? 'var(--ok)' : 'var(--amber)'};margin-bottom:10px">
+          ${d ? `Rendered-pixel difference: ${(d.changedRatio * 100).toFixed(3)}% of pixels changed, max channel delta ${d.maxChannelDelta}/255. Both captures use the same canonical camera framing and studio lighting.` : 'Capture data unavailable.'}
+        </div>
+      `;
+      card.appendChild(
+        this.btn('Close', () => {
+          this.modalKind = 'none';
+          this.renderModal();
+        })
+      );
+    } else if (this.modalKind === 'export' && this.session.lastExportResult) {
       const r = this.session.lastExportResult.validation;
       const d = this.session.lastExportDiff;
       const p0 = r.primitives.find((p) => p.hasJoints && p.morphTargetCount > 0) ?? r.primitives[0];

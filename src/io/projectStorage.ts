@@ -1,12 +1,19 @@
-import type { CharacterRecipeV1 } from '../core/recipe';
+import type { ProjectRecipe } from '../core/recipe';
 import { validateCharacterRecipe } from '../core/recipe';
 
 const DB_NAME = 'dex-sculpt-storage';
 const STORE_NAME = 'autosave';
 const MAX_STORED_SOURCE_BYTES = 64 * 1024 * 1024; // 64 MB local browser quota guard
 
+export interface AutosaveStatus {
+  lastSavedAt: string;
+  slot: 'A' | 'B';
+  seq: number;
+  cachedSourceBytes: boolean;
+}
+
 export interface LocalProjectBundle {
-  recipe: CharacterRecipeV1;
+  recipe: ProjectRecipe;
   /** Optional local GLB bytes cached locally in IndexedDB for seamless reload (never uploaded). */
   sourceGlbBytes?: ArrayBuffer;
   savedAt: string;
@@ -71,7 +78,7 @@ function idbTx<T>(
  * Writes the new slot completely before committing the `head` pointer in a separate transaction.
  */
 export async function saveAutosaveProject(
-  recipe: CharacterRecipeV1,
+  recipe: ProjectRecipe,
   sourceGlbBytes?: ArrayBuffer
 ): Promise<{ slot: 'A' | 'B'; seq: number; cachedSourceBytes: boolean }> {
   const db = await openDb();
@@ -149,10 +156,10 @@ export async function clearAutosaveProject(): Promise<void> {
   }
 }
 
-export function serializeRecipeJson(recipe: CharacterRecipeV1): string {
+export function serializeRecipeJson(recipe: ProjectRecipe): string {
   return JSON.stringify(recipe, null, 2);
 }
 
-export function parseRecipeJson(text: string): CharacterRecipeV1 {
+export function parseRecipeJson(text: string): ProjectRecipe {
   return validateCharacterRecipe(JSON.parse(text));
 }

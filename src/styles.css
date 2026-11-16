@@ -363,7 +363,7 @@ input[type='range'] {
 
 .tab-bar {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   border-bottom: 1px solid var(--border);
   background: var(--bg-root);
 }
@@ -592,5 +592,42 @@ input[type='range'] {
   * {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* ---- V2: Sculpt Layers & Character Variants panels ---- */
+.layer-row,
+.variant-row {
+  background: var(--bg-root);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.layer-row.active,
+.variant-row.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.layer-row input[type='text'],
+.variant-row input[type='text'] {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.layer-row .control-row,
+.variant-row .control-row {
+  margin-top: 6px;
+}
+
+@media (max-width: 720px) {
+  .tab-bar {
+    grid-template-columns: repeat(4, 1fr);
   }
 }

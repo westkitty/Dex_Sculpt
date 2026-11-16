@@ -19,8 +19,10 @@ async function bootstrap(): Promise<void> {
   const tool = new SculptTool(
     vp,
     () => session.sculptTargets,
-    (entry) => session.history.push(entry),
-    () => session.ensureBindPoseForSculpting()
+    (target) => session.commitSculptStroke(target),
+    () => session.ensureBindPoseForSculpting(),
+    undefined,
+    (target) => session.prepareSculptStroke(target)
   );
 
   const ui = new StudioUI(appEl, vp, session, tool);

@@ -1,3 +1,4 @@
+import { sha256Hex as sha256HexPure } from '../core/sha256';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
@@ -28,24 +29,7 @@ export function kindOfFile(name: string): ImportKind | null {
 
 export async function sha256Hex(data: ArrayBuffer | Uint8Array): Promise<string> {
   const bytes = data instanceof Uint8Array ? data : new Uint8Array(data);
-  if (typeof crypto !== 'undefined' && crypto.subtle) {
-    const copy = new Uint8Array(bytes.byteLength);
-    copy.set(bytes);
-    const digest = await crypto.subtle.digest('SHA-256', copy.buffer);
-    return Array.from(new Uint8Array(digest))
-      .map((b) => b.toString(16).padStart(2, '0'))
-      .join('');
-  }
-  // Fallback FNV-64 style hex if subtle unavailable in non-secure test context
-  let h1 = 0x811c9dc5;
-  let h2 = 0x9e3779b9;
-  for (let i = 0; i < bytes.length; i++) {
-    h1 ^= bytes[i];
-    h1 = Math.imul(h1, 0x01000193);
-    h2 ^= bytes[i];
-    h2 = Math.imul(h2, 0x85ebca6b);
-  }
-  return (h1 >>> 0).toString(16).padStart(8, '0') + (h2 >>> 0).toString(16).padStart(8, '0');
+  return sha256HexPure(bytes);
 }
 
 /**

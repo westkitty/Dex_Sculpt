@@ -120,9 +120,11 @@ export class SculptTool {
   constructor(
     private vp: StudioViewport,
     private getTargets: () => RigSafeSculptTarget[],
-    private onCommitStroke: (entry: HistoryEntry | null) => void,
+    private onCommitStroke: (target: RigSafeSculptTarget, entry: HistoryEntry | null) => void,
     private onEnsureBindPoseForSculpt: () => void,
-    public onPenActivity: () => void = () => {}
+    public onPenActivity: () => void = () => {},
+    /** Session hook: prepare the active sculpt layer for a stroke. Return false to block the stroke. */
+    private prepareStroke: (target: RigSafeSculptTarget) => boolean = () => true
   ) {
     (this.ray as any).firstHitOnly = true;
     const cv = vp.renderer.domElement;
@@ -295,6 +297,9 @@ export class SculptTool {
     this.onEnsureBindPoseForSculpt();
     const hit = this.pickSurface(e.clientX, e.clientY);
     if (!hit) return;
+
+    // Layer-aware gate: blocks strokes onto hidden layers and prepares the active layer.
+    if (!this.prepareStroke(hit.target)) return;
 
     // Begin sculpt stroke: disable camera orbit while dragging on character mesh
     this.vp.controls.enabled = false;
@@ -516,7 +521,7 @@ export class SculptTool {
       this.vp.needsRender = true;
     });
     st.target.endStrokeMaintenance();
-    this.onCommitStroke(entry);
+    this.onCommitStroke(st.target, entry);
     this.vp.needsRender = true;
   }
 
