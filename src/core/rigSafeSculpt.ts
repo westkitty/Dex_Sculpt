@@ -113,6 +113,66 @@ export function ensureEditableVertexBuffers(geometry: THREE.BufferGeometry): voi
   normalizeMorphTargetsRelative(geometry);
 }
 
+/** Vertices are weld-compatible only when every non-position attribute, morph
+ * attribute and material-group membership matches exactly. Splitting a UV seam
+ * can leave a visible gap under sculpting; this is preferable to silently forcing
+ * unrelated skin/morph/material vertices to share one displacement. */
+export function vertexCompatibilityKeys(g: THREE.BufferGeometry): string[] {
+  const position = g.getAttribute('position');
+  const count = position.count;
+  const attributes = Object.entries(g.attributes).filter(([name]) => name !== 'position' && name !== 'sculptMask').sort(([a], [b]) => a.localeCompare(b));
+  const morphs = Object.entries(g.morphAttributes).sort(([a], [b]) => a.localeCompare(b));
+  const memberships: number[][] = Array.from({ length: count }, () => []);
+  const index = g.getIndex();
+  for (let groupIndex = 0; groupIndex < g.groups.length; groupIndex++) {
+    const group = g.groups[groupIndex];
+    const end = Math.min(group.start + group.count, index?.count ?? count);
+    for (let i = group.start; i < end; i++) {
+      const v = index ? index.getX(i) : i;
+      if (v >= 0 && v < count && !memberships[v].includes(groupIndex)) memberships[v].push(groupIndex);
+    }
+  }
+  const values = (attr: THREE.BufferAttribute | THREE.InterleavedBufferAttribute, v: number) => {
+    if (attr.count !== count) throw new Error('Attribute vertex count mismatch');
+    return Array.from({length: attr.itemSize}, (_, c) => attr.getComponent(v, c));
+  };
+  return Array.from({length: count}, (_, v) => JSON.stringify([
+    memberships[v], attributes.map(([name, attr]) => [name, values(attr, v)]),
+    morphs.map(([name, attrs]) => [name, attrs.map(attr => values(attr, v))])
+  ]));
+}
+
+/** Mark unique-space vertices whose coincident render copies were separated by protected attributes. */
+function markSplitPositionVertices(renderPos: Float32Array, mesh: SculptMesh, weldRel = 1e-6): Uint8Array {
+  const renderCount = Math.floor(renderPos.length / 3);
+  let minX = Infinity, minY = Infinity, minZ = Infinity;
+  let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
+  for (let i = 0; i < renderCount; i++) {
+    const x = renderPos[i * 3], y = renderPos[i * 3 + 1], z = renderPos[i * 3 + 2];
+    minX = Math.min(minX, x); minY = Math.min(minY, y); minZ = Math.min(minZ, z);
+    maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); maxZ = Math.max(maxZ, z);
+  }
+  const diag = Math.hypot(maxX - minX, maxY - minY, maxZ - minZ) || 1;
+  const inv = 1 / Math.max(diag * weldRel, 1e-8);
+  const firstByPosition = new Map<string, number>();
+  const split = new Uint8Array(mesh.vertCount);
+  for (let r = 0; r < renderCount; r++) {
+    const key = JSON.stringify([
+      Math.round(renderPos[r * 3] * inv),
+      Math.round(renderPos[r * 3 + 1] * inv),
+      Math.round(renderPos[r * 3 + 2] * inv)
+    ]);
+    const u = mesh.renderToUniq[r];
+    const first = firstByPosition.get(key);
+    if (first === undefined) firstByPosition.set(key, u);
+    else if (first !== u) { split[first] = 1; split[u] = 1; }
+  }
+  return split;
+}
+
+export const SPLIT_SEAM_STROKE_WARNING =
+  'This brush footprint overlaps coincident render vertices split by protected attributes. The stroke was canceled to avoid opening a seam; move away from the boundary. Mask painting remains available.';
+
 /**
  * Rig-safe sculpt controller for a single Mesh or SkinnedMesh.
  * Operates in welded unique-vertex space (`SculptMesh`) and writes changes
@@ -130,6 +190,9 @@ export class RigSafeSculptTarget {
   private refitsSinceBuild = 0;
   private maskAttr: THREE.BufferAttribute;
   private origUniqPos: Float32Array;
+  private splitPositionVertices: Uint8Array;
+  private splitPositionScratch: Uint32Array;
+  private splitPositionVertexCount = 0;
   private previewPausedSavedPos: Float32Array | null = null;
   private previewPausedSavedNrm: Float32Array | null = null;
 
@@ -149,7 +212,11 @@ export class RigSafeSculptTarget {
     const skinWgt = g.getAttribute('skinWeight');
     const uv = g.getAttribute('uv');
 
-    this.mesh = buildSculptMesh(pos, idx);
+    const compatibilityKeys = vertexCompatibilityKeys(g);
+    this.mesh = buildSculptMesh(pos, idx, 1e-6, i => compatibilityKeys[i]);
+    this.splitPositionVertices = markSplitPositionVertices(pos, this.mesh);
+    this.splitPositionScratch = new Uint32Array(this.mesh.vertCount);
+    for (const flag of this.splitPositionVertices) this.splitPositionVertexCount += flag;
     this.origUniqPos = new Float32Array(this.mesh.pos);
     // Keep original normals in snapshot, but ensure SculptMesh has normalized normals
     const sourcePos = new Float32Array(pos);
@@ -192,6 +259,33 @@ export class RigSafeSculptTarget {
 
   get isSkinned(): boolean {
     return this.snapshot.hasSkinning;
+  }
+
+  get hasSplitProtectedVertices(): boolean {
+    return this.splitPositionVertexCount > 0;
+  }
+
+  /**
+   * Fail closed for geometry-displacing strokes whose brush footprint touches a
+   * coincident position split by protected attributes. Mask painting is exempt
+   * at the caller because it does not move geometry.
+   */
+  isGeometryStrokeSafeAt(
+    point: [number, number, number],
+    radius: number,
+    symmetry: { x: boolean; y: boolean; z: boolean }
+  ): boolean {
+    if (!Number.isFinite(radius) || radius <= 0) return false;
+    if (!this.splitPositionVertexCount) return true;
+    const centers: [number, number, number][] = [[point[0], point[1], point[2]]];
+    if (symmetry.x) for (const c of [...centers]) centers.push([-c[0], c[1], c[2]]);
+    if (symmetry.y) for (const c of [...centers]) centers.push([c[0], -c[1], c[2]]);
+    if (symmetry.z) for (const c of [...centers]) centers.push([c[0], c[1], -c[2]]);
+    for (const c of centers) {
+      const n = this.engine.grid.query(c[0], c[1], c[2], radius, this.splitPositionScratch);
+      for (let i = 0; i < n; i++) if (this.splitPositionVertices[this.splitPositionScratch[i]]) return false;
+    }
+    return true;
   }
 
   rebuildBvh(): void {
@@ -303,6 +397,45 @@ export class RigSafeSculptTarget {
     }
   }
 
+  /**
+   * Project absolute composed render-space positions (length `renderCount * 3`,
+   * e.g. from deterministic DNA layer composition) into the live buffers. The
+   * welded unique-space positions are rebuilt from the projected render values so
+   * later strokes continue from the exact composed state. Protected attributes
+   * (UVs, skin weights, morphs, materials) are never touched.
+   */
+  projectRenderPositions(renderPos: Float32Array): void {
+    if (renderPos.length !== this.snapshot.renderVertexCount * 3) {
+      throw new Error('Composed position size mismatch');
+    }
+    const posAttr = this.geometry.getAttribute('position') as THREE.BufferAttribute;
+    const nrmAttr = this.geometry.getAttribute('normal') as THREE.BufferAttribute;
+    (posAttr.array as Float32Array).set(renderPos);
+    for (let r = 0; r < this.mesh.renderCount; r++) {
+      const u = this.mesh.renderToUniq[r];
+      this.mesh.pos[u * 3] = renderPos[r * 3];
+      this.mesh.pos[u * 3 + 1] = renderPos[r * 3 + 1];
+      this.mesh.pos[u * 3 + 2] = renderPos[r * 3 + 2];
+    }
+    recomputeAllNormals(this.mesh);
+    const nrmArr = nrmAttr.array as Float32Array;
+    for (let r = 0; r < this.mesh.renderCount; r++) {
+      const u = this.mesh.renderToUniq[r];
+      nrmArr[r * 3] = this.mesh.nrm[u * 3];
+      nrmArr[r * 3 + 1] = this.mesh.nrm[u * 3 + 1];
+      nrmArr[r * 3 + 2] = this.mesh.nrm[u * 3 + 2];
+    }
+    this.syncMaskBuffer();
+    posAttr.needsUpdate = true;
+    nrmAttr.needsUpdate = true;
+    this.maskAttr.needsUpdate = true;
+    this.engine.grid.rebuild();
+    this.rebuildBvh();
+    this.dirty = false;
+    this.geometry.computeBoundingSphere();
+    this.geometry.computeBoundingBox();
+  }
+
   /** Refresh entire render buffer from current SculptMesh state. */
   syncAll(): void {
     const posAttr = this.geometry.getAttribute('position') as THREE.BufferAttribute;
@@ -393,6 +526,13 @@ export class RigSafeSculptTarget {
         `Vertex count mismatch for ${this.snapshot.meshName}: recipe expects ${delta.vertexCount}, mesh has ${this.snapshot.renderVertexCount}`
       );
     }
+    if (delta.deltas.length !== delta.indices.length * 3) throw new Error('Malformed sculpt delta');
+    const seen = new Set<number>();
+    for (const index of delta.indices) {
+      if (!Number.isInteger(index) || index < 0 || index >= delta.vertexCount || seen.has(index)) throw new Error('Invalid sculpt vertex index');
+      seen.add(index);
+    }
+    if (!delta.deltas.every(Number.isFinite)) throw new Error('Invalid sculpt delta value');
     const posAttr = this.geometry.getAttribute('position') as THREE.BufferAttribute;
     const posArr = posAttr.array as Float32Array;
     posArr.set(this.snapshot.sourcePos);

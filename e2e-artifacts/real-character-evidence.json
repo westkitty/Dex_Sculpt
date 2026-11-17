@@ -1,0 +1,84 @@
+{
+  "asset": {
+    "name": "Cesium Man",
+    "sourceCommit": "f0920f5b32d172a30efe3f9257e965918831e6ea",
+    "sourceUrl": "https://github.com/KhronosGroup/glTF-Sample-Assets/blob/f0920f5b32d172a30efe3f9257e965918831e6ea/Models/CesiumMan/glTF-Binary/CesiumMan.glb",
+    "sha256": "b7001eaeea8254bd44773bcd247e78696d94169388fbb2a1800fc69434e777d9",
+    "bytes": 438044,
+    "author": "Cesium (2017)",
+    "license": "CC-BY-4.0 for model; Cesium logo/trademark excluded"
+  },
+  "imported": {
+    "file": "CesiumMan.glb",
+    "sha256": "b7001eaeea8254bd44773bcd247e78696d94169388fbb2a1800fc69434e777d9",
+    "boneCount": 19,
+    "clips": 1,
+    "meshCount": 1,
+    "vertices": 3273,
+    "triangles": 4672,
+    "morphs": 0
+  },
+  "layerDelta": {
+    "head": 0.03336779643103237,
+    "body": 0.030795452167609903,
+    "hiddenHeadDelta": 0,
+    "visibleBodyDelta": 0.030795452167609903
+  },
+  "variants": {
+    "names": [
+      "Variant A",
+      "Variant B"
+    ],
+    "variantAMaxPositionDifference": 0.03560122102499008,
+    "variantBStrokeMaxDelta": 0.03560122102499008
+  },
+  "reloadPixelDiff": {
+    "changedRatio": 0,
+    "maxChannelDelta": 0
+  },
+  "externalValidator": {
+    "source": {
+      "errors": 0,
+      "warnings": 1,
+      "messages": [
+        "NODE_SKINNED_MESH_NON_ROOT"
+      ]
+    },
+    "export": {
+      "errors": 0,
+      "warnings": 1,
+      "infos": 0,
+      "messages": [
+        "NODE_SKINNED_MESH_NON_ROOT"
+      ]
+    }
+  },
+  "protectedAttributesAfterReimport": {
+    "jointIndicesExact": true,
+    "skinWeightMaxDiff": 2.9802322387695312e-8,
+    "uvExact": true,
+    "boneNamesAndHierarchyExact": true,
+    "materialPropertiesExact": true,
+    "morphAttributesExact": true,
+    "animationNamesExact": true
+  },
+  "export": {
+    "bytes": 416340,
+    "internalRigPreserved": true,
+    "boneHierarchyEqual": true,
+    "animationNamesEqual": true,
+    "materialCountEqual": true,
+    "skinWeightMaxDiff": 5.960464477539063e-8,
+    "uvMaxDiff": 0,
+    "inverseBindMatricesMaxDiff": 0,
+    "sculptMaxPositionDelta": 0.07029601553525336
+  },
+  "reimportedAnimation": {
+    "clip": "animation_0 (2.00s)",
+    "maxSkinnedVertexMotion": 0.4698927242297887,
+    "pixelDiff": {
+      "changedRatio": 0.09498390260148762,
+      "maxChannelDelta": 221
+    }
+  }
+}

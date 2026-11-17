@@ -1,10 +1,15 @@
 import * as THREE from 'three';
-import type { BrushId, Symmetry, Vec3 } from '../core/brushes';
-import type { RigSafeSculptTarget } from '../core/rigSafeSculpt';
+import type { BrushId, Symmetry } from '../core/brushes';
+import { SPLIT_SEAM_STROKE_WARNING, type RigSafeSculptTarget } from '../core/rigSafeSculpt';
 import type { HistoryEntry } from '../core/history';
 import type { StudioViewport } from './viewport';
 
 export type StudioInteractionMode = 'sculpt' | 'transform';
+
+/** Brush types with reproduced split-position cracks on the adversarial fixture. */
+export function requiresSplitSeamGuard(tool: BrushId): boolean {
+  return tool === 'smooth' || tool === 'inflate';
+}
 
 export interface BrushSettings {
   tool: BrushId;
@@ -120,9 +125,13 @@ export class SculptTool {
   constructor(
     private vp: StudioViewport,
     private getTargets: () => RigSafeSculptTarget[],
-    private onCommitStroke: (entry: HistoryEntry | null) => void,
+    private onCommitStroke: (target: RigSafeSculptTarget, entry: HistoryEntry | null) => void,
     private onEnsureBindPoseForSculpt: () => void,
-    public onPenActivity: () => void = () => {}
+    public onPenActivity: () => void = () => {},
+    /** Session hook: prepare the active sculpt layer for a stroke. Return false to block the stroke. */
+    private prepareStroke: (target: RigSafeSculptTarget) => boolean = () => true,
+    /** User-facing compatibility diagnostic when a geometry operation is blocked. */
+    public onCompatibilityWarning: (message: string) => void = () => {}
   ) {
     (this.ray as any).firstHitOnly = true;
     const cv = vp.renderer.domElement;
@@ -267,6 +276,37 @@ export class SculptTool {
     return { tool, invert };
   }
 
+  private pressureFor(e: PointerEvent): number {
+    return e.pointerType === 'pen' && this.settings.usePressure
+      ? Math.max(0.05, Math.min(1, e.pressure || 0.5))
+      : 1;
+  }
+
+  private radiusScaleFor(e: PointerEvent, pressure = this.pressureFor(e)): number {
+    let scale = 1;
+    if (e.pointerType === 'pen') {
+      if (this.input.tiltWidens) scale *= tiltScale(tiltFromVertical(e));
+      if (this.input.pressureSize) scale *= 0.5 + 0.5 * pressure;
+    }
+    return scale;
+  }
+
+  private geometryStrokeAllowed(
+    target: RigSafeSculptTarget,
+    tool: BrushId,
+    point: THREE.Vector3,
+    radius: number
+  ): boolean {
+    // Reproduced split-edge gaps for Smooth and Inflate. Other brush types remain
+    // enabled because the controlled fixture produced no split-position gap for
+    // Draw, Clay, Crease, Grab, Flatten, or Pinch; expand this list only with
+    // evidence, rather than disabling common strokes across the whole character.
+    if (!requiresSplitSeamGuard(tool)) return true;
+    if (target.isGeometryStrokeSafeAt(point.toArray() as [number, number, number], radius, this.settings.symmetry)) return true;
+    this.onCompatibilityWarning(SPLIT_SEAM_STROKE_WARNING);
+    return false;
+  }
+
   private onDown(e: PointerEvent): void {
     if (this.isTouchPalmRejected(e)) {
       this.rejected.add(e.pointerId);
@@ -296,6 +336,17 @@ export class SculptTool {
     const hit = this.pickSurface(e.clientX, e.clientY);
     if (!hit) return;
 
+    const { tool, invert } = this.resolveToolAndInvert(e);
+    const scaleObj = hit.target.object.getWorldScale(new THREE.Vector3());
+    const avgScale = (scaleObj.x + scaleObj.y + scaleObj.z) / 3 || 1;
+    const worldR = this.worldRadiusAt(hit.distance, this.settings.radiusPx);
+    const localR = worldR / avgScale;
+    const firstRadius = localR * this.radiusScaleFor(e);
+    if (!this.geometryStrokeAllowed(hit.target, tool, hit.localPoint, firstRadius)) return;
+
+    // Layer-aware gate: blocks strokes onto hidden layers and prepares the active layer.
+    if (!this.prepareStroke(hit.target)) return;
+
     // Begin sculpt stroke: disable camera orbit while dragging on character mesh
     this.vp.controls.enabled = false;
     try {
@@ -303,12 +354,6 @@ export class SculptTool {
     } catch {
       // Ignore synthetic events
     }
-
-    const { tool, invert } = this.resolveToolAndInvert(e);
-    const scaleObj = hit.target.object.getWorldScale(new THREE.Vector3());
-    const avgScale = (scaleObj.x + scaleObj.y + scaleObj.z) / 3 || 1;
-    const worldR = this.worldRadiusAt(hit.distance, this.settings.radiusPx);
-    const localR = worldR / avgScale;
 
     hit.target.engine.begin(tool);
     this.lastStroke = {
@@ -398,6 +443,12 @@ export class SculptTool {
         const invRot = new THREE.Matrix4().copy(st.target.object.matrixWorld).invert();
         invRot.setPosition(0, 0, 0);
         const localDelta = worldDelta.applyMatrix4(invRot);
+        const localCenter = st.target.object.worldToLocal(planeHit.clone());
+        const grabRadius = st.localR * (st.pointerType === 'pen' && this.input.tiltWidens ? 1.6 : 1);
+        if (!this.geometryStrokeAllowed(st.target, st.tool, localCenter, grabRadius)) {
+          this.cancelActiveStroke();
+          return;
+        }
         const changed = st.target.engine.grabMove(
           [localDelta.x, localDelta.y, localDelta.z],
           Math.min(1, this.settings.strength * 1.4)
@@ -425,25 +476,38 @@ export class SculptTool {
     const st = this.active;
     if (!st) return;
 
-    const pressure =
-      e.pointerType === 'pen' && this.settings.usePressure
-        ? Math.max(0.05, Math.min(1, e.pressure || 0.5))
-        : 1;
-    this.lastStroke.minPressure = Math.min(this.lastStroke.minPressure, pressure);
-    this.lastStroke.maxPressure = Math.max(this.lastStroke.maxPressure, pressure);
-
-    let radiusScale = 1;
-    if (e.pointerType === 'pen') {
-      if (this.input.tiltWidens) radiusScale *= tiltScale(tiltFromVertical(e));
-      if (this.input.pressureSize) radiusScale *= 0.5 + 0.5 * pressure;
-    }
-    this.lastStroke.maxRadiusScale = Math.max(this.lastStroke.maxRadiusScale, radiusScale);
-
+    const pressure = this.pressureFor(e);
+    const radiusScale = this.radiusScaleFor(e, pressure);
     const effR = st.localR * radiusScale;
     const stepDist = Math.max(effR * 0.22, st.target.mesh.meanEdge * 0.5);
+    const dabPoints: THREE.Vector3[] = [];
 
-    const runDab = (pt: Vec3) => {
-      const changed = st.target.engine.dab(pt, {
+    if (!st.last) {
+      dabPoints.push(localPoint.clone());
+    } else {
+      const dist = st.last.distanceTo(localPoint);
+      if (dist >= stepDist * 0.4) {
+        const steps = Math.min(12, Math.max(1, Math.ceil(dist / stepDist)));
+        for (let i = 1; i <= steps; i++) dabPoints.push(st.last.clone().lerp(localPoint, i / steps));
+      }
+    }
+    if (dabPoints.length === 0) return;
+
+    // Preflight every interpolated dab before mutating any part of this segment.
+    // If a stroke reaches a protected split seam later, cancel the whole stroke byte-exactly.
+    for (const point of dabPoints) {
+      if (!this.geometryStrokeAllowed(st.target, st.tool, point, effR)) {
+        this.cancelActiveStroke();
+        return;
+      }
+    }
+
+    this.lastStroke.minPressure = Math.min(this.lastStroke.minPressure, pressure);
+    this.lastStroke.maxPressure = Math.max(this.lastStroke.maxPressure, pressure);
+    this.lastStroke.maxRadiusScale = Math.max(this.lastStroke.maxRadiusScale, radiusScale);
+
+    for (const p of dabPoints) {
+      const changed = st.target.engine.dab([p.x, p.y, p.z], {
         radius: effR,
         strength: this.settings.strength,
         invert: st.invert,
@@ -454,22 +518,8 @@ export class SculptTool {
       st.dabs++;
       this.lastStroke.dabs = st.dabs;
       this.lastStroke.verts = Math.max(this.lastStroke.verts, changed.length);
-    };
-
-    if (!st.last) {
-      runDab([localPoint.x, localPoint.y, localPoint.z]);
-      st.last = localPoint.clone();
-    } else {
-      const dist = st.last.distanceTo(localPoint);
-      if (dist >= stepDist * 0.4) {
-        const steps = Math.min(12, Math.max(1, Math.ceil(dist / stepDist)));
-        for (let i = 1; i <= steps; i++) {
-          const p = st.last.clone().lerp(localPoint, i / steps);
-          runDab([p.x, p.y, p.z]);
-        }
-        st.last.copy(localPoint);
-      }
     }
+    st.last = localPoint.clone();
     st.target.maintainBvh();
     this.vp.needsRender = true;
   }
@@ -516,7 +566,7 @@ export class SculptTool {
       this.vp.needsRender = true;
     });
     st.target.endStrokeMaintenance();
-    this.onCommitStroke(entry);
+    this.onCommitStroke(st.target, entry);
     this.vp.needsRender = true;
   }
 

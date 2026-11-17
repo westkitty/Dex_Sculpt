@@ -59,7 +59,8 @@ export function nextStamp(m: SculptMesh): number {
 export function buildSculptMesh(
   renderPos: Float32Array,
   renderIndex: ArrayLike<number> | null,
-  weldRel = 1e-6
+  weldRel = 1e-6,
+  compatibilityKey?: (renderVertex: number) => string
 ): SculptMesh {
   const renderCount = Math.floor(renderPos.length / 3);
   let minX = Infinity,
@@ -90,7 +91,7 @@ export function buildSculptMesh(
     const x = renderPos[i * 3];
     const y = renderPos[i * 3 + 1];
     const z = renderPos[i * 3 + 2];
-    const key = `${Math.round(x * inv)},${Math.round(y * inv)},${Math.round(z * inv)}`;
+    const key = JSON.stringify([Math.round(x * inv), Math.round(y * inv), Math.round(z * inv), compatibilityKey?.(i) ?? ""]);
     let id = map.get(key);
     if (id === undefined) {
       id = u++;

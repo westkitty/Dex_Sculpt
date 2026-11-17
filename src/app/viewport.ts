@@ -6,6 +6,17 @@ export type CameraViewPreset = 'threeQuarter' | 'front' | 'back' | 'left' | 'rig
 export type LightingPresetId = 'studio' | 'rim' | 'warm' | 'clay';
 export type RenderQuality = 'fast' | 'balanced' | 'sharp';
 
+/** Perspective-camera distance that fits a bounding sphere with explicit padding. */
+export function perspectiveFitDistance(radius: number, fovDegrees: number, aspect: number, padding = 1.12): number {
+  if (![radius, fovDegrees, aspect, padding].every(Number.isFinite) || radius <= 0 || fovDegrees <= 0 || fovDegrees >= 179 || aspect <= 0 || padding < 1) {
+    throw new Error('Invalid perspective framing parameters');
+  }
+  const halfVertical = THREE.MathUtils.degToRad(fovDegrees / 2);
+  const halfHorizontal = Math.atan(Math.tan(halfVertical) * aspect);
+  const limitingHalfAngle = Math.min(halfVertical, halfHorizontal);
+  return (radius / Math.sin(limitingHalfAngle)) * padding;
+}
+
 export class FrameStats {
   private buf = new Float64Array(240);
   private n = 0;
@@ -115,7 +126,7 @@ export class StudioViewport {
     return Math.max(1, Math.min(dpr, 3, cap));
   }
 
-  constructor(public readonly host: HTMLElement) {
+  constructor(public host: HTMLElement) {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       powerPreference: 'high-performance',
@@ -235,12 +246,30 @@ export class StudioViewport {
     });
 
     this.resize();
-    if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(() => this.resize());
-      this.resizeObserver.observe(host);
-    }
+    this.observeHost();
 
     this.startLoop();
+  }
+
+  /**
+   * Re-parent the render canvas into its real layout host and re-arm size
+   * tracking. The constructor may receive a detached staging element; the
+   * visual shell adopts the canvas once its layout exists. Without this the
+   * ResizeObserver would watch a detached 0x0 node and the WebGL buffer would
+   * silently stay 1x1 (a blank "rendered" viewport).
+   */
+  attach(el: HTMLElement): void {
+    el.appendChild(this.renderer.domElement);
+    this.host = el;
+    this.observeHost();
+    this.resize();
+  }
+
+  private observeHost(): void {
+    if (typeof ResizeObserver === 'undefined') return;
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(this.host);
   }
 
   resize(): void {
@@ -287,7 +316,9 @@ export class StudioViewport {
   }
 
   setViewPreset(preset: CameraViewPreset): void {
-    const dist = Math.max(1.5, this.focusRadius * 2.45);
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    const aspect = rect.width > 0 && rect.height > 0 ? rect.width / rect.height : this.perspCamera.aspect;
+    const dist = Math.max(1.5, perspectiveFitDistance(this.focusRadius, this.perspCamera.fov, aspect));
     const c = this.focusCenter;
     switch (preset) {
       case 'front':
@@ -321,6 +352,24 @@ export class StudioViewport {
     this.focusCenter.copy(center);
     this.focusRadius = radius;
     this.setViewPreset('threeQuarter');
+  }
+
+  /**
+   * Deterministic pixel capture: renders synchronously and reads the drawing
+   * buffer in the same task (required with `preserveDrawingBuffer: false`).
+   */
+  renderToPng(): string {
+    // Canonical capture: transient brush cursor overlays are excluded so pixel
+    // diffs reflect geometry/material state only, never pointer hover position.
+    const cursorWas = this.cursor.visible;
+    const mirrorWas = this.mirrorCursor.visible;
+    this.cursor.visible = false;
+    this.mirrorCursor.visible = false;
+    this.renderer.render(this.scene, this.camera);
+    const url = this.renderer.domElement.toDataURL('image/png');
+    this.cursor.visible = cursorWas;
+    this.mirrorCursor.visible = mirrorWas;
+    return url;
   }
 
   setLightingPreset(preset: LightingPresetId): void {

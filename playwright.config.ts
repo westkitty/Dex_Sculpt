@@ -25,7 +25,8 @@ export default defineConfig({
     baseURL: process.env.DEX_E2E_BASE ?? 'http://127.0.0.1:5192',
     launchOptions: {
       ...(executablePath ? { executablePath } : {}),
-      args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist']
+      // Require real WebGL2 initialization on CI's software renderer; no WebGL-failure skip.
+      args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--disable-dev-shm-usage']
     },
     viewport: { width: 1440, height: 900 },
     acceptDownloads: true
