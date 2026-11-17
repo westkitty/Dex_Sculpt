@@ -3,6 +3,9 @@ name: Deploy DEX//SCULPT to GitHub Pages
 # Intentionally manual: deploying an unmerged draft branch requires an explicit run.
 # Repository Settings > Pages > Build and deployment > Source must be GitHub Actions.
 on:
+  push:
+    branches:
+      - arena/9dff85d7-dex-sculpt
   workflow_dispatch:
 
 permissions:
