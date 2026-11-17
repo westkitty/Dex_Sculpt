@@ -1,35 +1,57 @@
-# Operational State — DEX//SCULPT
+# Operational State — DEX//SCULPT Character DNA V2
 
-Last Reviewed: 2026-11-15  
-Repository: `westkitty/Dex_Sculpt`  
-Feature Branch: `feat/dex-sculpt-character-foundry`  
+**Reviewed:** 2026-11-17 (UTC)
+**Code under verification:** exact PR #3 head `0a25eee2dc030aa787b9271ab5cbb44fcaedbaed` plus the portable hardening changes in this workspace.
+**Delivery checkout:** active Arena branch `arena/88aa43b0-dex-sculpt` is based on unrelated bootstrap commit `c0cc55196d29681c75611f7ef8a012474ea0078f`; it was not edited or used as a PR #3 base. Deliver changes as a patch against the exact PR #3 head.
 
-## Evidence Status Matrix
+## Status matrix
 
-### IMPLEMENTED & TESTED (Vitest — `npm test`, `6/6` passed)
-- **Phase A Rig-Safe Sculpt & GLB Round-Trip Proof (`tests/phaseA_rigSafeProof.test.ts`)**:
-  - Procedural 20-bone skinned humanoid with 4 morph targets, UVs, procedural texture, and 3 `AnimationClip`s.
-  - Multi-dab X-symmetrical sculpt stroke (`maxDisplacement > 0.02m`), byte-exact Undo/Redo, sparse delta extraction, non-bind-pose animation playback followed by clean bind-pose GLB export.
-  - Independent binary GLB 2.0 validation (`compareRigPreservation`) proving bone hierarchy, `inverseBindMatrices`, `JOINTS_0`, `WEIGHTS_0`, `TEXCOORD_0`, morph target deltas, and animation clips remain intact.
-  - Re-import & skeletal/morph deformation verified in both **Three.js `0.186.1`** and **Three.js `0.185.1`** (`three-r185`), plus GPU disposal (`skeleton.dispose()`).
-- **Brushes, Masking, Catalog, Modular Assembly & Recipes (`tests/coreAndCatalog.test.ts`)**:
-  - All 8 displacement brushes (`draw`, `inflate`, `clay`, `smooth`, `flatten`, `pinch`, `crease`, `grab`) produce pairwise-distinct geometry hashes; freeze mask locks vertices (`delta === 0`).
-  - Sparse `CharacterRecipeV1` serialization and reconstruction (`maxPositionDelta < 1e-6`).
-  - `786` catalog records, `43` sources, and compatibility matrix rules verified; incompatible skeleton bindings blocked cleanly.
-  - Static OBJ import warns honestly that rigging/animations are unavailable.
+| Status | Capability / evidence |
+|---|---|
+| **IMPLEMENTED** | `CharacterSession.dna` remains authoritative; non-destructive layers, isolated variants, V1/V2 recipes, SHA-256 source verification, IndexedDB recovery, rig-safe GLB import/export, nine brushes, masks, symmetry, undo/redo, attachments, catalog and viewport remain in the PR #3 project. No Character DNA recreation or unrelated subsystem expansion was performed. |
+| **LOCAL REPOSITORY CHECKS — PASS** | On the hardening tree: `npm run typecheck` passed; `npm test` passed **40/40** tests across 7 files; `npm run build` passed (existing large-JS-chunk advisory); `npm run test:e2e` passed **5/5** Playwright tests using a real Chromium/WebGL2 SwiftShader browser. Existing unit-test Three.js instance/texture warnings remain. |
+| **THIRD-PARTY BROWSER JOURNEY — PASS (local only)** | The Playwright test imported pinned Cesium Man bytes through the real file picker; sculpted and toggled two layers; edited and switched isolated variants; downloaded a V2 recipe; autosaved and reloaded; exported and independently validated a GLB; used the studio reimport action; compared protected data; and played the reimported animation. Actual canvas pixels and browser screenshots were captured. This is local software-renderer/browser proof, not GitHub Actions or hardware-device proof. |
+| **SOURCE / LICENSE PROVENANCE — RECORDED** | Cesium Man, Cesium (2017), Khronos `glTF-Sample-Assets` commit `f0920f5b32d172a30efe3f9257e965918831e6ea`; exact path and URL, CC BY 4.0 model license with the Cesium logo/trademark excluded, 438,044 bytes, SHA-256 `b7001eaeea8254bd44773bcd247e78696d94169388fbb2a1800fc69434e777d9`. Binary is acquired only into an ignored local fixture folder and is not in the portable patch. |
+| **MEASURED IMPORT / SCULPT / ROUND-TRIP** | Browser observed 1 skinned mesh, 3,273 render vertices, 4,672 triangles, 19 bones, 1 two-second animation, 1 material, and no morph targets. Local sculpt displacement max was **0.0702960** model units on export; head/body regions measured **0.0333678 / 0.0307955** units; hidden head region returned **0**, while body remained **0.0307955**. Variant A/B position difference max **0.0356012**. Reload canvas pixel diff was **0.000%**. Exact values are in `e2e-artifacts/real-character-evidence.json`. |
+| **PROTECTED DATA — PASS FOR THIS CHARACTER** | Export audit: bone hierarchy, animation names, material count, JOINTS_0 exact, UV max diff **0**, inverse bind matrix max diff **0**, skin-weight max diff `5.96e-8`. Independent in-browser post-reimport snapshot additionally matched the bone names/parents/hierarchy, UVs, material properties, morph-attribute layout (empty on this model), and animation names; skin weights max diff `2.98e-8`. This asset has no morph targets, so third-party morph-target preservation is not established by this journey. |
+| **INDEPENDENT KHRONOS VALIDATOR — PASS WITH WARNING** | `gltf-validator@2.0.0-dev.3.10`: source **0 errors / 1 warning**, export **0 errors / 1 warning / 0 infos** in the latest browser test. Warning `NODE_SKINNED_MESH_NON_ROOT` is present on both. Export bytes: **416,340**. |
+| **RENDERED ANIMATION — PASS (local browser)** | Reimported `animation_0 (2.00s)` changed the sampled skinned vertices by max **0.4698927** model units. Actual viewport screenshots differed by **9.4984%** of pixels (max channel delta 221). Local visual captures are under `e2e-artifacts/real-character-*.png`; these include the model's excluded Cesium mark and are intentionally not bundled into the portable patch. |
+| **SPLIT-SEAM ADVERSARIAL FIXTURE — PARTIAL** | On the two-triangle split-edge fixture, Smooth opened a `0.2960245861` unit gap and Inflate `0.0904220490`; Draw, Clay, Crease, Grab, Flatten and Pinch measured zero for that fixture. The guard is scoped only to Smooth and Inflate, where the defect was reproduced, and the regression rejects the historical footprint without changing positions. This is fixture-specific evidence, not a claim that other production meshes/tools cannot crack. Browser warning UX, seam usability and dense-mesh performance remain unverified. Protected attributes are not blindly welded. |
+| **GITHUB ACTIONS — NOT VERIFIED** | No remote Actions run was started or observed. The workflow is part of the proposed patch only. Local Chromium success must not be described as a successful GitHub Actions run. |
+| **PHYSICAL TABLET / S PEN — PENDING** | Existing synthetic pointer-event coverage passes. No physical tablet/S Pen, palm-rejection hardware, pressure sensor or device GPU test was performed. |
+| **AUDIT / BUILD NOTES** | Vite emits the existing large bundle advisory. `npm install` surfaced a high dev-only `happy-dom` advisory; no compatibility-blind major dependency upgrade was made. |
+| **NOT IMPLEMENTED / OUT OF SCOPE** | Dynamic topology/remeshing, arbitrary cross-skeleton retargeting, cloud accounts/storage, telemetry, FORM//ENGINE and DEX//RIG changes. |
 
-### VERIFIED IN BROWSER (Playwright Chromium + SwiftShader WebGL2 — `npm run test:e2e`, `2/2` passed)
-- WebGL2 viewport boots with 0 console/page errors and renders the rigged humanoid (`Rigged · 20 bones · 4 morphs · 3 clips`).
-- Real pointer-based sculpt stroke on `#viewport-canvas`, Undo/Redo, Before/After toggle, morph target slider (`Broaden_Shoulders`), `Walk_Cycle` animation playback, modular attachments (`Foundry Visor Crest` + `Foundry Cloak (Skinned)`), `.glb` download + independent validation modal (`VERIFIED PASS`), one-click **Verify Re-Import in Studio**, second sculpt on re-imported GLB, `.dexsculpt.json` recipe download, 786-record Catalog tab, keyboard shortcuts (`?`, `Escape`), and IndexedDB autosave recovery across `page.reload()`.
-- Simulated S Pen PointerEvents: hover without sculpting, pressure + tilt widening (`maxRadiusScale > 1.3`), palm touch rejection (`rejectedTouches === 1`), and zero horizontal overflow at `1480×924` (tablet landscape aspect) and `390×844` (mobile).
+## Reproduction
 
-### AWAITING REAL CHARACTER FILE (PENDING)
-- Testing with genuine licensed third-party library GLB binaries (e.g. Microsoft Rocketbox, KayKit, Quaternius, GDQuest) is **PENDING** because private Google Drive model binaries are intentionally absent from this public repository. Local file import and SHA-256 catalog matching are implemented and ready for user-supplied `.glb` files.
+```bash
+npm ci
+npm run typecheck
+npm test
+npm run build
+npm run test:e2e
+```
 
-### AWAITING PHYSICAL DEVICE TEST
-- Real Samsung Galaxy Tab S9 Ultra physical S Pen hardware validation (barrel button firmware behavior, physical palm-rejection ergonomics, hardware GPU frame pacing) has **not** been executed; only simulated PointerEvents in Chromium were tested.
+`npm run test:e2e` uses `scripts/acquire-real-character.mjs` to fetch the exact pinned model from the GitHub API and verifies byte count and SHA-256 before Playwright begins. To run only the existing Node/core acceptance:
 
-### NOT IMPLEMENTED
-- Dynamic topology / voxel remeshing / multiresolution subdivision (deliberately excluded to preserve fixed vertex correspondence for skin weights and morph targets).
-- Automated cross-skeleton animation retargeting solver (incompatible skeletons are detected and blocked/warned rather than silently retargeted).
-- Cloud storage, accounts, or telemetry (intentionally local-only).
+```bash
+npm run test:real-character
+```
+
+Browser setup on a standard Linux runner:
+
+```bash
+npx playwright install --with-deps chromium
+npm run test:e2e
+```
+
+The model and GLB export are not committed. See `tests/fixtures/README.md` for the full source, attribution, licensing boundary, mesh/rig/animation measurements, and acquisition details. `e2e-artifacts/real-character-evidence.json` is the compact machine-readable result; local screenshots are not redistributed because the model includes an explicitly excluded trademark.
+
+## Safety and release posture
+
+- Fixed topology is retained; no dynamic remeshing was introduced. Coincident positions are not sufficient reason to weld: UVs, normals, material groups, skin indices/weights and morph data remain compatibility dimensions.
+- Smooth and Inflate route through the seam safety check based on reproduced fixture defects. Other brushes remain ungated based on zero gaps in this test fixture only. Do not generalize that measurement beyond the tested geometry.
+- `npm run test:e2e` proves the local browser workflow and rendered pixels for this one third-party model; it does not certify arbitrary GLBs, multi-skinned-mesh characters, third-party morph targets, every GPU/browser, or physical S Pen behavior.
+- The active Arena branch is not based on PR #3. No branch switch, push, PR update, merge or remote publication was performed. The complete portable patch must target `0a25eee2dc030aa787b9271ab5cbb44fcaedbaed` exactly and include its own manifest, checksums, commands, report and evidence index.
+
+**Overall outcome: PARTIAL.** The requested third-party import-to-animation journey is independently reproduced in a real local browser and the code-quality checks pass. Delivery remains partial because no GitHub Actions result exists, the authorized branch is unrelated to PR #3, the physical stylus is untested, and seam-browser UX/performance and wider asset coverage remain open.

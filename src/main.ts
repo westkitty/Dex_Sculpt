@@ -22,7 +22,8 @@ async function bootstrap(): Promise<void> {
     (target) => session.commitSculptStroke(target),
     () => session.ensureBindPoseForSculpting(),
     undefined,
-    (target) => session.prepareSculptStroke(target)
+    (target) => session.prepareSculptStroke(target),
+    (message) => session.onToast(message, 'warn')
   );
 
   const ui = new StudioUI(appEl, vp, session, tool);

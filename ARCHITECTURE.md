@@ -12,8 +12,8 @@ In `FORM//ENGINE 0.2.0`, `normaliseGeometry()` constructs a brand-new `THREE.Buf
    - `RigSafeSculptTarget` captures an immutable `SourceMeshSnapshot` (base positions, base normals, UV/skin hashes, bone names, morph target names).
 
 2. **Welded Unique Sculpt Space -> Exact Render Delta Sync (`src/core/topology.ts`, `src/core/brushes.ts`)**
-   - `SculptMesh` builds a welded unique-vertex topology (`renderToUniq`, `uniqRenderStart`, `uniqRenderList`, neighbour & triangle CSR tables) so brushes never tear UV/normal seams.
-   - During sculpting, displacements in unique space are applied as exact deltas from the initial unique positions (`m.pos[v] - origUniqPos[v]`) onto `snapshot.sourcePos[r]`. Unmodified vertices remain bit-for-bit identical to the imported mesh, and undo/redo restores exact pre-stroke bytes.
+   - `SculptMesh` builds a unique-vertex topology (`renderToUniq`, `uniqRenderStart`, `uniqRenderList`, neighbour & triangle CSR tables). Coincident render vertices are grouped only when their protected attributes and material-group membership match; position equality alone never welds different UVs, normals, skin assignments, or morph deltas.
+   - During sculpting, displacement is synchronized to the render vertices belonging to each compatible unique vertex using exact deltas from the initial position. Protected buffers and topology are not rebuilt. **Important limitation:** a synthetic hard-normal/UV/material split-edge test shows that a neighborhood-based Smooth stroke can move separate coincident vertices differently and open a gap. Attribute-safe separation is not a guarantee of geometric continuity. Until a coordinated-displacement solution or operation guard is implemented, avoid sculpting across split seams; see `OPERATIONAL_STATE.md` and the hardening test.
    - Freeze masking is stored in an editor-only `sculptMask` attribute rendered via `material.onBeforeCompile` (`attachMaskShaderHook`), never overwriting `geometry.attributes.color`, and stripped cleanly before GLB export.
 
 3. **Bind-Pose Export & Independent Binary GLB2 Validation (`src/io/glbPipeline.ts`, `src/io/glbValidator.ts`)**
@@ -23,15 +23,11 @@ In `FORM//ENGINE 0.2.0`, `normaliseGeometry()` constructs a brand-new `THREE.Buf
 
 ## Non-Destructive Character Recipes (`src/core/recipe.ts`, `src/io/projectStorage.ts`)
 
-A `dexsculpt.recipe.v1` file records:
-- Project ID, schema/editor version, timestamps
-- Source asset metadata (`kind`, `assetId`, `fileName`, `sha256`, `skeletonFamily`, `licenseId`, `attribution`, `requiresSourceRelink`)
-- Sparse vertex deltas (`meshName`, `vertexCount`, `indices`, `deltas`)
-- Morph target weights
-- PBR material overrides
-- Modular attachment descriptors and transforms
+A `dexsculpt.recipe.v2` file records project/source metadata plus the complete `dexsculpt.dna.v2` document: independently owned character variants, named layer metadata and render-vertex deltas, per-variant morph weights, material overrides, and attachment descriptors. V1 sparse-delta recipes are explicitly migrated into a single `Imported V1 sculpt` layer; they are not treated as V2 documents.
 
-Recipes for local third-party GLBs explicitly set `requiresSourceRelink: true` and verify the relinked GLB's SHA-256 rather than claiming a lightweight JSON file embeds copyrighted or external mesh binaries. Crash-safe dual-slot IndexedDB autosave (`A/B` slots + separate `head` commit) protects work across reloads and WebGL context loss.
+`CharacterSession.dna` is the only authoritative editable character state. Scene geometry is projected from immutable source positions and the selected variant's visible, strength-scaled layers. Variants are isolated copies; changing the active variant recomposes rather than incrementally mutating another variant's source. Source verification uses SHA-256 over source bytes; a local third-party GLB recipe requires the original/relinked source bytes and exact digest match. Recipe parse, validation, and source checks occur before state installation so failures leave the current character intact. Crash-safe dual-slot IndexedDB autosave (`A/B` slots plus a head pointer) stores the recipe and recoverable source bytes locally; this is not a cloud backup.
+
+GLB export uses the active composed variant in bind pose and audits structure/rig attributes through the independent in-repository binary parser and a source-to-export comparison. That proves specific measured invariants, not full compatibility with every game engine, vendor extension, texture decoder, arbitrary animation controller, or visual appearance. The optional extended Khronos Cesium Man test is a local-pipeline test only; browser visual acceptance and CI execution remain separate gates.
 
 ## Modular Character Assembly (`src/modular/assembly.ts`)
 

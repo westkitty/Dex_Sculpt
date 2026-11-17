@@ -14,3 +14,9 @@ google_drive/
 e2e-artifacts/journey-export.glb
 e2e-artifacts/bad-recipe.json
 e2e-artifacts/journey-recipe-v2.dexsculpt.json
+# Test-only third-party assets and model-derived files (never committed)
+tests/fixtures/downloads/
+e2e-artifacts/CesiumMan-edited.glb
+e2e-artifacts/real-character-recipe.dexsculpt.json
+# Browser captures show a third-party trademark excluded from the model license; local only
+e2e-artifacts/real-character-*.png

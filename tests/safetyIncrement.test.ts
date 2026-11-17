@@ -28,6 +28,19 @@ describe('portable safety integration', () => {
     const p=t.geometry.getAttribute('position'); expect(p.getX(0)).toBe(.5); expect(p.getX(3)).toBe(0); t.dispose();
   });
   it('still welds attribute-compatible coincident vertices', () => {const t=seam('same'); expect(t.mesh.renderToUniq[0]).toBe(t.mesh.renderToUniq[3]); t.dispose();});
+  it('fails closed near split protected-attribute positions but permits footprints away from the seam', () => {
+    const t = seam('skinWeight');
+    expect(t.hasSplitProtectedVertices).toBe(true);
+    expect(t.isGeometryStrokeSafeAt([0.1, 0, 0], 0.2, {x:false,y:false,z:false})).toBe(false);
+    expect(t.isGeometryStrokeSafeAt([0.1, 0, 0], 0.2, {x:true,y:false,z:false})).toBe(false);
+    expect(t.isGeometryStrokeSafeAt([0.5, 0.5, 0], 0.2, {x:false,y:false,z:false})).toBe(true);
+    t.dispose();
+  });
+  it('does not seam-block attribute-compatible coincident vertices', () => {
+    const compatible = seam('same');
+    expect(compatible.isGeometryStrokeSafeAt([0,0,0], 0.2, {x:false,y:false,z:false})).toBe(true);
+    compatible.dispose();
+  });
   it('rejects malformed deltas before touching geometry', () => {const t=seam('same'); const before=Array.from(t.geometry.getAttribute('position').array); expect(() => t.applySparseDeltas({meshName:'x',vertexCount:6,indices:[0],deltas:[NaN,0,0]})).toThrow(); expect(Array.from(t.geometry.getAttribute('position').array)).toEqual(before); t.dispose();});
   it('rejects a wrong relink before unloading the current character', async () => {
     const s=new CharacterSession({} as StudioViewport); const original=new THREE.Group(); s.root=original; s.sourceSha256='old';

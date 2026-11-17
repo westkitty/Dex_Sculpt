@@ -6,6 +6,17 @@ export type CameraViewPreset = 'threeQuarter' | 'front' | 'back' | 'left' | 'rig
 export type LightingPresetId = 'studio' | 'rim' | 'warm' | 'clay';
 export type RenderQuality = 'fast' | 'balanced' | 'sharp';
 
+/** Perspective-camera distance that fits a bounding sphere with explicit padding. */
+export function perspectiveFitDistance(radius: number, fovDegrees: number, aspect: number, padding = 1.12): number {
+  if (![radius, fovDegrees, aspect, padding].every(Number.isFinite) || radius <= 0 || fovDegrees <= 0 || fovDegrees >= 179 || aspect <= 0 || padding < 1) {
+    throw new Error('Invalid perspective framing parameters');
+  }
+  const halfVertical = THREE.MathUtils.degToRad(fovDegrees / 2);
+  const halfHorizontal = Math.atan(Math.tan(halfVertical) * aspect);
+  const limitingHalfAngle = Math.min(halfVertical, halfHorizontal);
+  return (radius / Math.sin(limitingHalfAngle)) * padding;
+}
+
 export class FrameStats {
   private buf = new Float64Array(240);
   private n = 0;
@@ -305,7 +316,9 @@ export class StudioViewport {
   }
 
   setViewPreset(preset: CameraViewPreset): void {
-    const dist = Math.max(1.5, this.focusRadius * 2.45);
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    const aspect = rect.width > 0 && rect.height > 0 ? rect.width / rect.height : this.perspCamera.aspect;
+    const dist = Math.max(1.5, perspectiveFitDistance(this.focusRadius, this.perspCamera.fov, aspect));
     const c = this.focusCenter;
     switch (preset) {
       case 'front':

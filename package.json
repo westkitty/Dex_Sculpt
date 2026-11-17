@@ -10,7 +10,8 @@
     "preview": "vite preview --host 127.0.0.1 --port 5191 --strictPort",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "node scripts/acquire-real-character.mjs && playwright test",
+    "test:real-character": "node scripts/acquire-real-character.mjs && vitest run --config vitest.real-character.config.ts"
   },
   "dependencies": {
     "fflate": "^0.8.3",
@@ -21,6 +22,7 @@
     "@playwright/test": "^1.58.2",
     "@types/node": "^22.15.0",
     "@types/three": "^0.186.0",
+    "gltf-validator": "2.0.0-dev.3.10",
     "happy-dom": "^20.0.0",
     "three-r185": "npm:three@^0.185.1",
     "typescript": "^5.9.3",

@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dex-sculpt-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck, unit, build, and browser acceptance
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up pinned Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.3
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: TypeScript typecheck
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Install Playwright Chromium and Linux dependencies
+        run: npx playwright install --with-deps chromium
+      - name: Run Chromium browser acceptance (SwiftShader WebGL2; rendering failures are fatal)
+        run: npm run test:e2e
+      - name: Preserve browser evidence on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dex-sculpt-browser-failure-${{ github.run_id }}
+          path: |
+            test-results/
+            playwright-report/
+            e2e-artifacts/*.png
+            e2e-artifacts/pixel-evidence.json
+          if-no-files-found: ignore
+          retention-days: 14

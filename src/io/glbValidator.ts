@@ -315,7 +315,10 @@ export function validateGlbBinary(buf: ArrayBuffer): GlbValidationReport {
       }
     }
     return {
-      name: a.name ?? `Animation_${ai}`,
+      // Three.js GLTFLoader assigns this exact fallback when glTF animation.name is omitted.
+      // Match that stable imported identity so round-trip comparison does not report a
+      // false loss caused solely by comparing our own `Animation_0` label to `animation_0`.
+      name: typeof a.name === 'string' && a.name.length > 0 ? a.name : `animation_${ai}`,
       channelCount: (a.channels ?? []).length,
       samplerCount: (a.samplers ?? []).length,
       durationSec

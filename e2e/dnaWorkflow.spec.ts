@@ -458,7 +458,16 @@ test.describe('DEX//SCULPT Character DNA V2 — complete authoring journey', () 
         __DEX_SCULPT__: {
           session: {
             lastExportResult: {
-              validation: { validGlb2: boolean; skinCount: number; animationCount: number; primitives: Array<{ morphTargetCount: number; hasJoints: boolean; hasWeights: boolean; hasUV: boolean }> };
+              validation: {
+                validGlb2: boolean; byteLength: number; nodeCount: number; meshCount: number;
+                materialCount: number; textureCount: number; skinCount: number; animationCount: number;
+                totalVertices: number; totalTriangles: number; errors: string[]; warnings: string[];
+                primitives: Array<{
+                  meshName: string; vertexCount: number; indexCount: number;
+                  hasPosition: boolean; hasNormal: boolean; hasUV: boolean; hasJoints: boolean;
+                  hasWeights: boolean; weightsNormalized: boolean; morphTargetCount: number;
+                }>;
+              };
             } | null;
             lastExportDiff: {
               passed: boolean; failures: string[];
@@ -499,7 +508,38 @@ test.describe('DEX//SCULPT Character DNA V2 — complete authoring journey', () 
     expect(reports.diff.vertexCountEqual).toBe(true);
     expect(reports.diff.triangleCountEqual).toBe(true);
     expect(reports.diff.sculptMaxPositionDelta).toBeGreaterThan(0); // sculpt geometry survived the round-trip
-    (evidence as Record<string, unknown>).glbRoundTrip = { validation: reports.validation, rigPreservation: reports.diff };
+    // Keep committed evidence bounded: the full validator includes large typed arrays
+    // (positions, joints, weights, UVs, morph data), which are already recoverable by
+    // rerunning this workflow and need not be duplicated into the JSON artifact.
+    (evidence as Record<string, unknown>).glbRoundTrip = {
+      validation: {
+        validGlb2: reports.validation.validGlb2,
+        byteLength: reports.validation.byteLength,
+        nodeCount: reports.validation.nodeCount,
+        meshCount: reports.validation.meshCount,
+        materialCount: reports.validation.materialCount,
+        textureCount: reports.validation.textureCount,
+        skinCount: reports.validation.skinCount,
+        animationCount: reports.validation.animationCount,
+        totalVertices: reports.validation.totalVertices,
+        totalTriangles: reports.validation.totalTriangles,
+        primitives: reports.validation.primitives.map(p => ({
+          meshName: p.meshName,
+          vertexCount: p.vertexCount,
+          indexCount: p.indexCount,
+          hasPosition: p.hasPosition,
+          hasNormal: p.hasNormal,
+          hasUV: p.hasUV,
+          hasJoints: p.hasJoints,
+          hasWeights: p.hasWeights,
+          weightsNormalized: p.weightsNormalized,
+          morphTargetCount: p.morphTargetCount
+        })),
+        errors: reports.validation.errors,
+        warnings: reports.validation.warnings
+      },
+      rigPreservation: reports.diff
+    };
 
     // Re-import the exported GLB into the studio (real verify flow).
     await page.getByTestId('btn-verify-reimport').click();
@@ -527,7 +567,9 @@ test.describe('DEX//SCULPT Character DNA V2 — complete authoring journey', () 
     expect(animTime).toBeGreaterThan(0.05);
     await shot(page, 'step20-animation-playing');
 
-    fs.writeFileSync(path.join(ART, 'pixel-evidence.json'), JSON.stringify(evidence, null, 2));
+    const evidenceJson = JSON.stringify(evidence, null, 2);
+    expect(Buffer.byteLength(evidenceJson)).toBeLessThan(64 * 1024);
+    fs.writeFileSync(path.join(ART, 'pixel-evidence.json'), evidenceJson);
     expect(errors).toEqual([]);
   });
 

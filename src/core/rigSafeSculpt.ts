@@ -142,6 +142,37 @@ export function vertexCompatibilityKeys(g: THREE.BufferGeometry): string[] {
   ]));
 }
 
+/** Mark unique-space vertices whose coincident render copies were separated by protected attributes. */
+function markSplitPositionVertices(renderPos: Float32Array, mesh: SculptMesh, weldRel = 1e-6): Uint8Array {
+  const renderCount = Math.floor(renderPos.length / 3);
+  let minX = Infinity, minY = Infinity, minZ = Infinity;
+  let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
+  for (let i = 0; i < renderCount; i++) {
+    const x = renderPos[i * 3], y = renderPos[i * 3 + 1], z = renderPos[i * 3 + 2];
+    minX = Math.min(minX, x); minY = Math.min(minY, y); minZ = Math.min(minZ, z);
+    maxX = Math.max(maxX, x); maxY = Math.max(maxY, y); maxZ = Math.max(maxZ, z);
+  }
+  const diag = Math.hypot(maxX - minX, maxY - minY, maxZ - minZ) || 1;
+  const inv = 1 / Math.max(diag * weldRel, 1e-8);
+  const firstByPosition = new Map<string, number>();
+  const split = new Uint8Array(mesh.vertCount);
+  for (let r = 0; r < renderCount; r++) {
+    const key = JSON.stringify([
+      Math.round(renderPos[r * 3] * inv),
+      Math.round(renderPos[r * 3 + 1] * inv),
+      Math.round(renderPos[r * 3 + 2] * inv)
+    ]);
+    const u = mesh.renderToUniq[r];
+    const first = firstByPosition.get(key);
+    if (first === undefined) firstByPosition.set(key, u);
+    else if (first !== u) { split[first] = 1; split[u] = 1; }
+  }
+  return split;
+}
+
+export const SPLIT_SEAM_STROKE_WARNING =
+  'This brush footprint overlaps coincident render vertices split by protected attributes. The stroke was canceled to avoid opening a seam; move away from the boundary. Mask painting remains available.';
+
 /**
  * Rig-safe sculpt controller for a single Mesh or SkinnedMesh.
  * Operates in welded unique-vertex space (`SculptMesh`) and writes changes
@@ -159,6 +190,9 @@ export class RigSafeSculptTarget {
   private refitsSinceBuild = 0;
   private maskAttr: THREE.BufferAttribute;
   private origUniqPos: Float32Array;
+  private splitPositionVertices: Uint8Array;
+  private splitPositionScratch: Uint32Array;
+  private splitPositionVertexCount = 0;
   private previewPausedSavedPos: Float32Array | null = null;
   private previewPausedSavedNrm: Float32Array | null = null;
 
@@ -180,6 +214,9 @@ export class RigSafeSculptTarget {
 
     const compatibilityKeys = vertexCompatibilityKeys(g);
     this.mesh = buildSculptMesh(pos, idx, 1e-6, i => compatibilityKeys[i]);
+    this.splitPositionVertices = markSplitPositionVertices(pos, this.mesh);
+    this.splitPositionScratch = new Uint32Array(this.mesh.vertCount);
+    for (const flag of this.splitPositionVertices) this.splitPositionVertexCount += flag;
     this.origUniqPos = new Float32Array(this.mesh.pos);
     // Keep original normals in snapshot, but ensure SculptMesh has normalized normals
     const sourcePos = new Float32Array(pos);
@@ -222,6 +259,33 @@ export class RigSafeSculptTarget {
 
   get isSkinned(): boolean {
     return this.snapshot.hasSkinning;
+  }
+
+  get hasSplitProtectedVertices(): boolean {
+    return this.splitPositionVertexCount > 0;
+  }
+
+  /**
+   * Fail closed for geometry-displacing strokes whose brush footprint touches a
+   * coincident position split by protected attributes. Mask painting is exempt
+   * at the caller because it does not move geometry.
+   */
+  isGeometryStrokeSafeAt(
+    point: [number, number, number],
+    radius: number,
+    symmetry: { x: boolean; y: boolean; z: boolean }
+  ): boolean {
+    if (!Number.isFinite(radius) || radius <= 0) return false;
+    if (!this.splitPositionVertexCount) return true;
+    const centers: [number, number, number][] = [[point[0], point[1], point[2]]];
+    if (symmetry.x) for (const c of [...centers]) centers.push([-c[0], c[1], c[2]]);
+    if (symmetry.y) for (const c of [...centers]) centers.push([c[0], -c[1], c[2]]);
+    if (symmetry.z) for (const c of [...centers]) centers.push([c[0], c[1], -c[2]]);
+    for (const c of centers) {
+      const n = this.engine.grid.query(c[0], c[1], c[2], radius, this.splitPositionScratch);
+      for (let i = 0; i < n; i++) if (this.splitPositionVertices[this.splitPositionScratch[i]]) return false;
+    }
+    return true;
   }
 
   rebuildBvh(): void {
