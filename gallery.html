@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c141e">
+<title>DEX//SCULPT — Model Gallery</title>
+<style>
+:root{color-scheme:dark;--bg:#0c141e;--surface:#14212b;--soft:#1d2b36;--line:#32424a;--text:#eef3ef;--muted:#9eadaf;--gold:#e6c98a;--green:#b5ddbd;--blue:#9ac3dc;--red:#f1aa9e}*{box-sizing:border-box}[hidden]{display:none!important}html{scroll-behavior:smooth}body{margin:0;color:var(--text);background:var(--bg);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}body:before{content:"";position:fixed;z-index:-1;inset:0;background:radial-gradient(ellipse at 80% -20%,#23414b70,transparent 45%)}a{color:inherit}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.shell{max-width:1580px;margin:auto;padding:0 clamp(16px,3.4vw,54px)}header{padding:31px 0 24px;display:flex;gap:20px;align-items:flex-start;justify-content:space-between}.brandline{color:var(--gold);font-size:11px;letter-spacing:.22em;font-weight:750;text-transform:uppercase}.mast{margin:6px 0 6px;font-size:clamp(31px,4.4vw,56px);font-weight:650;letter-spacing:-.045em;line-height:1.08}.intro{color:var(--muted);max-width:580px;margin:0;font-size:13px}.back{border:1px solid var(--line);background:var(--surface);padding:10px 15px;border-radius:9px;text-decoration:none;white-space:nowrap}.back:hover{border-color:var(--gold)}.summary{display:flex;align-items:center;gap:18px;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;color:var(--muted)}.stat strong{color:var(--text);font-size:18px;margin-right:5px;font-variant-numeric:tabular-nums}.stat em{font-style:normal;color:var(--green)}.filterbar{position:sticky;top:0;z-index:4;background:#0c141ef0;backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:15px 0 12px}.filters{display:grid;grid-template-columns:minmax(200px,2fr) repeat(3,minmax(135px,1fr)) auto;align-items:end;gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field span{font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-weight:700}input,select{background:#17252f;border:1px solid var(--line);color:var(--text);padding:11px 12px;border-radius:8px;min-width:0;height:43px}input::placeholder{color:#80939a}.clear{background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--text);height:43px;padding:0 13px}.clear:hover{border-color:var(--gold)}.resultline{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 0 15px;color:var(--muted);font-size:12px}.legend{display:flex;align-items:center;gap:8px}.key{width:8px;height:8px;border-radius:50%;background:var(--green)}.key.drive{background:var(--gold)}.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px}.model-card{min-width:0;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0;text-align:left;color:inherit;overflow:hidden;min-height:292px;transition:border-color .17s,transform .17s,background .17s}.model-card:hover{border-color:var(--gold);transform:translateY(-2px);background:#1b2b36}.model-card:focus-visible{outline-offset:3px}.thumb{position:relative;height:192px;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 40%,#2a3b43,#121b25 75%);border-bottom:1px solid #36444b;overflow:hidden}.thumb:before,.thumb:after{content:"";position:absolute;border-radius:50%;border:1px solid #ffffff12;width:83%;aspect-ratio:1;transform:rotateX(68deg);bottom:-25%}.thumb:after{width:48%;bottom:-10%}.thumb img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block}.thumb-symbol{position:relative;z-index:1;color:#6d8a8f;font-size:48px;font-weight:200;opacity:.68}.thumb-wait{position:absolute;left:10px;bottom:8px;z-index:2;color:#afbbba;font-size:10px;letter-spacing:.03em}.model-card[data-preview="live"] .thumb-wait,.model-card[data-preview="drive"] .thumb-wait{display:none}.thumb-tag{position:absolute;z-index:2;top:9px;left:9px;border-radius:5px;background:#0b151cd9;padding:4px 7px;color:#d8e4e6;font-size:9px;font-weight:750;letter-spacing:.05em}.meta{display:flex;flex-direction:column;gap:5px;padding:12px 12px 14px;min-height:98px}.model-name{font-size:14px;font-weight:700;line-height:1.28;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.model-source{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta-bottom{display:flex;justify-content:space-between;gap:6px;align-items:center;margin-top:auto;font-size:10px;text-transform:uppercase;letter-spacing:.06em}.available{color:var(--green);font-weight:700}.archived{color:var(--gold)}.kind{color:var(--muted);text-transform:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.load-more{text-align:center;padding:35px 0 55px;min-height:95px;color:var(--muted);font-size:12px}.empty{padding:65px 15px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}.foot{color:var(--muted);font-size:11px;border-top:1px solid var(--line);margin:20px 0 40px;padding-top:16px}.dialog{background:#111e28;border:1px solid #637176;border-radius:16px;color:var(--text);padding:0;width:min(860px,94vw);max-height:94vh;box-shadow:0 30px 90px #0009}.dialog::backdrop{background:#000b;backdrop-filter:blur(5px)}.dialogheader{display:flex;justify-content:space-between;gap:18px;padding:20px 22px;border-bottom:1px solid var(--line)}.dialogheader h2{margin:3px 0 0;line-height:1.15;font-size:25px}.x{align-self:start;background:none;border:1px solid var(--line);color:var(--text);border-radius:8px;width:37px;height:37px;font-size:20px}.dialogcontent{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(225px,1fr)}.viewer{background:radial-gradient(circle at 50% 35%,#31434d,#111821 75%);height:440px;position:relative;display:grid;place-items:center;overflow:hidden}.viewer canvas{display:block;max-width:100%;max-height:100%}.viewer img{width:100%;height:100%;object-fit:contain}.viewer p{color:var(--muted);padding:24px;text-align:center}.viewerlabel{position:absolute;bottom:10px;left:12px;right:12px;pointer-events:none;color:#adbbbf;font-size:11px;text-align:center}.detail{padding:20px;border-left:1px solid var(--line);overflow:auto;max-height:65vh}.detail dl{margin:0 0 22px}.detail dt{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.08em;margin:12px 0 2px}.detail dd{margin:0;overflow-wrap:anywhere;font-size:13px}.actions{display:flex;flex-direction:column;gap:8px}.action{display:block;text-decoration:none;text-align:center;background:var(--gold);color:#1b2325;font-weight:750;border:1px solid var(--gold);padding:12px;border-radius:8px}.action.secondary{background:transparent;color:var(--text);border-color:var(--line)}.hint{font-size:11px;color:var(--muted);margin:12px 0 0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}@media(max-width:840px){.filters{grid-template-columns:1fr 1fr}.field.search{grid-column:1/-1}.clear{width:100%}.dialogcontent{grid-template-columns:1fr}.detail{max-height:none;border-left:0;border-top:1px solid var(--line)}.viewer{height:320px}}@media(max-width:450px){header{flex-direction:column;padding:24px 0 17px}.back{align-self:flex-start}.filters{grid-template-columns:1fr 1fr;gap:8px}.filters select{font-size:12px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.thumb{height:165px}.model-card{min-height:259px}.meta{padding:10px}.summary{gap:10px 14px}.legend{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+.localimport{margin:0 0 4px;padding:18px 0 20px;display:flex;align-items:center;justify-content:space-between;gap:18px;border-bottom:1px solid var(--line)}.localimport strong{font-size:15px}.localimport p{color:var(--muted);font-size:12px;margin:4px 0 6px;max-width:760px}.localimport #importStatus{font-size:11px;color:var(--gold)}.importactions{display:flex;gap:9px;flex-wrap:wrap;flex-shrink:0}.importactions button{border:1px solid var(--gold);background:#29383f;color:var(--text);padding:10px 12px;border-radius:8px;font-weight:650}.importactions button:hover{background:#344a50}.importactions button:disabled{opacity:.5;cursor:progress}@media(max-width:780px){.localimport{flex-direction:column;align-items:stretch}.importactions{width:100%}.importactions button{flex:1}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header><div><div class="brandline">DEX // SCULPT · MODEL INDEX</div><h1 class="mast">Model Gallery<span style="color:var(--gold)">.</span></h1><p class="intro">Browse the complete model catalogue. To see real thumbnails, select GLB files you already own, use the optional local model bridge, or provide your own private preview index. No files are uploaded.</p></div><a class="back" href="./">← Return to sculpt studio</a></header>
+  <section class="summary" aria-label="Library totals"><div class="stat"><strong id="allCount">—</strong> catalogued</div><div class="stat"><strong id="readyCount">—</strong> available locally</div><div class="stat"><strong id="driveCount">—</strong> optional preview images</div><div id="connectionStatus" class="stat">Checking model sources…</div></section>
+  <section class="localimport" aria-label="Add local GLB files for thumbnails">
+    <div><strong>See the actual models.</strong><p>Select your authorized .glb files or a folder. Files stay in your browser, matched against this catalogue by file size and SHA-256. This is optional.</p><span id="importStatus" role="status" aria-live="polite">No files selected.</span></div>
+    <div class="importactions"><button id="chooseFiles" type="button">Choose GLB files</button><button id="chooseFolder" type="button">Choose model folder</button><input id="filePicker" type="file" accept=".glb,model/gltf-binary" multiple hidden><input id="folderPicker" type="file" webkitdirectory multiple hidden></div>
+  </section>
+</main>
+<div class="filterbar"><div class="shell filters"><label class="field search"><span>Find models</span><input id="query" type="search" placeholder="Search name, collection, skeleton, type…" autocomplete="off"></label><label class="field"><span>Collection</span><select id="source"><option value="">All collections</option></select></label><label class="field"><span>Asset type</span><select id="type"><option value="">All asset types</option></select></label><label class="field"><span>Availability</span><select id="availability"><option value="all">All 786 records</option><option value="local">Available in this browser</option><option value="preview">Preview available</option><option value="drive">Not available locally</option></select></label><button id="clear" class="clear" type="button">Reset</button></div></div>
+<main class="shell"><div class="resultline"><span id="countNote" role="status" aria-live="polite">Loading model index…</span><span class="legend"><span class="key"></span> Ready on Mac <span class="key drive"></span> Drive archive</span></div><div id="grid" class="gallery" aria-label="Browsable model gallery"></div><div id="empty" class="empty" hidden>No records match these filters. Try a different search.</div><div id="sentinel" class="load-more">Scroll to browse more models</div><div class="foot">Source: public humanoid master catalogue. Real thumbnails are rendered from verified local GLBs; an optional private preview index may provide additional images. Catalogue metadata is not proof that a model file is publicly available. No third-party models, Drive IDs, or private preview assets are bundled in the public build.</div></main>
+<dialog id="detailDialog" class="dialog" aria-labelledby="detailTitle"><div class="dialogheader"><div><div class="brandline">Model inspection</div><h2 id="detailTitle">Character</h2></div><button id="closeDialog" class="x" aria-label="Close model inspection">×</button></div><div class="dialogcontent"><div id="largeViewer" class="viewer"><p>Select a model to inspect.</p></div><div class="detail"><dl id="properties"></dl><div class="actions"><a id="studioLink" class="action" href="./">Open in DEX//SCULPT</a><a id="sourceLink" class="action secondary" target="_blank" rel="noopener noreferrer" href="#">View original preview source</a><button id="copyId" class="action secondary" type="button">Copy catalog ID</button></div><p id="detailHint" class="hint"></p></div></div></dialog>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import catalogData from './src/data/humanoidCatalog.json';
+
+const $ = (id) => document.getElementById(id);
+const all = catalogData.records ?? [];
+const byId = new Map(all.map(x=>[x.asset_id,x]));
+const ready = new Set(); // Verified local bridge records, never persisted in the public bundle.
+const providedFiles = new Map(); // Session-only user-selected local File objects.
+const candidatesBySize = new Map();
+for (const r of all) {
+ const bytes = r.processed_glb_bytes;
+ if (!Number.isSafeInteger(bytes) || bytes < 12 || bytes > 100*1024*1024 || !/^[a-f0-9]{64}$/i.test(r.processed_glb_sha256||'')) continue;
+ if (!candidatesBySize.has(bytes)) candidatesBySize.set(bytes, []);
+ candidatesBySize.get(bytes).push(r);
+}
+let driveIndex = {};
+let liveConnected = false;
+let filtered = all;
+let visibleCount = 0;
+let generation = 0;
+let thumbnailQueue = [];
+let thumbnailRunning = false;
+let screenshotRenderer = null;
+let previewObserver = null;
+let activeDetail = null;
+let detailScene = null;
+let detailRenderer = null;
+let detailAnimation = 0;
+let detailResize = null;
+const memoryThumbs = new Map();
+const BATCH = 30;
+const canvas = document.createElement('canvas');
+canvas.width = 288;
+canvas.height = 288;
+const loader = new GLTFLoader();
+const layout = { query:'',source:'',type:'',availability:'all' };
+
+function cleanName(s){return (s||'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();}
+function typeLabel(type){return cleanName(type ?? 'Model');}
+function previewFor(r){return driveIndex[r.asset_id] ?? null;}
+function isBridgeReady(r){return liveConnected && ready.has(r.asset_id);}
+function isReady(r){return isBridgeReady(r) || providedFiles.has(r.asset_id);}
+function updateAvailableCount(){ $('readyCount').textContent = new Set([...ready, ...providedFiles.keys()]).size.toLocaleString(); }
+function isPreviewable(r){return isReady(r) || Boolean(previewFor(r));}
+function driveImageUrl(meta){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(meta.id)+'&sz=w420';}
+
+async function init(){
+  const sources=[...new Set(all.map(x=>x.source_id))].sort();
+  for(const s of sources){const option=new Option(cleanName(s),s);$('source').appendChild(option);}
+  for(const t of [...new Set(all.map(x=>x.asset_type))].sort()){$('type').appendChild(new Option(typeLabel(t),t));}
+  $('allCount').textContent=all.length.toLocaleString();
+  await Promise.allSettled([loadLocalStatus(),loadDriveIndex()]);
+  attachControls();
+  applyFilters();
+  setupObservers();
+  const wanted=new URLSearchParams(location.search).get('asset');
+  if(wanted && byId.has(wanted)) openDetail(byId.get(wanted));
+}
+async function loadLocalStatus(){
+ try{
+  const response=await fetch('./__dex_catalog/status',{cache:'no-store'});
+  if(!response.ok)throw new Error('No local bridge');
+  const status=await response.json();
+  liveConnected=status.ready === true;
+  for(const id of status.cachedIds ?? []) ready.add(id);
+  $('connectionStatus').textContent=liveConnected?'Verified local model loader connected':'Public catalogue · optional local model previews';
+ }catch{$('connectionStatus').textContent='Public catalogue · add GLB files to see thumbnails';}
+ updateAvailableCount();
+}
+async function loadDriveIndex(){
+ try{
+  const response=await fetch('./gallery-drive-previews.json',{cache:'no-store'});
+  if(!response.ok)throw new Error('No private preview index');
+  const content=await response.json();
+  driveIndex=(content && typeof content.previews==='object' && !Array.isArray(content.previews))?content.previews:{};
+ }catch{driveIndex={};}
+ $('driveCount').textContent=Object.keys(driveIndex).length.toLocaleString();
+}
+function attachControls(){
+ for(const id of ['query','source','type','availability']){
+  $(id).addEventListener(id==='query'?'input':'change',()=>{layout[id]=$(id).value;applyFilters();});
+ }
+ $('clear').addEventListener('click',()=>{
+  for(const id of Object.keys(layout)){layout[id]=id==='availability'?'all':'';$(id).value=layout[id];}applyFilters();$('query').focus();
+ });
+ $('chooseFiles').addEventListener('click',()=> $('filePicker').click());
+ $('chooseFolder').addEventListener('click',()=> $('folderPicker').click());
+ for (const id of ['filePicker','folderPicker']) $(id).addEventListener('change', async()=>{
+  const input=$(id); const picked=Array.from(input.files||[]); input.value='';
+  if(picked.length) await matchLocalFiles(picked);
+ });
+ $('closeDialog').addEventListener('click',()=>$('detailDialog').close());
+ $('detailDialog').addEventListener('close',closeDetail);
+ $('detailDialog').addEventListener('click',(event)=>{if(event.target===$('detailDialog'))$('detailDialog').close();});
+ $('copyId').addEventListener('click',async()=>{if(!activeDetail)return;try{await navigator.clipboard.writeText(activeDetail.asset_id);$('copyId').textContent='Catalog ID copied';}catch{$('copyId').textContent=activeDetail.asset_id;}});
+}
+async function matchLocalFiles(files){
+ const usable=files.filter(f=>f.name.toLowerCase().endsWith('.glb'));
+ const status=$('importStatus');
+ if(!crypto?.subtle){status.textContent='SHA-256 verification needs HTTPS or localhost. No files were loaded.';return;}
+ let verified=0, skipped=0;
+ $('chooseFiles').disabled=true; $('chooseFolder').disabled=true;
+ try{
+  for(let i=0;i<usable.length;i++){
+   const file=usable[i];
+   status.textContent=`Checking ${i+1} of ${usable.length} selected GLBs…`;
+   const matches=candidatesBySize.get(file.size);
+   if(!matches?.length){skipped++;continue;}
+   try{
+    const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', await file.arrayBuffer()))).map(b=>b.toString(16).padStart(2,'0')).join('');
+    const identified=matches.filter(r=>r.processed_glb_sha256.toLowerCase()===digest);
+    if(!identified.length){skipped++;continue;}
+    for(const r of identified){providedFiles.set(r.asset_id,file);verified++;}
+   }catch{skipped++;}
+   // Leave a browser render opportunity between heavy files.
+   await new Promise(resolve=>setTimeout(resolve,0));
+  }
+  status.textContent=`${verified} verified catalogue match${verified===1?'':'es'} · ${skipped} unmatched/skipped. Nothing uploaded.`;
+  updateAvailableCount();applyFilters();
+ }finally{$('chooseFiles').disabled=false;$('chooseFolder').disabled=false;}
+}
+function matches(r){
+ if(layout.source && r.source_id!==layout.source)return false;
+ if(layout.type && r.asset_type!==layout.type)return false;
+ if(layout.availability==='local'&&!isReady(r))return false;
+ if(layout.availability==='preview'&&!isPreviewable(r))return false;
+ if(layout.availability==='drive'&&isReady(r))return false;
+ const q=layout.query.trim().toLowerCase();
+ return !q || [r.display_name,r.asset_id,r.source_id,r.category,r.skeleton_family,r.asset_type,...(r.style_tags??[])].join(' ').toLowerCase().includes(q);
+}
+function applyFilters(){
+ generation++;
+ thumbnailQueue=[];
+ filtered=all.filter(matches);
+ visibleCount=0;
+ $('grid').replaceChildren();
+ $('empty').hidden=filtered.length!==0;
+ $('sentinel').hidden=filtered.length===0;
+ appendBatch();
+}
+function setupObservers(){
+ previewObserver=new IntersectionObserver(entries=>{
+  for(const entry of entries){if(!entry.isIntersecting)continue;previewObserver.unobserve(entry.target);const record=byId.get(entry.target.dataset.assetId);if(record) void loadCardPreview(entry.target,record,generation);}
+ },{rootMargin:'330px'});
+ const more=new IntersectionObserver(entries=>{if(entries.some(x=>x.isIntersecting))appendBatch();},{rootMargin:'650px'});
+ more.observe($('sentinel'));
+ document.querySelectorAll('[data-asset-id]').forEach(card=>previewObserver.observe(card));
+}
+function appendBatch(){
+ if(visibleCount>=filtered.length){$('sentinel').textContent='End of results';return;}
+ const end=Math.min(filtered.length,visibleCount+BATCH);
+ const fragment=document.createDocumentFragment();
+ for(const r of filtered.slice(visibleCount,end)){
+  const card=document.createElement('button');
+  card.type='button';card.className='model-card';card.dataset.assetId=r.asset_id;card.dataset.preview='pending';
+  const image=document.createElement('div');image.className='thumb';
+  const badge=document.createElement('span');badge.className='thumb-tag';badge.textContent=isReady(r)?'LOCAL GLB':previewFor(r)?'PRIVATE IMAGE':'CATALOGUED';
+  const symbol=document.createElement('span');symbol.className='thumb-symbol';symbol.textContent=r.asset_type==='animation_pack'?'◌':'◇';symbol.setAttribute('aria-hidden','true');
+  const wait=document.createElement('span');wait.className='thumb-wait';wait.textContent=isReady(r)?'Preparing preview…':previewFor(r)?'Loading optional preview…':'No preview available';
+  image.append(badge,symbol,wait);
+  const meta=document.createElement('div');meta.className='meta';
+  const name=document.createElement('div');name.className='model-name';name.textContent=r.display_name;name.title=r.display_name;
+  const source=document.createElement('div');source.className='model-source';source.textContent=cleanName(r.source_id);
+  const bottom=document.createElement('div');bottom.className='meta-bottom';
+  const available=document.createElement('span');available.className=isReady(r)?'available':'archived';available.textContent=isBridgeReady(r)?'Ready in editor':providedFiles.has(r.asset_id)?'Local preview':'Metadata only';
+  const kind=document.createElement('span');kind.className='kind';kind.textContent=typeLabel(r.asset_type);kind.title=typeLabel(r.asset_type);
+  bottom.append(available,kind);meta.append(name,source,bottom);card.append(image,meta);
+  card.addEventListener('click',()=>openDetail(r));fragment.append(card);
+ }
+ $('grid').appendChild(fragment);
+ visibleCount=end;
+ $('countNote').textContent=filtered.length?`Showing ${visibleCount.toLocaleString()} of ${filtered.length.toLocaleString()} models`:'0 matching models';
+ $('sentinel').textContent=visibleCount<filtered.length?'Scroll for more models':'End of results';
+ if(previewObserver){for(const card of $('grid').querySelectorAll('.model-card[data-preview="pending"]'))previewObserver.observe(card);}
+}
+async function loadCardPreview(card,r,token){
+ if(!card.isConnected || token!==generation)return;
+ const thumb=card.querySelector('.thumb');
+ if(!thumb)return;
+ if(isReady(r) && r.asset_type!=='animation_pack'){
+  const cached=await dbGet(r);
+  if(cached){showImage(card,cached,'live');return;}
+  enqueueThumbnail(card,r,token);return;
+ }
+ const preview=previewFor(r);
+ if(preview){
+  const img=new Image();img.loading='lazy';img.alt='Visual QA image of '+r.display_name;
+  img.addEventListener('load',()=>{if(card.isConnected&&token===generation)showImage(card,img.src,'drive');},{once:true});
+  img.addEventListener('error',()=>{if(card.isConnected&&token===generation&&isReady(r))enqueueThumbnail(card,r,token);else card.dataset.preview='missing';},{once:true});
+  img.src=driveImageUrl(preview);
+ } else card.dataset.preview='missing';
+}
+function showImage(card,url,kind){
+ if(!card.isConnected)return;
+ const thumb=card.querySelector('.thumb');if(!thumb)return;
+ let img=thumb.querySelector('img');if(!img){img=document.createElement('img');img.alt='Thumbnail of '+(card.querySelector('.model-name')?.textContent||'model');thumb.append(img);}img.src=url;
+ card.dataset.preview=kind;
+ card.querySelector('.thumb-tag').textContent=kind==='live'?'GLB RENDER':'VISUAL QA';
+}
+function enqueueThumbnail(card,r,token){thumbnailQueue.push({card,r,token});void pumpThumbs();}
+async function pumpThumbs(){
+ if(thumbnailRunning)return;thumbnailRunning=true;
+ try{
+  while(thumbnailQueue.length){
+   const next=thumbnailQueue.shift();if(!next||next.token!==generation||!next.card.isConnected)continue;
+   try{const thumb=await generateThumb(next.r);if(next.token===generation&&next.card.isConnected){showImage(next.card,thumb,'live');void dbSet(next.r,thumb);}}
+   catch{if(next.token===generation&&next.card.isConnected){const preview=previewFor(next.r);if(preview){const img=new Image();img.onload=()=>showImage(next.card,img.src,'drive');img.src=driveImageUrl(preview);}else next.card.dataset.preview='missing';}}
+   await new Promise(resolve=>setTimeout(resolve,0));
+  }
+ }finally{thumbnailRunning=false;}
+}
+function poseCamera(object,camera,side=0.18){
+ object.updateWorldMatrix(true,true);
+ const bounds=new THREE.Box3().setFromObject(object);
+ if(bounds.isEmpty())throw new Error('No visible geometry');
+ const center=bounds.getCenter(new THREE.Vector3());const size=bounds.getSize(new THREE.Vector3());
+ if(!Number.isFinite(size.length()) || size.length()===0)throw new Error('Invalid model bounds');
+ const half=Math.max(size.x,size.y,size.z)*.5;
+ const radius=Math.max(half,0.15);
+ const fov=THREE.MathUtils.degToRad(camera.fov);
+ const distance=radius/Math.tan(fov/2)*1.63;
+ camera.position.set(center.x+distance*side,center.y+Math.max(size.y*.05,0.05),center.z+distance);
+ camera.lookAt(center);camera.near=Math.max(0.001,distance/1000);camera.far=distance*16;camera.updateProjectionMatrix();
+ return center;
+}
+function addLights(scene){scene.add(new THREE.HemisphereLight(0xe6f5ff,0x53606f,2.1));const a=new THREE.DirectionalLight(0xffeed2,2.6);a.position.set(4,9,8);scene.add(a);const b=new THREE.DirectionalLight(0x9bcdf5,1.4);b.position.set(-4,5,-5);scene.add(b);}
+async function getModel(r){
+ if(!isReady(r)) throw new Error('Select a matching local GLB first');
+ let bytes;
+ if(providedFiles.has(r.asset_id)){
+  bytes=await providedFiles.get(r.asset_id).arrayBuffer();
+ }else{
+  const response=await fetch('./__dex_catalog/load?id='+encodeURIComponent(r.asset_id),{cache:'no-store'});
+  if(!response.ok)throw new Error('Verified local model is temporarily unavailable');
+  bytes=await response.arrayBuffer();
+ }
+ return await new Promise((resolve,reject)=>loader.parse(bytes,'',resolve,reject));
+}
+function disposeModel(gltf){
+ if(!gltf)return;const geos=new Set(),materials=new Set(),textures=new Set();
+ gltf.scene.traverse(o=>{if(o.geometry)geos.add(o.geometry);if(o.material){for(const mat of (Array.isArray(o.material)?o.material:[o.material]))materials.add(mat);}});
+ materials.forEach(m=>{for(const v of Object.values(m)){if(v&&v.isTexture)textures.add(v);}m.dispose();});
+ textures.forEach(t=>t.dispose());geos.forEach(g=>g.dispose());
+}
+async function generateThumb(r){
+ const gltf=await getModel(r);
+ try{
+  if(!screenshotRenderer){screenshotRenderer=new THREE.WebGLRenderer({canvas,antialias:false,alpha:false,preserveDrawingBuffer:true});screenshotRenderer.setPixelRatio(1);screenshotRenderer.setSize(288,288,false);screenshotRenderer.outputColorSpace=THREE.SRGBColorSpace;}
+  const scene=new THREE.Scene();scene.background=new THREE.Color('#192632');addLights(scene);scene.add(gltf.scene);
+  const camera=new THREE.PerspectiveCamera(36,1,.01,2000);poseCamera(gltf.scene,camera);
+  screenshotRenderer.render(scene,camera);
+  return canvas.toDataURL('image/webp',.82);
+ }finally{disposeModel(gltf);}
+}
+function dbOpen(){
+ return new Promise(resolve=>{
+  if(!('indexedDB' in window)){resolve(null);return;}
+  try {
+   const req=indexedDB.open('dex-sculpt-gallery-thumbnails',1);
+   req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('images'))req.result.createObjectStore('images');};
+   req.onerror=()=>resolve(null);req.onsuccess=()=>resolve(req.result);
+  } catch { resolve(null); }
+ });
+}
+let dbPromise=null;
+function dbKey(r){return r.asset_id+':'+(r.processed_glb_sha256??'unversioned');}
+async function dbGet(r){
+ const key=dbKey(r);if(memoryThumbs.has(key))return memoryThumbs.get(key);
+ const db=await (dbPromise??=dbOpen());if(!db)return null;
+ return new Promise(resolve=>{try{const req=db.transaction('images','readonly').objectStore('images').get(key);req.onsuccess=()=>{if(req.result){remember(key,req.result);resolve(req.result);}else resolve(null);};req.onerror=()=>resolve(null);}catch{resolve(null);}});
+}
+async function dbSet(r,img){
+ const key=dbKey(r);remember(key,img);
+ const db=await (dbPromise??=dbOpen());if(!db)return;
+ try{db.transaction('images','readwrite').objectStore('images').put(img,key);}catch{}
+}
+function remember(key,val){if(memoryThumbs.has(key))memoryThumbs.delete(key);memoryThumbs.set(key,val);if(memoryThumbs.size>45)memoryThumbs.delete(memoryThumbs.keys().next().value);}
+function addField(container,name,value){const dt=document.createElement('dt');dt.textContent=name;const dd=document.createElement('dd');dd.textContent=String(value);container.append(dt,dd);}
+async function openDetail(r){
+ activeDetail=r;
+ $('detailTitle').textContent=r.display_name;
+ $('copyId').textContent='Copy catalog ID';
+ const properties=$('properties');properties.replaceChildren();
+ addField(properties,'Collection',cleanName(r.source_id));addField(properties,'Asset type',typeLabel(r.asset_type));addField(properties,'Skeleton family',r.skeleton_family||'Not specified');addField(properties,'Joints / animations',`${r.joint_count??'Unknown'} / ${r.animation_count??'Unknown'}`);addField(properties,'License reference',r.license_id);addField(properties,'Catalogue ID',r.asset_id);
+ const isLocal=isReady(r);
+ $('studioLink').hidden=false;
+ $('studioLink').href='./?catalogAsset='+encodeURIComponent(r.asset_id);
+ $('studioLink').textContent=isBridgeReady(r)?'Load in DEX//SCULPT':'Find in studio catalogue';
+ $('sourceLink').hidden=!previewFor(r);
+ if(previewFor(r))$('sourceLink').href='https://drive.google.com/file/d/'+encodeURIComponent(previewFor(r).id)+'/view';
+ $('detailHint').textContent=isBridgeReady(r)?'The verified GLB can load directly into the local studio.':providedFiles.has(r.asset_id)?'This selected GLB can be previewed here. The studio opens to its catalogue record; use Import GLB there to edit the same local file.': 'Only the catalogue record is available. Open the studio to find it, then use Import GLB if you have the asset. No automatic model download occurs.';
+ $('detailDialog').showModal();
+ $('largeViewer').replaceChildren();
+ const caption=document.createElement('div');caption.className='viewerlabel';caption.textContent=isLocal?'Drag to rotate · scroll to zoom':'Optional preview (when available)';
+ $('largeViewer').appendChild(caption);
+ if(isLocal && r.asset_type!=='animation_pack'){
+  const p=document.createElement('p');p.textContent='Loading verified 3D model…';$('largeViewer').appendChild(p);
+  try{await startDetail3D(r,p);}catch{p.textContent='3D preview not available for this asset.';const previous=memoryThumbs.get(dbKey(r))??await dbGet(r);if(previous){const img=new Image();img.src=previous;img.alt=r.display_name;p.replaceWith(img);}}
+ }else if(previewFor(r)){
+  const img=new Image();img.alt='Drive visual QA for '+r.display_name;img.src=driveImageUrl(previewFor(r));img.onerror=()=>{const p=document.createElement('p');p.textContent='Your browser could not display this private Drive image. Use “View original preview source”.';img.replaceWith(p);};$('largeViewer').appendChild(img);
+ }else{const p=document.createElement('p');p.textContent='There is no verified thumbnail for this model yet.';$('largeViewer').appendChild(p);}
+}
+async function startDetail3D(r,placeholder){
+ const gltf=await getModel(r);
+ if(!$('detailDialog').open||activeDetail?.asset_id!==r.asset_id){disposeModel(gltf);return;}
+ const display=document.createElement('canvas');
+ display.setAttribute('aria-label','Interactive 3D model viewer');
+ display.style.width='100%';display.style.height='100%';
+ placeholder.replaceWith(display);
+ detailRenderer=new THREE.WebGLRenderer({canvas:display,antialias:true,alpha:false});
+ detailRenderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
+ detailScene=new THREE.Scene();detailScene.background=new THREE.Color('#17232c');detailScene.add(gltf.scene);addLights(detailScene);
+ const camera=new THREE.PerspectiveCamera(36,1,.01,2000);
+ const center=poseCamera(gltf.scene,camera);
+ const controls=new OrbitControls(camera,display);controls.target.copy(center);controls.enableDamping=true;controls.enablePan=false;controls.minDistance=.12;
+ detailScene.userData.cleanup=()=>{controls.dispose();disposeModel(gltf);};
+ const updateSize=()=>{if(!detailRenderer)return;const box=$('largeViewer').getBoundingClientRect();detailRenderer.setSize(Math.max(200,box.width),Math.max(200,box.height),false);camera.aspect=box.width/Math.max(1,box.height);camera.updateProjectionMatrix();};
+ detailResize=new ResizeObserver(updateSize);detailResize.observe($('largeViewer'));updateSize();
+ const animate=()=>{if(!detailRenderer||!$('detailDialog').open)return;controls.update();detailRenderer.render(detailScene,camera);detailAnimation=requestAnimationFrame(animate);};animate();
+}
+function closeDetail(){
+ cancelAnimationFrame(detailAnimation);detailResize?.disconnect();detailResize=null;
+ if(detailScene){detailScene.userData.cleanup?.();detailScene=null;}
+ if(detailRenderer){detailRenderer.dispose();detailRenderer.forceContextLoss();detailRenderer=null;}
+ $('largeViewer').replaceChildren();activeDetail=null;
+}
+init().catch(err=>{$('countNote').textContent='Could not start catalogue: '+err.message;console.error(err);});
+</script>
+</body>
+</html>

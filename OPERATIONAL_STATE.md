@@ -55,3 +55,12 @@ The model and GLB export are not committed. See `tests/fixtures/README.md` for t
 - The active Arena branch is not based on PR #3. No branch switch, push, PR update, merge or remote publication was performed. The complete portable patch must target `0a25eee2dc030aa787b9271ab5cbb44fcaedbaed` exactly and include its own manifest, checksums, commands, report and evidence index.
 
 **Overall outcome: PARTIAL.** The requested third-party import-to-animation journey is independently reproduced in a real local browser and the code-quality checks pass. Delivery remains partial because no GitHub Actions result exists, the authorized branch is unrelated to PR #3, the physical stylus is untested, and seam-browser UX/performance and wider asset coverage remain open.
+
+
+## Public-safe model gallery — 2026-11-20 (publication candidate)
+
+- **Bounded branch:** `feat/model-gallery-publishable` based on the repository's existing `main` reference, in a separate worktree. The original private local-model checkout is excluded.
+- **Added:** gallery HTML entrypoint, studio navigation, searchable/scrollable metadata cards, opt-in SHA-256 matched local GLB preview and on-demand 3D viewport, optional local-only preview index, and a two-page Vite build.
+- **Privacy rule:** No private Drive IDs, third-party binary files, cached GLBs, or local preview JSON may be committed to the public repository. `gallery-drive-previews.json` is ignored. No permission to publish other private integrations is implied.
+- **Verification state:** Implementation is candidate work until `npm run typecheck`, `npm test`, `npm run build`, output checks, and actual browser checks pass on the final worktree. Publishing, CI and physical-device rendering remain unverified; do not claim deployment.
+- **Protected:** Existing sculpt/import/recipe/export flows, third-party license restrictions, original project checkouts, Google Drive archive and verified local model cache.

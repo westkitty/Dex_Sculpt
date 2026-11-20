@@ -4,6 +4,7 @@ import { PROCEDURAL_ACCESSORIES } from '../fixtures/proceduralAccessories';
 import {
   assessCatalogCompatibility,
   getCatalogSummary,
+  getCatalogRecord,
   getCatalogSource,
   listCatalogSources,
   searchCatalog
@@ -192,6 +193,10 @@ export class StudioUI {
     });
     this.beforeAfterBtn.dataset.testid = 'btn-before-after';
 
+    const galleryBtn = this.btn('Model Gallery', () => {
+      window.open('./gallery.html', '_blank', 'noopener');
+    });
+    galleryBtn.title = 'Browse catalogue thumbnails and verified local models';
     const importBtn = this.btn('Import GLB', () => this.glbInput.click());
     importBtn.dataset.testid = 'btn-import-glb';
     const sampleBtn = this.btn('Sample Rig', () => this.session.loadProceduralSample());
@@ -214,6 +219,7 @@ export class StudioUI {
 
     actions.append(
       drawerBtns,
+      galleryBtn,
       importBtn,
       sampleBtn,
       this.sep(),
@@ -1321,6 +1327,23 @@ export class StudioUI {
       }
     }
     this.inspectorBodyEl.appendChild(listCard);
+  }
+
+  public focusModelFromGallery(assetId: string): void {
+    const record = getCatalogRecord(assetId);
+    if (!record) {
+      this.showToast('Model not found in the public catalogue.', 'warn');
+      return;
+    }
+    this.catalogQuery = record.asset_id;
+    this.activeTab = 'catalog';
+    this.rightOpen = true;
+    this.leftOpen = false;
+    this.syncDrawerClasses();
+    this.rightInspectorEl.querySelectorAll('.tab-btn').forEach((tab) => {
+      tab.classList.toggle('active', (tab as HTMLElement).dataset.tab === 'catalog');
+    });
+    this.renderInspectorTab();
   }
 
   private renderCatalogTab(): void {
