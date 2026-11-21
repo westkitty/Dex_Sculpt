@@ -64,3 +64,10 @@ This repository is **public**. No private Google Drive IDs, signed URLs, API key
 To run baseline checks: `npm ci && npm run typecheck && npm test && npm run build && npm run test:e2e`.
 
 `npm run test:e2e` first acquires the pinned Khronos Cesium Man fixture into a Git-ignored local directory, then runs all Playwright tests, including the third-party studio journey. It needs access to the GitHub API once; normal app startup, typecheck, unit tests, and build do not need the asset. The binary is intentionally not committed because the model contains a Cesium logo excluded from its CC BY license; exact provenance, source hash, license details, and fixture limitations are documented in `tests/fixtures/README.md`. Numeric results are in `e2e-artifacts/real-character-evidence.json`. Browser screenshots are retained in the working evidence directory but omitted from the portable patch because they reproduce the excluded logo.
+
+
+## Model Gallery (public-safe)
+
+Open **Model Gallery** in the Studio or visit `gallery.html` from the Vite server. Browse the full metadata index with search, collection/type filters, infinite scrolling, and a 3D viewer for verified GLBs. Use **Choose GLB files** or **Choose model folder** to preview files already on your device; the browser matches them by SHA-256 without uploading them.
+
+The public GitHub Pages build ships **no third-party GLBs, Drive IDs, or restricted visual previews**. On the private local edition, the same gallery can read verified cached models from its loopback-only bridge and an optional private preview manifest. See [Model Gallery](docs/MODEL_GALLERY.md) for the publishing boundary and tests.

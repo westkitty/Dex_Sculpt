@@ -40,6 +40,9 @@ async function bootstrap(): Promise<void> {
   if (!recovered) {
     await session.loadProceduralSample();
   }
+
+  const requestedId = new URLSearchParams(window.location.search).get('catalogAsset');
+  if (requestedId) ui.focusModelFromGallery(requestedId);
 }
 
 bootstrap().catch((err) => {

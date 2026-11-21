@@ -20,3 +20,7 @@ e2e-artifacts/CesiumMan-edited.glb
 e2e-artifacts/real-character-recipe.dexsculpt.json
 # Browser captures show a third-party trademark excluded from the model license; local only
 e2e-artifacts/real-character-*.png
+
+# Local-only thumbnails and authenticated Drive preview IDs must stay private.
+gallery-drive-previews.json
+gallery-preview-assets/

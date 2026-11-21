@@ -55,3 +55,22 @@ The model and GLB export are not committed. See `tests/fixtures/README.md` for t
 - The active Arena branch is not based on PR #3. No branch switch, push, PR update, merge or remote publication was performed. The complete portable patch must target `0a25eee2dc030aa787b9271ab5cbb44fcaedbaed` exactly and include its own manifest, checksums, commands, report and evidence index.
 
 **Overall outcome: PARTIAL.** The requested third-party import-to-animation journey is independently reproduced in a real local browser and the code-quality checks pass. Delivery remains partial because no GitHub Actions result exists, the authorized branch is unrelated to PR #3, the physical stylus is untested, and seam-browser UX/performance and wider asset coverage remain open.
+
+
+## Public-safe model gallery — 2026-11-20 (publication candidate)
+
+- **Bounded branch:** `feat/model-gallery-publishable` based on the repository's existing `main` reference, in a separate worktree. The original private local-model checkout is excluded.
+- **Added:** gallery HTML entrypoint, studio navigation, searchable/scrollable metadata cards, opt-in SHA-256 matched local GLB preview and on-demand 3D viewport, optional local-only preview index, and a two-page Vite build.
+- **Privacy rule:** No private Drive IDs, third-party binary files, cached GLBs, or local preview JSON may be committed to the public repository. `gallery-drive-previews.json` is ignored. No permission to publish other private integrations is implied.
+- **Verification state:** Implementation is candidate work until `npm run typecheck`, `npm test`, `npm run build`, output checks, and actual browser checks pass on the final worktree. Publishing, CI and physical-device rendering remain unverified; do not claim deployment.
+- **Protected:** Existing sculpt/import/recipe/export flows, third-party license restrictions, original project checkouts, Google Drive archive and verified local model cache.
+
+## Impeccable UI/UX gauntlet implementation (2026-11-20)
+
+- **Scope:** On top of the unmerged Model Gallery branch, the editor and gallery receive the 8 quick wins, 5 behavior/polish repairs, and 3 structural upgrades from the November 20 review. Work is isolated on `feat/impeccable-gauntlet-20261120`; no merge or deployment is implied.
+- **Safety lock:** Existing rig-safe sculpting, Character DNA V2, animation, export/reimport verification, variants, source SHA-256 validation, IndexedDB recovery, and S Pen support remain protected. Public gallery previews still require authorized models and must not bundle private original GLBs, Drive IDs or the private preview manifest.
+- **Data integrity:** `associateCatalogRecord` rejects catalog records whose source SHA-256 is missing or mismatched; mismatches cannot change license/provenance metadata. Verified matches remain supported.
+- **Interaction and accessibility:** Morph live input no longer recreates its own control; gesture-origin values are retained for Undo/Redo. Controls have visible focus rings, labels, larger hit targets, responsive inert drawers, native dialog focus behavior, status announcements, and meaningful loading states.
+- **Navigation and imagery:** The editor groups secondary actions under More tools while preserving their handlers. Existing Playwright journeys are adapted to use this navigation. Gallery falls back to a compact searchable metadata list without authorized preview assets; detail actions do not promise automatic GLB import.
+- **Validation envelope:** New `e2e/uiGauntlet.spec.ts` covers the 375/768/1024/1440px targets, gallery semantics, basic modal focus, morph Undo, A/B state, and catalog source identity. The historical GLB/Character DNA browser acceptance remains mandatory. Passing tests must be established by an actual CI run, not inferred from this note.
+- **Known limits:** Physical Galaxy S Pen hardware, real third-party preview libraries, visual screen-reader certification, and automated Impeccable detector evidence remain separately unverified unless subsequently tested.

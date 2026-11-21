@@ -64,8 +64,10 @@ test.describe('DEX//SCULPT End-to-End Studio Verification', () => {
     expect(afterRedo).toBe(sculptStats.mod);
 
     // 3. Before / After toggle
+    await page.locator('.topbar-more summary').click();
     await page.getByTestId('btn-before-after').click();
     await expect(page.locator('.hud-chip').nth(1)).toContainText('ORIGINAL SOURCE');
+    await page.locator('.topbar-more summary').click();
     await page.getByTestId('btn-before-after').click();
     await expect(page.locator('.hud-chip').nth(1)).toContainText('SCULPTED');
 
@@ -126,7 +128,7 @@ test.describe('DEX//SCULPT End-to-End Studio Verification', () => {
     // 8. Save Recipe download check
     const [recipeDl] = await Promise.all([
       page.waitForEvent('download'),
-      page.getByTestId('btn-save-recipe').click()
+      page.locator('.topbar-more summary').click().then(() => page.getByTestId('btn-save-recipe').click())
     ]);
     expect(recipeDl.suggestedFilename()).toContain('.dexsculpt.json');
 
