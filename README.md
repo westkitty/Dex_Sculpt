@@ -68,6 +68,6 @@ To run baseline checks: `npm ci && npm run typecheck && npm test && npm run buil
 
 ## Model Gallery (public-safe)
 
-Open **Model Gallery** in the Studio or visit `gallery.html` from the Vite server. Browse the full metadata index with search, collection/type filters, infinite scrolling, and a 3D viewer for verified GLBs. Use **Choose GLB files** or **Choose model folder** to preview files already on your device; the browser matches them by SHA-256 without uploading them.
+Open **Model Gallery** in the Studio or visit `gallery.html` from the Vite server. **139 catalogue records now have real, source-matched static model-render thumbnails** and are shown by default. Browse all 786 metadata entries via the availability filter; 647 currently have no matched image. Search/filter/scroll, open a model card for its larger static image, or supply a verified local GLB for interactive 3D inspection. The browser matches local files by SHA-256 without uploading them.
 
-The public GitHub Pages build ships **no third-party GLBs, Drive IDs, or restricted visual previews**. On the private local edition, the same gallery can read verified cached models from its loopback-only bridge and an optional private preview manifest. See [Model Gallery](docs/MODEL_GALLERY.md) for the publishing boundary and tests.
+The public GitHub Pages build includes these 139 licensed front-view PNG renders but ships **no third-party GLBs, private Drive IDs, restricted original assets or private preview manifests**. The same gallery can optionally use verified cached models from the loopback-only local bridge. See [Model Gallery](docs/MODEL_GALLERY.md) for exact source identity mapping, image coverage, licensing, publishing boundaries and tests.
