@@ -1,8 +1,8 @@
 {
   "schema_version": "dexsculpt.public-thumbnail-manifest.v1",
-  "description": "Static front-view QA renders matched exactly to public catalogue asset IDs; these images do not grant access to source GLBs.",
+  "description": "Static source-verified model QA renders matched exactly to public catalogue IDs (front or positive-Z oblique view); images do not grant access to GLB files.",
   "catalog_record_count": 786,
-  "public_thumbnail_count": 139,
+  "public_thumbnail_count": 161,
   "unmatched_source_renders": 11,
   "previews": {
     "barnabe-wild-lowpoly-character/character/char_rigged_ik": {
@@ -838,6 +838,182 @@
       "source_glb_sha256": "2ee77d1d1a87bbc0b1812ad05df0934c73049679de98911ca8309c0d737c4720",
       "source_id": "quaternius-zombie-apocalypse-kit",
       "license_id": "CC0-1.0"
+    },
+    "rocketbox/adults/female_adult_01": {
+      "filename": "microsoft-rocketbox__female_adult_01__posZ.png",
+      "source_glb_sha256": "4dd78525aa1175af4e87683e44b21cbfe655c6c6b126282032e7a6353801a40d",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/adults/female_adult_02": {
+      "filename": "microsoft-rocketbox__female_adult_02__posZ.png",
+      "source_glb_sha256": "810d6e8e4b15b6065a09eb48f08d38970c6d2fbff048cd8d4b0fccc2ccc608fc",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/adults/female_adult_11": {
+      "filename": "microsoft-rocketbox__female_adult_11__posZ.png",
+      "source_glb_sha256": "ed15c9cccbaea75c1a331d02dc3d0c3ae7302cce620cc60055bde1e253a7cb04",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/adults/male_adult_01": {
+      "filename": "microsoft-rocketbox__male_adult_01__posZ.png",
+      "source_glb_sha256": "733d6b0396893d4d0111e39ecc247618436b88ec1f1cee74e026c1356000c44c",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/adults/male_adult_05": {
+      "filename": "microsoft-rocketbox__male_adult_05__posZ.png",
+      "source_glb_sha256": "80034e7fb9b21e367b033947543dc9fa72a3214bbc743e8c602d7412393a21ea",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/adults/male_adult_08": {
+      "filename": "microsoft-rocketbox__male_adult_08__posZ.png",
+      "source_glb_sha256": "7d0531e7062d7c0e598cf4325f1cff26a1934f2b2af8c780a5a6b7f7c8471ef4",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/children/female_child_01": {
+      "filename": "microsoft-rocketbox__female_child_01__posZ.png",
+      "source_glb_sha256": "5dca247cdbdcec0f20b7ec3a793f663e8a770cf9b4df1878414f606eba68c11d",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/children/male_child_01": {
+      "filename": "microsoft-rocketbox__male_child_01__posZ.png",
+      "source_glb_sha256": "999a2c0cee7d53a04e2002cfafb1da4b2ed2324cb2af98c8f3a0ee275ecf8cf6",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/business_female_01": {
+      "filename": "microsoft-rocketbox__business_female_01__posZ.png",
+      "source_glb_sha256": "3012d23b0b8c2228cf6d24d58f40cba4a55e1adfccb7d78c75de5aaee2209056",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/business_male_01": {
+      "filename": "microsoft-rocketbox__business_male_01__posZ.png",
+      "source_glb_sha256": "573ef98bc3981f41c73307f425ee18a88ac23836b36bedae0517c181b0f86148",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/business_male_04": {
+      "filename": "microsoft-rocketbox__business_male_04__posZ.png",
+      "source_glb_sha256": "47c348230c1ea8818940b7bf2d2ac4bf20f32c4da91c27339988b8e0baf2b335",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/chef_female_01": {
+      "filename": "microsoft-rocketbox__chef_female_01__posZ.png",
+      "source_glb_sha256": "ae2d6bc6b8bb7c5102cfa1739d6084a84c0faed9cd8471ce36725b3579ec3eb4",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/construction_female_01": {
+      "filename": "microsoft-rocketbox__construction_female_01__posZ.png",
+      "source_glb_sha256": "7fc6a1575fdfffb50de3a33f3a317e72c8db10b2d794e9a570f7ab77bebd86bc",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/construction_male_01": {
+      "filename": "microsoft-rocketbox__construction_male_01__posZ.png",
+      "source_glb_sha256": "7b56d209c3735595d60042f8ca7f56b67d08cab58732fdb929624973b3c83d17",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/delivery_male_01": {
+      "filename": "microsoft-rocketbox__delivery_male_01__posZ.png",
+      "source_glb_sha256": "8113e5beb67d9114f2a6e02a2e8d2ffa3e304c47b5510c45443daaaf720c3cdb",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/fire_male_04": {
+      "filename": "microsoft-rocketbox__fire_male_04__posZ.png",
+      "source_glb_sha256": "b5bc8f04bd2612a27d8bf9bab4bda6f107706c91045f45f96bb088deab91d1fe",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/fire_male_06": {
+      "filename": "microsoft-rocketbox__fire_male_06__posZ.png",
+      "source_glb_sha256": "17601bf2043994d2992ba31666b600b597af356f913c623227104bfb65df2af8",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/medical_female_01": {
+      "filename": "microsoft-rocketbox__medical_female_01__posZ.png",
+      "source_glb_sha256": "2c9d879fb60124579651eb8967cedafb86176c4f96d14317edec3beb82e7ee5f",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/medical_female_02": {
+      "filename": "microsoft-rocketbox__medical_female_02__posZ.png",
+      "source_glb_sha256": "2711ed667f89a50f9a2ba7b4bb8e0fcf3778b126ce260c8a50fb334e94b5bc40",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/medical_male_02": {
+      "filename": "microsoft-rocketbox__medical_male_02__posZ.png",
+      "source_glb_sha256": "891e25d6513902b35a7860de971ba16984ac1feeb946dbb2ef2c2862260d123e",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/security_male_01": {
+      "filename": "microsoft-rocketbox__security_male_01__posZ.png",
+      "source_glb_sha256": "0342e86cfcea57f2b0e2876044d302549a15f207499d1773811e66683b7e6919",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
+    },
+    "rocketbox/professions/sports_female_01": {
+      "filename": "microsoft-rocketbox__sports_female_01__posZ.png",
+      "source_glb_sha256": "7d24da445ab90166e5e782c3527d027da2091c23519fb28393fa46db3be9e357",
+      "source_id": "microsoft-rocketbox",
+      "license_id": "MIT",
+      "view": "positive-z oblique",
+      "render_source": "Rocketbox 2026-11-13/14 WebGL2 QA"
     }
   }
 }

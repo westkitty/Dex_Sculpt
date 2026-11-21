@@ -82,3 +82,10 @@ The model and GLB export are not committed. See `tests/fixtures/README.md` for t
 - **Change scope:** public PNG renders under `public/model-thumbnails/`, typed per-ID manifest, illustrated-first gallery, static image detail view, official upstream link/attribution, metadata-only fallback, unit and browser regression updates. Existing local GLB SHA-256 matching, WebGL previews, private bridge/manifest handling, indexedDB, rig-safe studio, and export/reimport must remain unchanged.
 - **Privacy/access invariant:** no private Drive IDs, raw GLBs, signed URLs, local paths, or user-only archive credentials in public source or static output; source images published only when exact model identity and public image license evidence is sufficient. Inspect the stage before any main merge or Pages deployment.
 - **Verification target:** final commit CI typecheck/unit/build and Playwright Chromium render with actual PNG response plus 375, 768, 1024 and 1440px responsive and metadata-only behavior. Merely constructing Git blobs or source text is not validation; mark execution state independently.
+
+## Additional source-matched Rocketbox gallery thumbnails — 2026-11-21
+
+- **Candidate scope:** 22 positive-Z oblique PNGs from verified Rocketbox QA screenshot sets (Batch 02, Batch 03, Delivery Male 01, Medical Female 01), mapped by exact processed-GLB basename to `microsoft-rocketbox` catalogue IDs and SHA-256 values.
+- **Intended result:** expand static gallery coverage from 139 to 161 out of 786 entries (625 metadata-only); 136 CC0, 3 CC BY 4.0 and 22 MIT. Maintain illustrated-first default and local GLB hash gate.
+- **Exclusions:** no raw GLB, QA ZIPs, Drive IDs, private manifests or links; no images from Batch 04 ZIPs without individual mapping/clearance. No artificial substitutes or association across different models.
+- **Validation state:** source mappings and Git blob creation observed; TypeScript, unit, production, Chromium and release state must be independently checked on the final commit before treating the feature as verified.

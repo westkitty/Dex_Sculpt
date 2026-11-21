@@ -21,7 +21,9 @@ describe('public model thumbnail identity and distribution boundary', () => {
     expect(manifest.schema_version).toBe('dexsculpt.public-thumbnail-manifest.v1');
     expect(manifest.catalog_record_count).toBe(786);
     expect(records).toHaveLength(manifest.public_thumbnail_count);
-    expect(records).toHaveLength(139);
+    expect(records).toHaveLength(161);
+    const rocketbox = records.filter(([id]) => id.startsWith('rocketbox/'));
+    expect(rocketbox).toHaveLength(22);
     const filenames = new Set<string>();
     for (const [id, preview] of records) {
       const record = byId.get(id);
@@ -31,6 +33,10 @@ describe('public model thumbnail identity and distribution boundary', () => {
       expect(preview.source_glb_sha256).toBe(record?.processed_glb_sha256);
       expect(preview.filename).toMatch(/^[a-z0-9_-]+__[a-z0-9_-]+__posZ\.png$/i);
       expect(preview.filename.startsWith(record!.source_id + '__')).toBe(true);
+      if (id.startsWith('rocketbox/')) {
+        expect(preview.license_id).toBe('MIT');
+        expect(preview.filename).toMatch(/^microsoft-rocketbox__.+__posZ\.png$/);
+      }
       expect(filenames.has(preview.filename), 'no render reused for multiple models').toBe(false);
       filenames.add(preview.filename);
       const path = join(root, 'public/model-thumbnails', preview.filename);
