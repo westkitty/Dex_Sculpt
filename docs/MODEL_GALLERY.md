@@ -71,3 +71,5 @@ This guide does not imply a commit or deployment was performed. A push to this f
 - Attribution/rights reference: [Microsoft Rocketbox (MIT)](https://github.com/microsoft/Microsoft-Rocketbox) and its [license](https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md). This evidence does not confer rights to unrelated source models or creative derivatives.
 - Added browser and unit regressions for the 161-image count, actual Rocketbox PNG loading, exact identity/filename association, and a still-metadata-only collection.
 - Future coverage: Batch 04 archive contains additional zipped QA images not yet examined or published in this pass. Never treat the existence of a QA ZIP as proof of image identity or publication clearance.
+
+The complete upstream Microsoft Rocketbox copyright and MIT permission notice is distributed alongside the images at [`public/model-thumbnails/LICENSE-MICROSOFT-ROCKETBOX.txt`](../public/model-thumbnails/LICENSE-MICROSOFT-ROCKETBOX.txt).

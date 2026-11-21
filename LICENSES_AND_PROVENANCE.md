@@ -42,3 +42,5 @@ No third-party model binaries are bundled in this repository. When users locally
 - The Rocketbox renders are screenshot derivatives from the existing authorized 2026-11-13/14 WebGL2 QA captures. Each is linked to one exact catalogue asset ID, processed-GLB hash, source ID and license; oblique camera views are labelled separately in the manifest.
 - Rocketbox upstream: https://github.com/microsoft/Microsoft-Rocketbox ; MIT license: https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md . No GLB/FBX/TGA source assets, private Drive IDs, archives or QA logs are distributed.
 - Image inclusion does not mean an underlying GLB is available for public download or that an artwork has human visual approval.
+
+The complete upstream Microsoft Rocketbox copyright and MIT permission notice is distributed alongside the images at [`public/model-thumbnails/LICENSE-MICROSOFT-ROCKETBOX.txt`](public/model-thumbnails/LICENSE-MICROSOFT-ROCKETBOX.txt).
