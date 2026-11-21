@@ -102,7 +102,7 @@ test('gallery loads genuine model renders, keeps metadata fallback, and remains 
   await page.goto('/gallery.html');
   await expect(page.locator('#grid .model-card').first()).toBeVisible();
   await expect(page.locator('main')).toHaveCount(1);
-  await expect(page.locator('#publicCount')).toHaveText('139');
+  await expect(page.locator('#publicCount')).toHaveText('161');
   await expect(page.locator('#availability')).toHaveValue('preview');
   await expect(page.locator('#grid')).not.toHaveClass(/list-only/);
 
@@ -133,9 +133,20 @@ test('gallery loads genuine model renders, keeps metadata fallback, and remains 
     ).toBe(false);
   }
 
-  // A metadata-only collection remains browsable without impersonating another model.
+  // A newly illustrated Rocketbox model loads its actual stored positive-Z QA render.
   await page.locator('#availability').selectOption('all');
   await page.locator('#source').selectOption('microsoft-rocketbox');
+  await expect(page.locator('#grid')).not.toHaveClass(/list-only/);
+  const rocket = page.locator('#grid .model-card[data-asset-id="rocketbox/adults/female_adult_01"] img');
+  await expect(rocket).toBeVisible();
+  const rocketUrl = await rocket.getAttribute('src');
+  expect(rocketUrl).toContain('microsoft-rocketbox__female_adult_01__posZ.png');
+  const rocketResponse = await page.request.get(new URL(rocketUrl!, page.url()).toString());
+  expect(rocketResponse.ok()).toBe(true);
+  expect(rocketResponse.headers()['content-type']).toMatch(/image\/png/);
+
+  // A metadata-only collection must still work without pretending to show real models.
+  await page.locator('#source').selectOption('kaykit-adventurers');
   await expect(page.locator('#grid .model-card').first()).toBeVisible();
   await expect(page.locator('#grid')).toHaveClass(/list-only/);
   await expect(page.locator('#grid .model-card img')).toHaveCount(0);

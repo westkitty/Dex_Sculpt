@@ -35,3 +35,10 @@ No third-party model binaries are bundled in this repository. When users locally
 - **136 renders** have catalogue source license `CC0-1.0`; **three GDQuest Mannequiny renders** have `CC-BY-4.0` and carry GDQuest attribution in the model inspector. Source collection and license identity are available for each image. Consult `docs/MODEL_GALLERY.md` before revising that allocation.
 - **Quaternius transition:** Original catalogue intake lists the selected older Quaternius models as CC0; the current QAL license (effective August 28, 2026) permits publishing completed products incorporating assets but prohibits redistributing standalone source assets, and is non-retroactive. Do not use this release as authority to redistribute additional raw assets, source meshes or unrelated private QA files. Authoritative terms: https://quaternius.com/license.html.
 - Unillustrated 647 catalogue entries remain metadata only. Do not invent pictures or silently substitute visually similar models.
+
+## Public Static Model-Render Thumbnails
+
+- 161 catalogue-aligned PNG renders in `public/model-thumbnails/`: 136 CC0-1.0, 3 GDQuest CC BY 4.0 (with required credit in the gallery), and 22 Microsoft Rocketbox avatars under the source repository's MIT licence.
+- The Rocketbox renders are screenshot derivatives from the existing authorized 2026-11-13/14 WebGL2 QA captures. Each is linked to one exact catalogue asset ID, processed-GLB hash, source ID and license; oblique camera views are labelled separately in the manifest.
+- Rocketbox upstream: https://github.com/microsoft/Microsoft-Rocketbox ; MIT license: https://github.com/microsoft/Microsoft-Rocketbox/blob/master/LICENSE.md . No GLB/FBX/TGA source assets, private Drive IDs, archives or QA logs are distributed.
+- Image inclusion does not mean an underlying GLB is available for public download or that an artwork has human visual approval.
