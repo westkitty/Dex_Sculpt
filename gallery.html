@@ -254,7 +254,7 @@ async function loadCardPreview(card,r,token){
  const url=publicRender ?? (preview?driveImageUrl(preview):null);
  const kind=publicRender?'public':'drive';
  if(url){
-  const img=new Image();img.loading='lazy';img.decoding='async';img.alt='Front-view render of '+r.display_name;
+  const img=new Image();img.decoding='async';img.alt='Front-view render of '+r.display_name;
   img.addEventListener('load',()=>{if(card.isConnected&&token===generation)showImage(card,img.src,kind);},{once:true});
   img.addEventListener('error',()=>{
    if(!card.isConnected||token!==generation)return;
