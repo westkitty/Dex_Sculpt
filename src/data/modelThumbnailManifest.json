@@ -1,0 +1,843 @@
+{
+  "schema_version": "dexsculpt.public-thumbnail-manifest.v1",
+  "description": "Static front-view QA renders matched exactly to public catalogue asset IDs; these images do not grant access to source GLBs.",
+  "catalog_record_count": 786,
+  "public_thumbnail_count": 139,
+  "unmatched_source_renders": 11,
+  "previews": {
+    "barnabe-wild-lowpoly-character/character/char_rigged_ik": {
+      "filename": "barnabe-wild-lowpoly-character__char_rigged_ik__posZ.png",
+      "source_glb_sha256": "961f2b55235d90470fb579152836b93949668e015dac6a1822580b0aeb086816",
+      "source_id": "barnabe-wild-lowpoly-character",
+      "license_id": "CC0-1.0"
+    },
+    "barnabe-wild-lowpoly-character/character/mocap_preview": {
+      "filename": "barnabe-wild-lowpoly-character__mocap_preview__posZ.png",
+      "source_glb_sha256": "808b40adf1c20108f1b4755d54cf3f7bd64e153440047cb8d4599160fec1ab7e",
+      "source_id": "barnabe-wild-lowpoly-character",
+      "license_id": "CC0-1.0"
+    },
+    "gdquest-open-3d-mannequin/base_mesh/mannequiny_v0_4_0_mesh_only": {
+      "filename": "gdquest-open-3d-mannequin__mannequiny_v0_4_0_mesh_only__posZ.png",
+      "source_glb_sha256": "5a4b48863d10ce8e3a24ef56711eb46591a7626f8749a2a384e6826fa7d1e57d",
+      "source_id": "gdquest-open-3d-mannequin",
+      "license_id": "CC-BY-4.0"
+    },
+    "gdquest-open-3d-mannequin/character/mannequiny_v0_3_0_rigged": {
+      "filename": "gdquest-open-3d-mannequin__mannequiny_v0_3_0_rigged__posZ.png",
+      "source_glb_sha256": "8005cc2ab9221ad605be2d1cbb89eea894583e72bd5f50a5fbe40243a64f0493",
+      "source_id": "gdquest-open-3d-mannequin",
+      "license_id": "CC-BY-4.0"
+    },
+    "gdquest-open-3d-mannequin/character/mannequiny_v0_4_0_rigged": {
+      "filename": "gdquest-open-3d-mannequin__mannequiny_v0_4_0_rigged__posZ.png",
+      "source_glb_sha256": "735d106a1734956d15fcd5012deacaa9c9fdc6890ad345b5a02a7adf39506fb4",
+      "source_id": "gdquest-open-3d-mannequin",
+      "license_id": "CC-BY-4.0"
+    },
+    "kenney-animated-protagonists/character/criminalmalea": {
+      "filename": "kenney-animated-protagonists__criminalmalea__posZ.png",
+      "source_glb_sha256": "c852351f8d2df6b068e5f34f2d04b270eda9c11d4174e91fcb2afc2f91471c19",
+      "source_id": "kenney-animated-protagonists",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-protagonists/character/cyborgfemalea": {
+      "filename": "kenney-animated-protagonists__cyborgfemalea__posZ.png",
+      "source_glb_sha256": "d72d452d51d0f122e86b05049582c14b9194349910d9b22638e01bc6e668f635",
+      "source_id": "kenney-animated-protagonists",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-protagonists/character/skaterfemalea": {
+      "filename": "kenney-animated-protagonists__skaterfemalea__posZ.png",
+      "source_glb_sha256": "827cea6cd9a99a569e04c42f3d4b272b5a0ecef59862876afa19593b9486586d",
+      "source_id": "kenney-animated-protagonists",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-protagonists/character/skatermalea": {
+      "filename": "kenney-animated-protagonists__skatermalea__posZ.png",
+      "source_glb_sha256": "1aaade660f4a9c8ada245190aa5c587a2854304f23be18350cd80168ffa75cbc",
+      "source_id": "kenney-animated-protagonists",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-retro/character/humanfemalea": {
+      "filename": "kenney-animated-retro__humanfemalea__posZ.png",
+      "source_glb_sha256": "9d8e6f0191de14e33c0a741c1b45513e5f9bb7a0c9b4050e78ae84fa72ff6049",
+      "source_id": "kenney-animated-retro",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-retro/character/humanmalea": {
+      "filename": "kenney-animated-retro__humanmalea__posZ.png",
+      "source_glb_sha256": "b50e2a0c139e727f5f7c0d8096edd41049e929274e36bc9666853ab139414e27",
+      "source_id": "kenney-animated-retro",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-retro/character/zombiefemalea": {
+      "filename": "kenney-animated-retro__zombiefemalea__posZ.png",
+      "source_glb_sha256": "1e6e4040c15801b7b28333ff10a8bf8624a55d2e0512c7b12d08d92f4c76c5c3",
+      "source_id": "kenney-animated-retro",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-retro/character/zombiemalea": {
+      "filename": "kenney-animated-retro__zombiemalea__posZ.png",
+      "source_glb_sha256": "e54be212133ccd52f3efba359a0406786fa1d7f81cdee2430182990250283637",
+      "source_id": "kenney-animated-retro",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-survivors/character/survivorfemalea": {
+      "filename": "kenney-animated-survivors__survivorfemalea__posZ.png",
+      "source_glb_sha256": "79bbd80d2a20c3efb03946eac53138b93d27553dbb34bb8cfe928c3c6ff49706",
+      "source_id": "kenney-animated-survivors",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-survivors/character/survivormaleb": {
+      "filename": "kenney-animated-survivors__survivormaleb__posZ.png",
+      "source_glb_sha256": "0d0ec5cbe2e2a2f97b9b07fdd6aee13411cc4bbee6a7b12a55a42e176c94f7a0",
+      "source_id": "kenney-animated-survivors",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-survivors/character/zombiea": {
+      "filename": "kenney-animated-survivors__zombiea__posZ.png",
+      "source_glb_sha256": "9295474fff01abee042ed34edad28e4645296e1e9811ce1e5c5d46e96e8698bf",
+      "source_id": "kenney-animated-survivors",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-animated-survivors/character/zombiec": {
+      "filename": "kenney-animated-survivors__zombiec__posZ.png",
+      "source_glb_sha256": "028ff307c38f5f672bf5122ff063227fc7bb4d113dddea014cafe892bdb19acb",
+      "source_id": "kenney-animated-survivors",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_a": {
+      "filename": "kenney-blocky-characters__character_a__posZ.png",
+      "source_glb_sha256": "4ca29c21ed70498536f4f2cc65deb5badfcd5af9edd895cff560d4a44541c142",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_b": {
+      "filename": "kenney-blocky-characters__character_b__posZ.png",
+      "source_glb_sha256": "e9f7621831883679de1a54155e8577bc983817d5c8b06edc4c07dfed964e5ddb",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_c": {
+      "filename": "kenney-blocky-characters__character_c__posZ.png",
+      "source_glb_sha256": "c039d70a8ccc4f9cacabfa89440c7ce5a49de6117be16d298ddccad174fe66c3",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_d": {
+      "filename": "kenney-blocky-characters__character_d__posZ.png",
+      "source_glb_sha256": "93eef4c6ac878f10abf5d297e9b39f5aaa262b73dcbaa583580b66028271c9f7",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_e": {
+      "filename": "kenney-blocky-characters__character_e__posZ.png",
+      "source_glb_sha256": "fb9491d7cc022c3b328849fde3e42c2b8ab38d1e61d62b0a28cc88206127a356",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_f": {
+      "filename": "kenney-blocky-characters__character_f__posZ.png",
+      "source_glb_sha256": "9a57580b29407f5ba8cf600377983a61ac36576f6ae4e4242e3b5815e56ccee0",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_g": {
+      "filename": "kenney-blocky-characters__character_g__posZ.png",
+      "source_glb_sha256": "0aa19ae2f1f0a523b8ece290e3f621412ebd55015089636df8ac6350fcb2f7dd",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_h": {
+      "filename": "kenney-blocky-characters__character_h__posZ.png",
+      "source_glb_sha256": "4da910f8b7343d844cae34376f70612ace8547b37ac3ded22f6c4a12f9080762",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_i": {
+      "filename": "kenney-blocky-characters__character_i__posZ.png",
+      "source_glb_sha256": "19ce59ce2b79fb39f0b53224040252660207dd5c01e3e6e3f43da71935fd8953",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_j": {
+      "filename": "kenney-blocky-characters__character_j__posZ.png",
+      "source_glb_sha256": "ed7316ea1689944dbeca50aa1dce197f048ab5aab4031fdfc6edeff735d1468c",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_k": {
+      "filename": "kenney-blocky-characters__character_k__posZ.png",
+      "source_glb_sha256": "bda6ef82e95f667f8fe8fbbc9fa4dd9e82ec0f5ef800b5fe2550f1753107f749",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_l": {
+      "filename": "kenney-blocky-characters__character_l__posZ.png",
+      "source_glb_sha256": "c163f8785dbe6e9a2d59dee253b3da348e78d741b062e04d2bd6ae51fd74593b",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_m": {
+      "filename": "kenney-blocky-characters__character_m__posZ.png",
+      "source_glb_sha256": "d68e4ccfa0517c52ff9176f331d42510b63e6eb4c16e52e9815dd994e8222408",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_n": {
+      "filename": "kenney-blocky-characters__character_n__posZ.png",
+      "source_glb_sha256": "5519d5e1f28339191e3875f49240273baeff0000274cdb1d83c7b552a967c72b",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-blocky-characters/character/character_o": {
+      "filename": "kenney-blocky-characters__character_o__posZ.png",
+      "source_glb_sha256": "870e518ea708dcdb79ac79af8124f849c2b75c0f7abe5e20fa45bc9bdca284e9",
+      "source_id": "kenney-blocky-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_alien": {
+      "filename": "kenney-mini-characters__character_alien__posZ.png",
+      "source_glb_sha256": "b2edb8287af25b807c94ff39e52cdf3538acc2d285c570c9ac131d1ac6f18a2a",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_female_a": {
+      "filename": "kenney-mini-characters__character_female_a__posZ.png",
+      "source_glb_sha256": "124d1b2e30ab45ab83ef7b9c37076bf9ca3b54a3afefac2f70e478f659cda774",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_female_b": {
+      "filename": "kenney-mini-characters__character_female_b__posZ.png",
+      "source_glb_sha256": "2100eda53c2368fd83ed7efd970a4c44612cb5559857eac05d964e097b745fba",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_female_c": {
+      "filename": "kenney-mini-characters__character_female_c__posZ.png",
+      "source_glb_sha256": "7ed40b243e15888d28c5b835b1dcc24ca8fc8831290963f2c3c016daa4f87070",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_female_d": {
+      "filename": "kenney-mini-characters__character_female_d__posZ.png",
+      "source_glb_sha256": "fdb2222a9031acb5bd56c91d3cad22226c090d98f65d5cba9b767f2ba59bde37",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_female_e": {
+      "filename": "kenney-mini-characters__character_female_e__posZ.png",
+      "source_glb_sha256": "d1f53e174a4ae07369dadcfab1f067d1e1c39e8b7c1b2eed3bc5c16ca1b55661",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_female_f": {
+      "filename": "kenney-mini-characters__character_female_f__posZ.png",
+      "source_glb_sha256": "65656db32d1002c61041ffca7f307eca669a194376db12fecf1bcb6b6e77cef7",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_knight": {
+      "filename": "kenney-mini-characters__character_knight__posZ.png",
+      "source_glb_sha256": "9ce45b2ffd63bf84f0b88fba4b64a41628b89dfa5e203142237b9964fbf01a62",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_a": {
+      "filename": "kenney-mini-characters__character_male_a__posZ.png",
+      "source_glb_sha256": "813da3a49a2d3dca56b87c028dbe896a114889a6fa073b4184b1b5c01c303163",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_b": {
+      "filename": "kenney-mini-characters__character_male_b__posZ.png",
+      "source_glb_sha256": "e1cc73af6b47cf8b89b11da8b6626f26c951cdc3fee6df94620f9594aabe61c9",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_c": {
+      "filename": "kenney-mini-characters__character_male_c__posZ.png",
+      "source_glb_sha256": "aff66ac203e8748e1f2c06a8b3a8e059a4cadca90bc03a8002bb657f07779a47",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_d": {
+      "filename": "kenney-mini-characters__character_male_d__posZ.png",
+      "source_glb_sha256": "6bccd99e767a791c9f4f18f76edb33848817bd74ab68ef714a321ce4de1f2cf7",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_e": {
+      "filename": "kenney-mini-characters__character_male_e__posZ.png",
+      "source_glb_sha256": "e061dcc0b02f9fa6634583bff9477513a396d29fb09f92832a55eca6be98a1c7",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_f": {
+      "filename": "kenney-mini-characters__character_male_f__posZ.png",
+      "source_glb_sha256": "b7f4343c5196c9900cf02d94902564aac61902df13f8f4f1834b7245d9dc7807",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "kenney-mini-characters/character/character_male_g": {
+      "filename": "kenney-mini-characters__character_male_g__posZ.png",
+      "source_glb_sha256": "aa0b3b15e82d9680bb60888cdb2f014175958e93ed702db63a9d4808303443d2",
+      "source_id": "kenney-mini-characters",
+      "license_id": "CC0-1.0"
+    },
+    "oga-rigged-fps-arms/partial_rig/fps_arms_rigged": {
+      "filename": "oga-rigged-fps-arms__fps_arms_rigged__posZ.png",
+      "source_glb_sha256": "05c653bfe4b749609e1470388f6c056a196ea53b3387156c40c0175a3f357c77",
+      "source_id": "oga-rigged-fps-arms",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/01_crimsom_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__01_crimsom_avatar__posZ.png",
+      "source_glb_sha256": "f31c3327ad14201f02f78dfea65394b2e916bc4b89473cf631093c3bdd1ce929",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/02_coolalien_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__02_coolalien_avatar__posZ.png",
+      "source_glb_sha256": "678291d60a816c569535ed71cecaede90c1dfeea5a90c1e7e7b18ad3806bf8ad",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/03_jimmy_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__03_jimmy_avatar__posZ.png",
+      "source_glb_sha256": "6635fb4202ef1a80a2d6621f6ef0784761e3c7096b6f3428494a1f137cda446d",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/04_oldmoustache_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__04_oldmoustache_avatar__posZ.png",
+      "source_glb_sha256": "e996de8373c7c072c5a3147264ac9ee1ac95642db40713bf17f51fd2deb5f731",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/05_skull_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__05_skull_avatar__posZ.png",
+      "source_glb_sha256": "5e1d40f23f0151c160f5774e3f0f10b6a28540d107c1a8d97875ba6679c16eb7",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/06_cappy_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__06_cappy_avatar__posZ.png",
+      "source_glb_sha256": "ad76bb712d0f8c67884d6e9331854fd6a1114421e034387999a7338fdb5f863d",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/07_observer_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__07_observer_avatar__posZ.png",
+      "source_glb_sha256": "5557e38a8d66ed0cb93ab80b0d14d2c594a2fc7f3182c433201daba69cda87c9",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r1/character/08_hugo_avatar": {
+      "filename": "polygonalmind-100-avatars-r1__08_hugo_avatar__posZ.png",
+      "source_glb_sha256": "777c02b4317e8d577ef08826db2d1b033a590009045a2ba87b7cf932a89c7525",
+      "source_id": "polygonalmind-100-avatars-r1",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_101_eggboy": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_101_eggboy__posZ.png",
+      "source_glb_sha256": "1afeaa75d052574069d1bfd62930c162b7b3c3ce43724f8f7f2efa2eeda6f1b6",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_102_bizdude": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_102_bizdude__posZ.png",
+      "source_glb_sha256": "d6c74739b67e2122256db8f0ec2ef6d614610fb8dd98366277cd2933d3cadea1",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_103_coolpizza": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_103_coolpizza__posZ.png",
+      "source_glb_sha256": "e30f015b51635e3efebf5728b6d2f9d609b7daf2555121fbf00de352384163a1",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_104_sunflowerperson": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_104_sunflowerperson__posZ.png",
+      "source_glb_sha256": "36923fc8204db0b2fde38d7695e4a45db0f47e64048497de45c860ee058bd778",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_105_goldfishbagperson": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_105_goldfishbagperson__posZ.png",
+      "source_glb_sha256": "77ea9e37504e8b8fd2ac0615bbe182b4f05f7ad3599e0f9b7747e049e0edd704",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_106_coolloops": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_106_coolloops__posZ.png",
+      "source_glb_sha256": "6ec6380e3e55d0bfe6db7af4fa8d5542614ff032df98add3859b835624745706",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_107_pyresorcerer": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_107_pyresorcerer__posZ.png",
+      "source_glb_sha256": "b9dcc6321ba47436f726fe52ec5d18ef5a2b0c2fe4f7f1c54c2ed1d436509417",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-100-avatars-r2/character/100avatars_108_chillpalm": {
+      "filename": "polygonalmind-100-avatars-r2__100avatars_108_chillpalm__posZ.png",
+      "source_glb_sha256": "f95ddf81ce238c308b1c24ce3189fd1ddd3532deeda84f5c0cb7aa1fa6a13728",
+      "source_id": "polygonalmind-100-avatars-r2",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-xyz-creatures/character/001_triangulon": {
+      "filename": "polygonalmind-xyz-creatures__001_triangulon__posZ.png",
+      "source_glb_sha256": "52136cabfca5efce566a7a1690689256375d3beebaa3c9576861a9d8463ece77",
+      "source_id": "polygonalmind-xyz-creatures",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-xyz-creatures/character/004_xenguin": {
+      "filename": "polygonalmind-xyz-creatures__004_xenguin__posZ.png",
+      "source_glb_sha256": "2a326d1decc6c49465d9695587d64364d8d18ce87f8ceff7cc681f77382b1ea4",
+      "source_id": "polygonalmind-xyz-creatures",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-xyz-creatures/character/008_vguy": {
+      "filename": "polygonalmind-xyz-creatures__008_vguy__posZ.png",
+      "source_glb_sha256": "c59dc61376ebc399b86188dc293e95ffbf3c83a900da869829bcfe47b382a6fd",
+      "source_id": "polygonalmind-xyz-creatures",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-xyz-creatures/character/015_slothocto": {
+      "filename": "polygonalmind-xyz-creatures__015_slothocto__posZ.png",
+      "source_glb_sha256": "b44a23bf6d5c47896eed6445e14e2d87bc518a56fd0144830ff87e6fcae6f0a5",
+      "source_id": "polygonalmind-xyz-creatures",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-xyz-creatures/character/046_mushroomy": {
+      "filename": "polygonalmind-xyz-creatures__046_mushroomy__posZ.png",
+      "source_glb_sha256": "714d5f9027ab414ef19ad4b5714458f3eea732d9838936b27e6f0757d72b463a",
+      "source_id": "polygonalmind-xyz-creatures",
+      "license_id": "CC0-1.0"
+    },
+    "polygonalmind-xyz-creatures/character/053_penguiton": {
+      "filename": "polygonalmind-xyz-creatures__053_penguiton__posZ.png",
+      "source_glb_sha256": "94084be4ad16c06aff3349b625f3a9ce70ed8aa7049ee656cd47b0bc5d8b0dec",
+      "source_id": "polygonalmind-xyz-creatures",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-alien/character/alien": {
+      "filename": "quaternius-animated-alien__alien__posZ.png",
+      "source_glb_sha256": "4e222e4c0798e96b58f7a01d08db00ce87d054e03ff02903ab6a92d5bdd7f346",
+      "source_id": "quaternius-animated-alien",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-alien/character/alien_helmet": {
+      "filename": "quaternius-animated-alien__alien_helmet__posZ.png",
+      "source_glb_sha256": "b66328f2b8d5a30a55b13deb0dec9d507b09f2d03e4327f83045f0f8046dc2ae",
+      "source_id": "quaternius-animated-alien",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-knight/accessory/club": {
+      "filename": "quaternius-animated-knight__club__posZ.png",
+      "source_glb_sha256": "6f3b3085e57d63c1274928a6c07c11e91a3f315a827e43badfb04ed460e3bc1d",
+      "source_id": "quaternius-animated-knight",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-knight/accessory/helmet1": {
+      "filename": "quaternius-animated-knight__helmet1__posZ.png",
+      "source_glb_sha256": "1879d68119d4c7b0d1f89d08d491fc95e93c76769f25c82fa20479dc3d0d454f",
+      "source_id": "quaternius-animated-knight",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-knight/character/knightcharacter": {
+      "filename": "quaternius-animated-knight__knightcharacter__posZ.png",
+      "source_glb_sha256": "0fb6c3030e5f67fda973c815cf28e3b715998db7fa619ea2a436780602422a77",
+      "source_id": "quaternius-animated-knight",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-man/character/animated_man_clotheddarkskin": {
+      "filename": "quaternius-animated-man__animated_man_clotheddarkskin__posZ.png",
+      "source_glb_sha256": "c850ef61f7744463fc2e9a53297b99d89df35bf8dacd437a170380c87949b1fa",
+      "source_id": "quaternius-animated-man",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-man/character/animated_man_clotheddarkskin1": {
+      "filename": "quaternius-animated-man__animated_man_clotheddarkskin1__posZ.png",
+      "source_glb_sha256": "eacfed400a5bdfc45fe1f39c363aa5d7354c3bd9b9998a6b582bcac403f26a40",
+      "source_id": "quaternius-animated-man",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-man/character/animated_man_clotheddarkskin2": {
+      "filename": "quaternius-animated-man__animated_man_clotheddarkskin2__posZ.png",
+      "source_glb_sha256": "937d8613898ace7e460e1f3a8f1782f5611ca232a6a4f8a54421f4b4d229dd08",
+      "source_id": "quaternius-animated-man",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-man/character/animated_man_clothedlightskin": {
+      "filename": "quaternius-animated-man__animated_man_clothedlightskin__posZ.png",
+      "source_glb_sha256": "17d64ae34fa4af6521ae31f407e5da83482da266984ead0da930ded2ee0a511d",
+      "source_id": "quaternius-animated-man",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-men/character/male_casual": {
+      "filename": "quaternius-animated-men__male_casual__posZ.png",
+      "source_glb_sha256": "82ccd8325bbfa2798831169263b08ccc8f21c434bc0178d854c411bc14c92177",
+      "source_id": "quaternius-animated-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-men/character/male_longsleeve": {
+      "filename": "quaternius-animated-men__male_longsleeve__posZ.png",
+      "source_glb_sha256": "ef01b21022bea3bd9ad569f21468e57a22949a38ea60e547a7be5bce7aa11463",
+      "source_id": "quaternius-animated-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-men/character/male_shirt": {
+      "filename": "quaternius-animated-men__male_shirt__posZ.png",
+      "source_glb_sha256": "a37331167d27b9de12dbff8aba4ff60692d27c6ca43d36d547bbe67025a3e8d3",
+      "source_id": "quaternius-animated-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-men/character/male_suit": {
+      "filename": "quaternius-animated-men__male_suit__posZ.png",
+      "source_glb_sha256": "9dc0aeead70ad5fe7e6ef64123aa3c707aeae335a24701ef21cee5de3626dc6f",
+      "source_id": "quaternius-animated-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-robot/character/robot": {
+      "filename": "quaternius-animated-robot__robot__posZ.png",
+      "source_glb_sha256": "85b3a3affabed2c938aaf516b4af296eb11cd8c35f4f8c3ec67e2b702021ab28",
+      "source_id": "quaternius-animated-robot",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-woman/character/animated_woman_darkskin1": {
+      "filename": "quaternius-animated-woman__animated_woman_darkskin1__posZ.png",
+      "source_glb_sha256": "6f4b7d5d26734fb2d123d147da2b4df87b9a2b3d287dc5927a1af2673464f12b",
+      "source_id": "quaternius-animated-woman",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-woman/character/animated_woman_lightskin1": {
+      "filename": "quaternius-animated-woman__animated_woman_lightskin1__posZ.png",
+      "source_glb_sha256": "a2760d7d5417bd1edad9e5e64f9db0d5bd90c32749a15528317ec5c392a55aa6",
+      "source_id": "quaternius-animated-woman",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-women/character/female_alternative": {
+      "filename": "quaternius-animated-women__female_alternative__posZ.png",
+      "source_glb_sha256": "c935af6acf4bd67b31987d2250d8f20a58a9eb5d28e61155b3da789badc904e5",
+      "source_id": "quaternius-animated-women",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-women/character/female_casual": {
+      "filename": "quaternius-animated-women__female_casual__posZ.png",
+      "source_glb_sha256": "36cd5562b6e953b30750d2f7bce0420576593b38b4ab2a1f55c476458223351f",
+      "source_id": "quaternius-animated-women",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-zombie/character/zombie": {
+      "filename": "quaternius-animated-zombie__zombie__posZ.png",
+      "source_glb_sha256": "e8694ae21ef1f63a60539bf64793257ee554dbd8c4e7349d1e8109cf92922689",
+      "source_id": "quaternius-animated-zombie",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-animated-zombie/character/zombiesmooth": {
+      "filename": "quaternius-animated-zombie__zombiesmooth__posZ.png",
+      "source_glb_sha256": "878aec1afbf0643720b9c0f676d8a127bdd2e1e8705d81d400f4ea33e6a441c6",
+      "source_id": "quaternius-animated-zombie",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-background-posed-humans/modular_hairstyle/female_hairstyle_1": {
+      "filename": "quaternius-background-posed-humans__female_hairstyle_1__posZ.png",
+      "source_glb_sha256": "41079b442cef9539de76a3b7e2ea99e4b29ee9b954c9278d13ed9ecd08d46a5f",
+      "source_id": "quaternius-background-posed-humans",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-background-posed-humans/modular_hairstyle/female_hairstyle_2": {
+      "filename": "quaternius-background-posed-humans__female_hairstyle_2__posZ.png",
+      "source_glb_sha256": "77d0a7ec04943dac927f927a6256dc3454926e9b503a74d747f60f814c8c1e7c",
+      "source_id": "quaternius-background-posed-humans",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-background-posed-humans/modular_hairstyle/female_hairstyle_3": {
+      "filename": "quaternius-background-posed-humans__female_hairstyle_3__posZ.png",
+      "source_glb_sha256": "480bc948f1b71e59ea9c13e7584ff3b931cb3b2df2f2ed39caad24806adb7f65",
+      "source_id": "quaternius-background-posed-humans",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-background-posed-humans/modular_hairstyle/female_hairstyle_4": {
+      "filename": "quaternius-background-posed-humans__female_hairstyle_4__posZ.png",
+      "source_glb_sha256": "276c72a474fa27ec59256363595db1cbf58b04bc4a62a01bc41dfa8e548f3364",
+      "source_id": "quaternius-background-posed-humans",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-background-posed-humans/static_posed_humanoid/male_standing": {
+      "filename": "quaternius-background-posed-humans__male_standing__posZ.png",
+      "source_glb_sha256": "75747855f4d24e3ed418d8ff1cc657f62d81e28fdd8c59469f2f8ef2e82ca784",
+      "source_id": "quaternius-background-posed-humans",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-background-posed-humans/static_posed_humanoid/male_standing_coveringeyes": {
+      "filename": "quaternius-background-posed-humans__male_standing_coveringeyes__posZ.png",
+      "source_glb_sha256": "bf8ff7e929c9c10031283871aabae172c66b8a56bd5ae4abb871951e77283b26",
+      "source_id": "quaternius-background-posed-humans",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/character_female_1": {
+      "filename": "quaternius-cube-world-kit__character_female_1__posZ.png",
+      "source_glb_sha256": "d1c453739da3c3dfd4c765f4bd2eb4ce865f44aca20e570aab8fbd7bc557d23d",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/character_female_2": {
+      "filename": "quaternius-cube-world-kit__character_female_2__posZ.png",
+      "source_glb_sha256": "d7bcb62818e1cd931c84466e5469db01eae3cde3ef7cf772312051f43201ee62",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/character_male_1": {
+      "filename": "quaternius-cube-world-kit__character_male_1__posZ.png",
+      "source_glb_sha256": "6b757517f2694fa8caf803d33cd7873694f155789e1caccb6d6af538edbabbb6",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/character_male_2": {
+      "filename": "quaternius-cube-world-kit__character_male_2__posZ.png",
+      "source_glb_sha256": "017ca2f0658a0805bb443f030fc26a59526159c4f262d4e0d38392cb957831a0",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/demon": {
+      "filename": "quaternius-cube-world-kit__demon__posZ.png",
+      "source_glb_sha256": "4c80cd25eedb9a5d0b88526b1cdfc55b8cd62eaa511f88de1ca699be5cde3773",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/giant": {
+      "filename": "quaternius-cube-world-kit__giant__posZ.png",
+      "source_glb_sha256": "599568ec18c61b37e2ad9ae4e3c386d3e3b9436133c29b4e12184c64304557af",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/goblin": {
+      "filename": "quaternius-cube-world-kit__goblin__posZ.png",
+      "source_glb_sha256": "ad7329d055808176dcae542e471972e4ed062a9c1224969e1b805941e483cd80",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/character/wizard": {
+      "filename": "quaternius-cube-world-kit__wizard__posZ.png",
+      "source_glb_sha256": "f4d86a8af02db7a34d31885c609a222901896c2f466dff71ae42724f885b3659",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/specialized_skeletal_humanoid/skeleton": {
+      "filename": "quaternius-cube-world-kit__skeleton__posZ.png",
+      "source_glb_sha256": "49fb4539ec604bb3ba5872ea30faa776ba068cec49011850bc3914c578109a42",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cube-world-kit/specialized_skeletal_humanoid/skeleton_armor": {
+      "filename": "quaternius-cube-world-kit__skeleton_armor__posZ.png",
+      "source_glb_sha256": "7c6d67b5e67c7abc3bd7c1a89b51b99bf6dd424ab730e7968198683398961fd8",
+      "source_id": "quaternius-cube-world-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-cyberpunk-kit/character/character": {
+      "filename": "quaternius-cyberpunk-kit__character__posZ.png",
+      "source_glb_sha256": "a02b6222d6aa0541ec1e9d0ca1b58ff6ee902dc9eaa4dc33d84236dc7709e2e7",
+      "source_id": "quaternius-cyberpunk-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/character/characters_anne": {
+      "filename": "quaternius-pirate-kit__characters_anne__posZ.png",
+      "source_glb_sha256": "517e41fe0a6486b3c4f09cae9c0aa380a636ab9e9f18e20942bad206fc3f3d3b",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/character/characters_captain_barbarossa": {
+      "filename": "quaternius-pirate-kit__characters_captain_barbarossa__posZ.png",
+      "source_glb_sha256": "0cd9e0b07df55caa3d9e5b4b834c4d37d46bbbc3502e1a46f991d1d3a4d6667a",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/character/characters_henry": {
+      "filename": "quaternius-pirate-kit__characters_henry__posZ.png",
+      "source_glb_sha256": "3943cc731612850071668a0e9558aeccf980bf1e468d5a97650bb3fb72a3505b",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/character/characters_mako": {
+      "filename": "quaternius-pirate-kit__characters_mako__posZ.png",
+      "source_glb_sha256": "c9a54c426e919c4904f3f5392091b2df52f9cebfc27592c28f9a101aca7912ef",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/character/characters_sharky": {
+      "filename": "quaternius-pirate-kit__characters_sharky__posZ.png",
+      "source_glb_sha256": "cee3a87b8afd1913d1013341598b732a63e3969c1db6315abc546a201bbd600d",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/specialized_skeletal_humanoid/characters_skeleton": {
+      "filename": "quaternius-pirate-kit__characters_skeleton__posZ.png",
+      "source_glb_sha256": "00ccf9dc4aef9c76c5cfce0b8a32c9310756a5916444a70407949ea4d538b07b",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-pirate-kit/specialized_skeletal_humanoid/characters_skeleton_headless": {
+      "filename": "quaternius-pirate-kit__characters_skeleton_headless__posZ.png",
+      "source_glb_sha256": "4a9fa4bc1befd483a8fec80a0fb002607c31052b74b51788895fd9cacef2d6a3",
+      "source_id": "quaternius-pirate-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-toon-shooter-kit/character/character_enemy": {
+      "filename": "quaternius-toon-shooter-kit__character_enemy__posZ.png",
+      "source_glb_sha256": "9a9e182bfb31fecb195ca1ab83fd3e5d186c6d358ee3e96b138c9b24d0d9e8c8",
+      "source_id": "quaternius-toon-shooter-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-toon-shooter-kit/character/character_hazmat": {
+      "filename": "quaternius-toon-shooter-kit__character_hazmat__posZ.png",
+      "source_glb_sha256": "b49b3b26d0cfec84b253bf4e750a58cac8986323a1e5b223044ef8383e383e8d",
+      "source_id": "quaternius-toon-shooter-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-toon-shooter-kit/character/character_soldier": {
+      "filename": "quaternius-toon-shooter-kit__character_soldier__posZ.png",
+      "source_glb_sha256": "fcaf6e4061b3661b5478c842c132d3d989488464aea417f881b519b3247def84",
+      "source_id": "quaternius-toon-shooter-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-animated-character/character/basecharacter": {
+      "filename": "quaternius-ultimate-animated-character__basecharacter__posZ.png",
+      "source_glb_sha256": "3db81a209a537d172f93b169d303b0752d14733f6b9ebe4ab11b13f945792bb5",
+      "source_id": "quaternius-ultimate-animated-character",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-animated-character/character/bluesoldier_female": {
+      "filename": "quaternius-ultimate-animated-character__bluesoldier_female__posZ.png",
+      "source_glb_sha256": "bb57b39169631b0e7806eb5253741d3dafa34d2a3d4bd5ff0e0e9d9b63e361ae",
+      "source_id": "quaternius-ultimate-animated-character",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-animated-character/character/bluesoldier_male": {
+      "filename": "quaternius-ultimate-animated-character__bluesoldier_male__posZ.png",
+      "source_glb_sha256": "7b45e54696dcc217d0bd1fe7e60fe40691d401d32b172336f5f499a813ca676f",
+      "source_id": "quaternius-ultimate-animated-character",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-animated-character/character/casual2_female": {
+      "filename": "quaternius-ultimate-animated-character__casual2_female__posZ.png",
+      "source_glb_sha256": "d95c07243223d4f71130ce5e2e77fd1d5e5e778fade27b7234f6ba17bc4cbc8b",
+      "source_id": "quaternius-ultimate-animated-character",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-modular-men/character/adventurer": {
+      "filename": "quaternius-ultimate-modular-men__adventurer__posZ.png",
+      "source_glb_sha256": "175498543cd5800c15906fb510869a8cd6d6c09addc1c1206125f9ae2e17349b",
+      "source_id": "quaternius-ultimate-modular-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-modular-men/character/beach": {
+      "filename": "quaternius-ultimate-modular-men__beach__posZ.png",
+      "source_glb_sha256": "d32cb4dfff6a6c9c37eaed90b9981751e4fb2372f207157aefb27910c34ba747",
+      "source_id": "quaternius-ultimate-modular-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-modular-men/character/casual_2": {
+      "filename": "quaternius-ultimate-modular-men__casual_2__posZ.png",
+      "source_glb_sha256": "c0f29d4e7af1be4b573ceaa0634183b0622cc48295187e274a3acab88ca64afc",
+      "source_id": "quaternius-ultimate-modular-men",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-space-kit/character/astronaut_barbarathebee": {
+      "filename": "quaternius-ultimate-space-kit__astronaut_barbarathebee__posZ.png",
+      "source_glb_sha256": "bae261fcb12ce279bb4d9ca2a79765ebe335dc274f55eb4dbea191dffad118c2",
+      "source_id": "quaternius-ultimate-space-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-space-kit/character/astronaut_fernandotheflamingo": {
+      "filename": "quaternius-ultimate-space-kit__astronaut_fernandotheflamingo__posZ.png",
+      "source_glb_sha256": "9993a8157046e3ef589efb8f550a82a1608ea96c18ffd71a8e2e96f05789e4bc",
+      "source_id": "quaternius-ultimate-space-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-space-kit/character/astronaut_finnthefrog": {
+      "filename": "quaternius-ultimate-space-kit__astronaut_finnthefrog__posZ.png",
+      "source_glb_sha256": "3fcf7e409f4d48d40345aa7682ccc44eca3ec845a63746eb1675a8018b4c9d88",
+      "source_id": "quaternius-ultimate-space-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-space-kit/character/astronaut_raetheredpanda": {
+      "filename": "quaternius-ultimate-space-kit__astronaut_raetheredpanda__posZ.png",
+      "source_glb_sha256": "bbc41bf50cd5ed20257b90cb993ffd8231da62af744e72182cc94b0469a15a34",
+      "source_id": "quaternius-ultimate-space-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-ultimate-space-kit/character/enemy_large": {
+      "filename": "quaternius-ultimate-space-kit__enemy_large__posZ.png",
+      "source_glb_sha256": "a2cd307a90daff05cae7d171e84837e8d62df12ef8a5acf60a62d1a18adae2f6",
+      "source_id": "quaternius-ultimate-space-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_lis": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_lis__posZ.png",
+      "source_glb_sha256": "edc7c12856dc74dd9ea812d0a0b51a1c7b502732c6119ccb54ebff40902fe9e2",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_lis_singleweapon": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_lis_singleweapon__posZ.png",
+      "source_glb_sha256": "ca19a76cd416fe32aece5b4da95fbc796b23447c7becd5b2d4eca74499ff7803",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_matt": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_matt__posZ.png",
+      "source_glb_sha256": "3835b253f8934a52c0288220448403af02068a2839dcb0d22961eabeec058979",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_matt_singleweapon": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_matt_singleweapon__posZ.png",
+      "source_glb_sha256": "de4ad672f4e6b716c738382e332c17e045da2e187d3300f76ecb37c5dbe677f4",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_sam": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_sam__posZ.png",
+      "source_glb_sha256": "8eb36d4587b43863f8ed7e15ef5e8ee870636f9048222500d6cdb4cfa7b89117",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_sam_singleweapon": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_sam_singleweapon__posZ.png",
+      "source_glb_sha256": "8ff927369eda2595f0bfb0ecc60a593197598df49697f158ee18ba0e937d9829",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_shaun": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_shaun__posZ.png",
+      "source_glb_sha256": "f16e64c0f7d68b7cbffd77ad14f61281b56bfad44cb260b6757826715d4209b5",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/characters_shaun_singleweapon": {
+      "filename": "quaternius-zombie-apocalypse-kit__characters_shaun_singleweapon__posZ.png",
+      "source_glb_sha256": "ac9c5068708b013083387be2a9710c0870066e06e569d528a697ce536f47c88a",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/zombie_basic": {
+      "filename": "quaternius-zombie-apocalypse-kit__zombie_basic__posZ.png",
+      "source_glb_sha256": "866a178edf09d7b0e3eb36ee8401f999839e241449184db7842ad2ec0e514739",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    },
+    "quaternius-zombie-apocalypse-kit/character/zombie_chubby": {
+      "filename": "quaternius-zombie-apocalypse-kit__zombie_chubby__posZ.png",
+      "source_glb_sha256": "2ee77d1d1a87bbc0b1812ad05df0934c73049679de98911ca8309c0d737c4720",
+      "source_id": "quaternius-zombie-apocalypse-kit",
+      "license_id": "CC0-1.0"
+    }
+  }
+}

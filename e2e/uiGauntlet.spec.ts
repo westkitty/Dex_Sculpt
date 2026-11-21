@@ -98,11 +98,22 @@ test('catalog association never replaces the loaded GLB identity with mismatched
   expect(after.provenance).toBe(before.provenance);
 });
 
-test('gallery has one main landmark, compact fallback, and responsive native detail dialog', async ({ page }) => {
+test('gallery loads genuine model renders, keeps metadata fallback, and remains responsive', async ({ page }) => {
   await page.goto('/gallery.html');
   await expect(page.locator('#grid .model-card').first()).toBeVisible();
   await expect(page.locator('main')).toHaveCount(1);
-  await expect(page.locator('#grid')).toHaveClass(/list-only/);
+  await expect(page.locator('#publicCount')).toHaveText('139');
+  await expect(page.locator('#availability')).toHaveValue('preview');
+  await expect(page.locator('#grid')).not.toHaveClass(/list-only/);
+
+  const front = page.locator('#grid .model-card img').first();
+  await expect(front).toBeVisible();
+  await expect(front).toHaveAttribute('alt', /Front-view render|Thumbnail of/);
+  const src = await front.getAttribute('src');
+  expect(src, 'real image URL is present').toBeTruthy();
+  const imageResponse = await page.request.get(new URL(src!, page.url()).toString());
+  expect(imageResponse.ok()).toBe(true);
+  expect(imageResponse.headers()['content-type']).toMatch(/image\/png/);
 
   for (const width of [375, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
@@ -121,6 +132,16 @@ test('gallery has one main landmark, compact fallback, and responsive native det
       `gallery overflow at ${width}px: ${JSON.stringify(overflowInfo.culprits)}`
     ).toBe(false);
   }
+
+  // A metadata-only collection remains browsable without impersonating another model.
+  await page.locator('#availability').selectOption('all');
+  await page.locator('#source').selectOption('microsoft-rocketbox');
+  await expect(page.locator('#grid .model-card').first()).toBeVisible();
+  await expect(page.locator('#grid')).toHaveClass(/list-only/);
+  await expect(page.locator('#grid .model-card img')).toHaveCount(0);
+
+  await page.locator('#clear').click();
+  await expect(page.locator('#grid')).not.toHaveClass(/list-only/);
 
   await page.locator('#query').fill('no-model-will-match-this-gauntlet-query');
   await expect(page.locator('#empty')).toBeVisible();

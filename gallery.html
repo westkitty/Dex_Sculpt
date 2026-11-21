@@ -45,24 +45,28 @@
 </head>
 <body>
 <div class="shell">
-  <header><div><div class="brandline">DEX // SCULPT · MODEL INDEX</div><h1 class="mast">Model Gallery<span style="color:var(--gold)">.</span></h1><p class="intro">Browse the complete model catalogue. To see real thumbnails, select GLB files you already own, use the optional local model bridge, or provide your own private preview index. No files are uploaded.</p></div><a class="back" href="./">← Return to sculpt studio</a></header>
-  <section class="summary" aria-label="Library totals"><div class="stat"><strong id="allCount">—</strong> catalogued</div><div class="stat"><strong id="readyCount">—</strong> available locally</div><div class="stat"><strong id="driveCount">—</strong> optional preview images</div><div id="connectionStatus" class="stat">Checking model sources…</div></section>
+  <header><div><div class="brandline">DEX // SCULPT · MODEL INDEX</div><h1 class="mast">Model Gallery<span style="color:var(--gold)">.</span></h1><p class="intro">Browse real front-view model renders sourced from the verified humanoid archive. For interactive 3D inspection, choose a matching local GLB; files remain on your device.</p></div><a class="back" href="./">← Return to sculpt studio</a></header>
+  <section class="summary" aria-label="Library totals"><div class="stat"><strong id="allCount">—</strong> catalogued</div><div class="stat"><strong id="publicCount">—</strong> illustrated</div><div class="stat"><strong id="readyCount">—</strong> available locally</div><div class="stat"><strong id="driveCount">—</strong> optional preview images</div><div id="connectionStatus" class="stat">Checking model sources…</div></section>
   <section class="localimport" aria-label="Add local GLB files for thumbnails">
     <div><strong>See the actual models.</strong><p>Select your authorized .glb files or a folder. Files stay in your browser, matched against this catalogue by file size and SHA-256. This is optional.</p><span id="importStatus" role="status" aria-live="polite">No files selected.</span></div>
     <div class="importactions"><button id="chooseFiles" type="button">Choose GLB files</button><button id="chooseFolder" type="button">Choose model folder</button><input id="filePicker" type="file" accept=".glb,model/gltf-binary" multiple hidden><input id="folderPicker" type="file" webkitdirectory multiple hidden></div>
   </section>
 </div>
-<div class="filterbar"><div class="shell filters"><label class="field search"><span>Find models</span><input id="query" type="search" placeholder="Search name, collection, skeleton, type…" autocomplete="off"></label><label class="field"><span>Collection</span><select id="source"><option value="">All collections</option></select></label><label class="field"><span>Asset type</span><select id="type"><option value="">All asset types</option></select></label><label class="field"><span>Availability</span><select id="availability"><option value="all">All 786 records</option><option value="local">Available in this browser</option><option value="preview">Preview available</option><option value="drive">Not available locally</option></select></label><button id="clear" class="clear" type="button">Reset</button></div></div>
-<main class="shell"><div class="resultline"><span id="countNote" role="status" aria-live="polite">Loading model index…</span><span class="legend"><span class="key"></span> Ready on Mac <span class="key drive"></span> Drive archive</span></div><div id="grid" class="gallery" aria-label="Browsable model gallery"></div><div id="empty" class="empty" hidden>No records match these filters. Reset the filters or try a different search.</div><div id="sentinel" class="load-more">Scroll to browse more models</div><div class="foot">Source: public humanoid master catalogue. Real thumbnails are rendered from verified local GLBs; an optional private preview index may provide additional images. Catalogue metadata is not proof that a model file is publicly available. No third-party models, Drive IDs, or private preview assets are bundled in the public build.</div></main>
-<dialog id="detailDialog" class="dialog" aria-labelledby="detailTitle"><div class="dialogheader"><div><div class="brandline">Model inspection</div><h2 id="detailTitle">Character</h2></div><button id="closeDialog" class="x" aria-label="Close model inspection">×</button></div><div class="dialogcontent"><div id="largeViewer" class="viewer"><p>Select a model to inspect.</p></div><div class="detail"><dl id="properties"></dl><div class="actions"><a id="studioLink" class="action" href="./">Open in DEX//SCULPT</a><a id="sourceLink" class="action secondary" target="_blank" rel="noopener noreferrer" href="#">View original preview source</a><button id="copyId" class="action secondary" type="button">Copy catalog ID</button></div><p id="detailHint" class="hint"></p></div></div></dialog>
+<div class="filterbar"><div class="shell filters"><label class="field search"><span>Find models</span><input id="query" type="search" placeholder="Search name, collection, skeleton, type…" autocomplete="off"></label><label class="field"><span>Collection</span><select id="source"><option value="">All collections</option></select></label><label class="field"><span>Asset type</span><select id="type"><option value="">All asset types</option></select></label><label class="field"><span>Availability</span><select id="availability"><option value="preview">With real thumbnails</option><option value="all">All 786 records</option><option value="local">Verified GLBs in this browser</option><option value="drive">Metadata without local GLB</option></select></label><button id="clear" class="clear" type="button">Reset</button></div></div>
+<main class="shell"><div class="resultline"><span id="countNote" role="status" aria-live="polite">Loading model index…</span><span class="legend"><span class="key"></span> Ready on Mac <span class="key drive"></span> Drive archive</span></div><div id="grid" class="gallery" aria-label="Browsable model gallery"></div><div id="empty" class="empty" hidden>No records match these filters. Reset the filters or try a different search.</div><div id="sentinel" class="load-more">Scroll to browse more models</div><div class="foot">Source: public humanoid master catalogue. Verified front-view PNG renders are embedded for 139 exact catalogue records; other records remain metadata-only. The images are static visual references, not the underlying 3D model files. No third-party GLB binaries, private Drive file IDs, or private preview index are bundled.</div></main>
+<dialog id="detailDialog" class="dialog" aria-labelledby="detailTitle"><div class="dialogheader"><div><div class="brandline">Model inspection</div><h2 id="detailTitle">Character</h2></div><button id="closeDialog" class="x" aria-label="Close model inspection">×</button></div><div class="dialogcontent"><div id="largeViewer" class="viewer"><p>Select a model to inspect.</p></div><div class="detail"><dl id="properties"></dl><div class="actions"><a id="studioLink" class="action" href="./">Open in DEX//SCULPT</a><a id="sourceLink" class="action secondary" target="_blank" rel="noopener noreferrer" href="#">View source collection</a><button id="copyId" class="action secondary" type="button">Copy catalog ID</button></div><p id="detailHint" class="hint"></p></div></div></dialog>
 <script type="module">
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import catalogData from './src/data/humanoidCatalog.json';
+import publicThumbnailManifest from './src/data/modelThumbnailManifest.json';
+import sourcesData from './src/data/humanoidSources.json';
 
 const $ = (id) => document.getElementById(id);
 const all = catalogData.records ?? [];
+const publicThumbnails = publicThumbnailManifest.previews ?? {};
+const sourceById = new Map((sourcesData.sources ?? []).map(source => [source.id,source]));
 const byId = new Map(all.map(x=>[x.asset_id,x]));
 const ready = new Set(); // Verified local bridge records, never persisted in the public bundle.
 const providedFiles = new Map(); // Session-only user-selected local File objects.
@@ -93,15 +97,16 @@ const canvas = document.createElement('canvas');
 canvas.width = 288;
 canvas.height = 288;
 const loader = new GLTFLoader();
-const layout = { query:'',source:'',type:'',availability:'all' };
+const layout = { query:'',source:'',type:'',availability:'preview' };
 
 function cleanName(s){return (s||'').replace(/[-_]+/g,' ').replace(/\s+/g,' ').trim();}
 function typeLabel(type){return cleanName(type ?? 'Model');}
 function previewFor(r){return driveIndex[r.asset_id] ?? null;}
+function publicThumbnailFor(r){const file=publicThumbnails[r.asset_id]?.filename;return file && /^[a-z0-9][a-z0-9_-]*__[a-z0-9_-]+__posZ\.png$/i.test(file)?'./model-thumbnails/'+encodeURIComponent(file):null;}
 function isBridgeReady(r){return liveConnected && ready.has(r.asset_id);}
 function isReady(r){return isBridgeReady(r) || providedFiles.has(r.asset_id);}
 function updateAvailableCount(){ $('readyCount').textContent = new Set([...ready, ...providedFiles.keys()]).size.toLocaleString(); }
-function isPreviewable(r){return isReady(r) || Boolean(previewFor(r));}
+function isPreviewable(r){return isReady(r) || Boolean(publicThumbnailFor(r)) || Boolean(previewFor(r));}
 function driveImageUrl(meta){return 'https://drive.google.com/thumbnail?id='+encodeURIComponent(meta.id)+'&sz=w420';}
 
 async function init(){
@@ -109,6 +114,7 @@ async function init(){
   for(const s of sources){const option=new Option(cleanName(s),s);$('source').appendChild(option);}
   for(const t of [...new Set(all.map(x=>x.asset_type))].sort()){$('type').appendChild(new Option(typeLabel(t),t));}
   $('allCount').textContent=all.length.toLocaleString();
+  $('publicCount').textContent=Object.keys(publicThumbnails).length.toLocaleString();
   await Promise.allSettled([loadLocalStatus(),loadDriveIndex()]);
   attachControls();
   applyFilters();
@@ -141,7 +147,7 @@ function attachControls(){
   $(id).addEventListener(id==='query'?'input':'change',()=>{layout[id]=$(id).value;applyFilters();});
  }
  $('clear').addEventListener('click',()=>{
-  for(const id of Object.keys(layout)){layout[id]=id==='availability'?'all':'';$(id).value=layout[id];}applyFilters();$('query').focus();
+  for(const id of Object.keys(layout)){layout[id]=id==='availability'?'preview':'';$(id).value=layout[id];}applyFilters();$('query').focus();
  });
  $('chooseFiles').addEventListener('click',()=> $('filePicker').click());
  $('chooseFolder').addEventListener('click',()=> $('folderPicker').click());
@@ -215,15 +221,15 @@ function appendBatch(){
   const card=document.createElement('button');
   card.type='button';card.className='model-card';card.dataset.assetId=r.asset_id;card.dataset.preview='pending';
   const image=document.createElement('div');image.className='thumb';
-  const badge=document.createElement('span');badge.className='thumb-tag';badge.textContent=isReady(r)?'LOCAL GLB':previewFor(r)?'PRIVATE IMAGE':'CATALOGUED';
+  const badge=document.createElement('span');badge.className='thumb-tag';badge.textContent=isReady(r)?'LOCAL GLB':publicThumbnailFor(r)?'MODEL RENDER':previewFor(r)?'PRIVATE IMAGE':'CATALOGUED';
   const symbol=document.createElement('span');symbol.className='thumb-symbol';symbol.textContent=r.asset_type==='animation_pack'?'◌':'◇';symbol.setAttribute('aria-hidden','true');
-  const wait=document.createElement('span');wait.className='thumb-wait';wait.textContent=isReady(r)?'Preparing preview…':previewFor(r)?'Loading optional preview…':'No preview available';
+  const wait=document.createElement('span');wait.className='thumb-wait';wait.textContent=isReady(r)?'Preparing preview…':publicThumbnailFor(r)?'Loading source render…':previewFor(r)?'Loading optional preview…':'No verified preview';
   image.append(badge,symbol,wait);
   const meta=document.createElement('div');meta.className='meta';
   const name=document.createElement('div');name.className='model-name';name.textContent=r.display_name;name.title=r.display_name;
   const source=document.createElement('div');source.className='model-source';source.textContent=cleanName(r.source_id);
   const bottom=document.createElement('div');bottom.className='meta-bottom';
-  const available=document.createElement('span');available.className=isReady(r)?'available':'archived';available.textContent=isBridgeReady(r)?'Ready in editor':providedFiles.has(r.asset_id)?'Local preview':'Metadata only';
+  const available=document.createElement('span');available.className=isReady(r)||publicThumbnailFor(r)?'available':'archived';available.textContent=isBridgeReady(r)?'Ready in editor':providedFiles.has(r.asset_id)?'Local 3D':publicThumbnailFor(r)?'Image preview':'Metadata only';
   const kind=document.createElement('span');kind.className='kind';kind.textContent=typeLabel(r.asset_type);kind.title=typeLabel(r.asset_type);
   bottom.append(available,kind);meta.append(name,source,bottom);card.append(image,meta);
   card.addEventListener('click',()=>openDetail(r));fragment.append(card);
@@ -243,20 +249,30 @@ async function loadCardPreview(card,r,token){
   if(cached){showImage(card,cached,'live');return;}
   enqueueThumbnail(card,r,token);return;
  }
+ const publicRender=publicThumbnailFor(r);
  const preview=previewFor(r);
- if(preview){
-  const img=new Image();img.loading='lazy';img.alt='Visual QA image of '+r.display_name;
-  img.addEventListener('load',()=>{if(card.isConnected&&token===generation)showImage(card,img.src,'drive');},{once:true});
-  img.addEventListener('error',()=>{if(card.isConnected&&token===generation&&isReady(r))enqueueThumbnail(card,r,token);else card.dataset.preview='missing';},{once:true});
-  img.src=driveImageUrl(preview);
- } else card.dataset.preview='missing';
+ const url=publicRender ?? (preview?driveImageUrl(preview):null);
+ const kind=publicRender?'public':'drive';
+ if(url){
+  const img=new Image();img.decoding='async';img.alt='Front-view render of '+r.display_name;
+  img.addEventListener('load',()=>{if(card.isConnected&&token===generation)showImage(card,img.src,kind);},{once:true});
+  img.addEventListener('error',()=>{
+   if(!card.isConnected||token!==generation)return;
+   if(publicRender&&preview){
+    const fallback=new Image();fallback.onload=()=>{if(card.isConnected&&token===generation)showImage(card,fallback.src,'drive');};
+    fallback.onerror=()=>{card.dataset.preview='missing';};
+    fallback.src=driveImageUrl(preview);
+   }else card.dataset.preview='missing';
+  },{once:true});
+  img.src=url;
+ }else card.dataset.preview='missing';
 }
 function showImage(card,url,kind){
  if(!card.isConnected)return;
  const thumb=card.querySelector('.thumb');if(!thumb)return;
  let img=thumb.querySelector('img');if(!img){img=document.createElement('img');img.alt='Thumbnail of '+(card.querySelector('.model-name')?.textContent||'model');thumb.append(img);}img.src=url;
  card.dataset.preview=kind;
- card.querySelector('.thumb-tag').textContent=kind==='live'?'GLB RENDER':'VISUAL QA';
+ card.querySelector('.thumb-tag').textContent=kind==='live'?'GLB RENDER':kind==='public'?'MODEL RENDER':'PRIVATE QA';
 }
 function enqueueThumbnail(card,r,token){thumbnailQueue.push({card,r,token});void pumpThumbs();}
 async function pumpThumbs(){
@@ -265,7 +281,7 @@ async function pumpThumbs(){
   while(thumbnailQueue.length){
    const next=thumbnailQueue.shift();if(!next||next.token!==generation||!next.card.isConnected)continue;
    try{const thumb=await generateThumb(next.r);if(next.token===generation&&next.card.isConnected){showImage(next.card,thumb,'live');void dbSet(next.r,thumb);}}
-   catch{if(next.token===generation&&next.card.isConnected){const preview=previewFor(next.r);if(preview){const img=new Image();img.onload=()=>showImage(next.card,img.src,'drive');img.src=driveImageUrl(preview);}else next.card.dataset.preview='missing';}}
+   catch{if(next.token===generation&&next.card.isConnected){const localPublic=publicThumbnailFor(next.r);const preview=previewFor(next.r);const fallback=localPublic??(preview?driveImageUrl(preview):null);if(fallback){const img=new Image();img.onload=()=>showImage(next.card,img.src,localPublic?'public':'drive');img.onerror=()=>{next.card.dataset.preview='missing';};img.src=fallback;}else next.card.dataset.preview='missing';}}
    await new Promise(resolve=>setTimeout(resolve,0));
   }
  }finally{thumbnailRunning=false;}
@@ -342,23 +358,26 @@ async function openDetail(r){
  $('detailTitle').textContent=r.display_name;
  $('copyId').textContent='Copy catalog ID';
  const properties=$('properties');properties.replaceChildren();
- addField(properties,'Collection',cleanName(r.source_id));addField(properties,'Asset type',typeLabel(r.asset_type));addField(properties,'Skeleton family',r.skeleton_family||'Not specified');addField(properties,'Joints / animations',`${r.joint_count??'Unknown'} / ${r.animation_count??'Unknown'}`);addField(properties,'License reference',r.license_id);addField(properties,'Catalogue ID',r.asset_id);
+ addField(properties,'Collection',cleanName(r.source_id));addField(properties,'Asset type',typeLabel(r.asset_type));addField(properties,'Skeleton family',r.skeleton_family||'Not specified');addField(properties,'Joints / animations',`${r.joint_count??'Unknown'} / ${r.animation_count??'Unknown'}`);addField(properties,'License reference',r.license_id);if(r.license_id==='CC-BY-4.0')addField(properties,'Creator attribution','GDQuest — Mannequiny open 3D mannequin; CC BY 4.0.');addField(properties,'Catalogue ID',r.asset_id);
  const isLocal=isReady(r);
  $('studioLink').hidden=false;
  $('studioLink').href='./?catalogAsset='+encodeURIComponent(r.asset_id);
  $('studioLink').textContent='Find in Studio Catalogue';
- $('sourceLink').hidden=!previewFor(r);
- if(previewFor(r))$('sourceLink').href='https://drive.google.com/file/d/'+encodeURIComponent(previewFor(r).id)+'/view';
+ const upstream=sourceById.get(r.source_id);
+ $('sourceLink').hidden=!upstream?.official_url;
+ if(upstream?.official_url)$('sourceLink').href=upstream.official_url;
  $('detailHint').textContent=isBridgeReady(r)?'The verified GLB can load directly into the local studio.':providedFiles.has(r.asset_id)?'This selected GLB can be previewed here. The studio opens to its catalogue record; use Import GLB there to edit the same local file.': 'Only the catalogue record is available. Open the studio to find it, then use Import GLB if you have the asset. No automatic model download occurs.';
  $('detailDialog').showModal();
  $('largeViewer').replaceChildren();
- const caption=document.createElement('div');caption.className='viewerlabel';caption.textContent=isLocal?'Drag to rotate · scroll to zoom':'Optional preview (when available)';
+ const caption=document.createElement('div');caption.className='viewerlabel';caption.textContent=isLocal?'Drag to rotate · scroll to zoom':publicThumbnailFor(r)?'Static front-view render · import the matching GLB for 3D':'Optional preview (when available)';
  $('largeViewer').appendChild(caption);
  if(isLocal && r.asset_type!=='animation_pack'){
   const p=document.createElement('p');p.textContent='Loading verified 3D model…';$('largeViewer').appendChild(p);
   try{await startDetail3D(r,p);}catch{p.textContent='3D preview not available for this asset.';const previous=memoryThumbs.get(dbKey(r))??await dbGet(r);if(previous){const img=new Image();img.src=previous;img.alt=r.display_name;p.replaceWith(img);}}
+ }else if(publicThumbnailFor(r)){
+  const img=new Image();img.alt='Static front-view render of '+r.display_name;img.src=publicThumbnailFor(r);img.onerror=()=>{const p=document.createElement('p');p.textContent='The source render could not load. Try selecting the verified GLB.';img.replaceWith(p);};$('largeViewer').appendChild(img);
  }else if(previewFor(r)){
-  const img=new Image();img.alt='Drive visual QA for '+r.display_name;img.src=driveImageUrl(previewFor(r));img.onerror=()=>{const p=document.createElement('p');p.textContent='Your browser could not display this private Drive image. Use “View original preview source”.';img.replaceWith(p);};$('largeViewer').appendChild(img);
+  const img=new Image();img.alt='Private visual QA for '+r.display_name;img.src=driveImageUrl(previewFor(r));img.onerror=()=>{const p=document.createElement('p');p.textContent='Your browser could not display this private Drive image. Use “View original preview source”.';img.replaceWith(p);};$('largeViewer').appendChild(img);
  }else{const p=document.createElement('p');p.textContent='There is no verified thumbnail for this model yet.';$('largeViewer').appendChild(p);}
 }
 async function startDetail3D(r,placeholder){
