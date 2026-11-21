@@ -379,7 +379,7 @@ test.describe('DEX//SCULPT Character DNA V2 — complete authoring journey', () 
     // ---------- STEP 16: Save the recipe (real download, schema V2 verified) ----------
     const [recipeDl] = await Promise.all([
       page.waitForEvent('download'),
-      page.getByTestId('btn-save-recipe').click()
+      page.locator('.topbar-more summary').click().then(() => page.getByTestId('btn-save-recipe').click())
     ]);
     expect(recipeDl.suggestedFilename()).toContain('.dexsculpt.json');
     const recipePath = await recipeDl.path();

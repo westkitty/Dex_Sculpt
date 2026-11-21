@@ -30,6 +30,9 @@ export class StudioUI {
   private catalogAnimatedOnly = false;
   private selectedBone = 'Head';
   private attachMode: 'bone-attached' | 'static-prop' | 'skinned-compatible' = 'bone-attached';
+  private updatingMorphSlider = false;
+  private nextRangeId = 0;
+  private modalReturnFocus: HTMLElement | null = null;
 
   private leftRailEl!: HTMLElement;
   private rightInspectorEl!: HTMLElement;
@@ -68,6 +71,7 @@ export class StudioUI {
       this.renderHud();
     };
     this.vp.onContextChange = () => this.renderBanner();
+    window.matchMedia('(max-width: 1080px)').addEventListener('change', () => this.syncDrawerClasses());
     this.refresh();
   }
 
@@ -167,6 +171,8 @@ export class StudioUI {
     brand.innerHTML = `<div class="brand-mark">DEX<span>//</span>SCULPT</div>`;
     this.topStatusEl = document.createElement('div');
     this.topStatusEl.className = 'status-pill';
+    this.topStatusEl.setAttribute('role', 'status');
+    this.topStatusEl.setAttribute('aria-live', 'polite');
     brand.appendChild(this.topStatusEl);
 
     const actions = document.createElement('div');
@@ -184,6 +190,10 @@ export class StudioUI {
       this.leftOpen = false;
       this.syncDrawerClasses();
     });
+    toggleLeft.dataset.drawerToggle = 'left';
+    toggleLeft.setAttribute('aria-controls', 'sculpt-tools');
+    toggleRight.dataset.drawerToggle = 'right';
+    toggleRight.setAttribute('aria-controls', 'sculpt-inspector');
     drawerBtns.append(toggleLeft, toggleRight);
 
     this.undoBtn = this.btn('Undo', () => this.session.history.undo());
@@ -205,7 +215,18 @@ export class StudioUI {
     saveRecipeBtn.dataset.testid = 'btn-save-recipe';
     const loadRecipeBtn = this.btn('Load Recipe', () => this.recipeInput.click());
     loadRecipeBtn.dataset.testid = 'btn-load-recipe';
-    const exportGlbBtn = this.btn('Export GLB', () => this.handleExportGlb(), 'primary');
+    const exportGlbBtn = this.btn('Export GLB', async () => {
+      exportGlbBtn.disabled = true;
+      exportGlbBtn.textContent = 'Exporting GLB…';
+      exportGlbBtn.setAttribute('aria-busy', 'true');
+      try {
+        await this.handleExportGlb();
+      } finally {
+        exportGlbBtn.disabled = false;
+        exportGlbBtn.textContent = 'Export GLB';
+        exportGlbBtn.removeAttribute('aria-busy');
+      }
+    }, 'primary');
     exportGlbBtn.dataset.testid = 'btn-export-glb';
     const tabletBtn = this.btn('Pen / Touch', () => {
       this.modalKind = this.modalKind === 'tablet' ? 'none' : 'tablet';
@@ -216,23 +237,31 @@ export class StudioUI {
       this.renderModal();
     });
     helpBtn.title = 'Keyboard shortcuts (?)';
+    helpBtn.setAttribute('aria-label', 'Keyboard shortcuts');
 
+    const more = document.createElement('details');
+    more.className = 'topbar-more';
+    const summary = document.createElement('summary');
+    summary.textContent = 'More tools';
+    const secondary = document.createElement('div');
+    secondary.className = 'topbar-more-panel';
+    secondary.append(
+      sampleBtn, this.beforeAfterBtn, saveRecipeBtn, loadRecipeBtn, tabletBtn, helpBtn
+    );
+    secondary.addEventListener('click', (event) => {
+      if (event.target instanceof HTMLButtonElement) more.open = false;
+    });
+    more.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        more.open = false;
+        summary.focus();
+        event.stopPropagation();
+      }
+    });
+    more.append(summary, secondary);
     actions.append(
-      drawerBtns,
-      galleryBtn,
-      importBtn,
-      sampleBtn,
-      this.sep(),
-      this.undoBtn,
-      this.redoBtn,
-      this.beforeAfterBtn,
-      this.sep(),
-      saveRecipeBtn,
-      loadRecipeBtn,
-      exportGlbBtn,
-      this.sep(),
-      tabletBtn,
-      helpBtn
+      drawerBtns, galleryBtn, importBtn,
+      this.undoBtn, this.redoBtn, exportGlbBtn, more
     );
 
     topbar.append(brand, actions);
@@ -244,12 +273,17 @@ export class StudioUI {
     // Left Rail
     this.leftRailEl = document.createElement('aside');
     this.leftRailEl.className = 'left-rail';
+    this.leftRailEl.id = 'sculpt-tools';
     this.buildLeftRail();
 
     // Center Viewport Stage
     const stage = document.createElement('main');
     stage.className = 'viewport-stage';
     this.vp.attach(stage);
+    const documentHeading = document.createElement('h1');
+    documentHeading.className = 'sr-only';
+    documentHeading.textContent = 'DEX//SCULPT Character Foundry';
+    stage.prepend(documentHeading);
 
     this.hudOverlayEl = document.createElement('div');
     this.hudOverlayEl.className = 'viewport-hud-top';
@@ -260,8 +294,11 @@ export class StudioUI {
     // Right Contextual Inspector
     this.rightInspectorEl = document.createElement('aside');
     this.rightInspectorEl.className = 'right-inspector';
+    this.rightInspectorEl.id = 'sculpt-inspector';
     const tabBar = document.createElement('div');
     tabBar.className = 'tab-bar';
+    tabBar.setAttribute('role', 'group');
+    tabBar.setAttribute('aria-label', 'Inspector panels');
     const tabs: Array<{ id: InspectorTab; label: string }> = [
       { id: 'shape', label: 'Shape' },
       { id: 'layers', label: 'Layers' },
@@ -276,10 +313,13 @@ export class StudioUI {
       b.className = `tab-btn ${t.id === this.activeTab ? 'active' : ''}`;
       b.textContent = t.label;
       b.dataset.tab = t.id;
+      b.setAttribute('aria-pressed', String(t.id === this.activeTab));
       b.addEventListener('click', () => {
         this.activeTab = t.id;
         tabBar.querySelectorAll('.tab-btn').forEach((el) => {
-          el.classList.toggle('active', (el as HTMLElement).dataset.tab === t.id);
+          const active = (el as HTMLElement).dataset.tab === t.id;
+          el.classList.toggle('active', active);
+          el.setAttribute('aria-pressed', String(active));
         });
         this.renderInspectorTab();
       });
@@ -294,6 +334,7 @@ export class StudioUI {
     this.modalRootEl = document.createElement('div');
     shell.append(topbar, workspace, this.glbInput, this.recipeInput, this.relinkInput, this.accessoryInput, this.modalRootEl);
     this.rootEl.appendChild(shell);
+    this.syncDrawerClasses();
   }
 
   private buildLeftRail(): void {
@@ -484,8 +525,19 @@ export class StudioUI {
   }
 
   private syncDrawerClasses(): void {
+    const compact = window.matchMedia('(max-width: 1080px)').matches;
+    const leftToggle = this.rootEl.querySelector<HTMLButtonElement>('[data-drawer-toggle="left"]');
+    const rightToggle = this.rootEl.querySelector<HTMLButtonElement>('[data-drawer-toggle="right"]');
+
+    if (compact && !this.leftOpen && this.leftRailEl.contains(document.activeElement)) leftToggle?.focus();
+    if (compact && !this.rightOpen && this.rightInspectorEl.contains(document.activeElement)) rightToggle?.focus();
+
     this.leftRailEl.classList.toggle('open', this.leftOpen);
     this.rightInspectorEl.classList.toggle('open', this.rightOpen);
+    this.leftRailEl.inert = compact && !this.leftOpen;
+    this.rightInspectorEl.inert = compact && !this.rightOpen;
+    leftToggle?.setAttribute('aria-expanded', String(this.leftOpen));
+    rightToggle?.setAttribute('aria-expanded', String(this.rightOpen));
   }
 
   refresh(): void {
@@ -506,7 +558,7 @@ export class StudioUI {
     this.refreshLeftState();
     this.renderHud();
     this.renderBanner();
-    this.renderInspectorTab();
+    if (!this.updatingMorphSlider) this.renderInspectorTab();
   }
 
   private renderHud(): void {
@@ -528,6 +580,9 @@ export class StudioUI {
   }
 
   private renderBanner(): void {
+    const isError = this.toast?.tone === 'error';
+    this.bannerEl.setAttribute('role', isError ? 'alert' : 'status');
+    this.bannerEl.setAttribute('aria-live', isError ? 'assertive' : 'polite');
     if (this.vp.contextLost) {
       this.bannerEl.style.display = 'flex';
       this.bannerEl.className = 'viewport-banner warn';
@@ -627,14 +682,19 @@ export class StudioUI {
       morphCard.appendChild(empty);
     } else {
       for (const m of this.session.morphs) {
+        let gestureStart = m.value;
+        const guarded = (work: () => void) => {
+          this.updatingMorphSlider = true;
+          try { work(); } finally { this.updatingMorphSlider = false; }
+        };
         const row = this.slider(
           `${m.name.replace(/_/g, ' ')} (${m.category})`,
-          0,
-          1,
-          0.01,
-          m.value,
-          (v) => this.session.setMorphWeight(m.name, v, false),
-          (v) => this.session.setMorphWeight(m.name, v, true)
+          0, 1, 0.01, m.value,
+          (v) => guarded(() => this.session.setMorphWeight(m.name, v, false)),
+          (v) => guarded(() => {
+            this.session.setMorphWeight(m.name, v, true, gestureStart);
+            gestureStart = v;
+          })
         );
         row.querySelector('input')!.dataset.morph = m.name;
         morphCard.appendChild(row);
@@ -956,7 +1016,14 @@ export class StudioUI {
     }, 'primary');
     compareBtn.dataset.testid = 'btn-compare-ab';
     compareBtn.style.marginTop = '8px';
-    compareBtn.disabled = !dna || dna.variants.length < 1;
+    selA.setAttribute('aria-label', 'Variant A');
+    selB.setAttribute('aria-label', 'Variant B');
+    const syncCompareState = () => {
+      compareBtn.disabled = !dna || dna.variants.length < 2 || selA.value === selB.value;
+    };
+    selA.addEventListener('change', syncCompareState);
+    selB.addEventListener('change', syncCompareState);
+    syncCompareState();
     compareCard.appendChild(compareBtn);
     const compareNote = document.createElement('div');
     compareNote.style.fontSize = '11px';
@@ -1373,6 +1440,7 @@ export class StudioUI {
     filterCard.className = 'card';
     const qInput = document.createElement('input');
     qInput.type = 'search';
+    qInput.setAttribute('aria-label', 'Search model catalogue');
     qInput.placeholder = 'Search 786 characters, outfits, rigs...';
     qInput.value = this.catalogQuery;
     qInput.style.width = '100%';
@@ -1383,6 +1451,7 @@ export class StudioUI {
     });
 
     const srcSel = document.createElement('select');
+    srcSel.setAttribute('aria-label', 'Catalogue source');
     srcSel.style.width = '100%';
     srcSel.style.marginBottom = '6px';
     srcSel.innerHTML = `<option value="">All Sources (${summary.sourceCount})</option>`;
@@ -1399,6 +1468,7 @@ export class StudioUI {
     });
 
     const typeSel = document.createElement('select');
+    typeSel.setAttribute('aria-label', 'Catalogue asset type');
     typeSel.style.width = '100%';
     typeSel.style.marginBottom = '6px';
     typeSel.innerHTML = `<option value="">All Asset Types</option>`;
@@ -1415,6 +1485,7 @@ export class StudioUI {
     });
 
     const famSel = document.createElement('select');
+    famSel.setAttribute('aria-label', 'Skeleton family');
     famSel.style.width = '100%';
     famSel.style.marginBottom = '6px';
     famSel.innerHTML = `<option value="">All Skeleton Families (${summary.familyCount})</option>`;
@@ -1498,6 +1569,13 @@ export class StudioUI {
         this.session.associateCatalogRecord(rec.asset_id);
         this.renderInspectorTab();
       });
+      const hashMatches = Boolean(
+        rec.processed_glb_sha256 &&
+        rec.processed_glb_sha256.toLowerCase() === this.session.sourceSha256.toLowerCase()
+      );
+      linkBtn.disabled = !hashMatches;
+      linkBtn.textContent = hashMatches ? 'Link Verified Model' : 'Source Does Not Match';
+      linkBtn.title = hashMatches ? 'Verified SHA-256 source match' : 'Import the matching GLB first';
       const pickBtn = this.btn('Import Local File', () => this.glbInput.click());
       row.append(linkBtn, pickBtn);
       if (src?.official_url) {
@@ -1560,16 +1638,34 @@ export class StudioUI {
   }
 
   private renderModal(): void {
-    this.modalRootEl.innerHTML = '';
-    if (this.modalKind === 'none') return;
+    if (this.modalKind === 'none') {
+      const existing = this.modalRootEl.querySelector<HTMLDialogElement>('dialog');
+      if (existing?.open) existing.close();
+      this.modalRootEl.replaceChildren();
+      return;
+    }
+    if (this.modalKind === 'tablet' && this.modalRootEl.querySelector('dialog[open]')) return;
 
-    const backdrop = document.createElement('div');
-    backdrop.className = 'modal-backdrop';
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) {
-        this.modalKind = 'none';
-        this.renderModal();
-      }
+    const focused = document.activeElement instanceof HTMLElement
+      ? document.activeElement : null;
+    // Disclosure actions close their menu; return focus to its visible summary.
+    this.modalReturnFocus = focused?.closest('details')?.querySelector<HTMLElement>('summary') ?? focused;
+    this.modalRootEl.replaceChildren();
+    const dialog = document.createElement('dialog');
+    dialog.className = 'studio-dialog';
+    dialog.setAttribute('aria-label', ({
+      compare: 'Variant comparison', export: 'GLB export validation',
+      tablet: 'Pen and touch settings', shortcuts: 'Keyboard shortcuts'
+    })[this.modalKind]);
+    dialog.addEventListener('close', () => {
+      this.modalKind = 'none';
+      this.modalRootEl.replaceChildren();
+      const target = this.modalReturnFocus;
+      this.modalReturnFocus = null;
+      if (target?.isConnected) target.focus();
+    });
+    dialog.addEventListener('click', e => {
+      if (e.target === dialog) dialog.close();
     });
 
     const card = document.createElement('div');
@@ -1599,8 +1695,7 @@ export class StudioUI {
       `;
       card.appendChild(
         this.btn('Close', () => {
-          this.modalKind = 'none';
-          this.renderModal();
+          dialog.close();
         })
       );
     } else if (this.modalKind === 'export' && this.session.lastExportResult) {
@@ -1639,13 +1734,11 @@ export class StudioUI {
       row.style.gap = '8px';
       const reimportBtn = this.btn('Verify Re-Import in Studio', async () => {
         await this.session.verifyReimportLastExport();
-        this.modalKind = 'none';
-        this.renderModal();
+        dialog.close();
       }, 'primary');
       reimportBtn.dataset.testid = 'btn-verify-reimport';
       const closeBtn = this.btn('Close', () => {
-        this.modalKind = 'none';
-        this.renderModal();
+        dialog.close();
       });
       row.append(reimportBtn, closeBtn);
       card.appendChild(row);
@@ -1681,8 +1774,7 @@ export class StudioUI {
       card.appendChild(qSel);
       card.appendChild(
         this.btn('Close', () => {
-          this.modalKind = 'none';
-          this.renderModal();
+          dialog.close();
         })
       );
     } else {
@@ -1703,19 +1795,20 @@ export class StudioUI {
       `;
       card.appendChild(
         this.btn('Close', () => {
-          this.modalKind = 'none';
-          this.renderModal();
+          dialog.close();
         })
       );
     }
 
-    backdrop.appendChild(card);
-    this.modalRootEl.appendChild(backdrop);
+    dialog.appendChild(card);
+    this.modalRootEl.appendChild(dialog);
+    dialog.showModal();
   }
 
   private bindGlobalShortcuts(): void {
     window.addEventListener('keydown', (e) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return;
+      if (this.modalKind !== 'none') return; // The native dialog owns focus and Escape.
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) return;
       const key = e.key.toLowerCase();
 
       if ((e.metaKey || e.ctrlKey) && key === 'z') {
@@ -1729,13 +1822,7 @@ export class StudioUI {
         this.session.history.redo();
         return;
       }
-      if (key === 'escape') {
-        if (this.modalKind !== 'none') {
-          this.modalKind = 'none';
-          this.renderModal();
-        }
-        return;
-      }
+      if (key === 'escape') return;
 
       const brushMatch = BRUSHES.find((b) => b.key.toLowerCase() === key);
       if (brushMatch) {
@@ -1794,12 +1881,6 @@ export class StudioUI {
     return b;
   }
 
-  private sep(): HTMLElement {
-    const d = document.createElement('div');
-    d.className = 'topbar-sep';
-    return d;
-  }
-
   private slider(
     label: string,
     min: number,
@@ -1813,7 +1894,9 @@ export class StudioUI {
     row.className = 'control-row';
     const hdr = document.createElement('div');
     hdr.className = 'control-header';
-    const lbl = document.createElement('span');
+    const lbl = document.createElement('label');
+    const controlId = `dex-range-${++this.nextRangeId}`;
+    lbl.htmlFor = controlId;
     lbl.textContent = label;
     const val = document.createElement('span');
     val.className = 'val';
@@ -1822,6 +1905,7 @@ export class StudioUI {
 
     const input = document.createElement('input');
     input.type = 'range';
+    input.id = controlId;
     input.min = String(min);
     input.max = String(max);
     input.step = String(step);

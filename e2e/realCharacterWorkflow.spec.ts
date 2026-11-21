@@ -219,7 +219,7 @@ test('real Cesium Man browser authoring, persistence, GLB validation, and animat
   await page.getByTestId(`btn-variant-switch/${variantB}`).click();
   await page.waitForFunction((id) => (window as any).__DEX_SCULPT__.session.dna.activeId === id, variantB);
 
-  const [recipeDownload] = await Promise.all([page.waitForEvent('download'), page.getByTestId('btn-save-recipe').click()]);
+  const [recipeDownload] = await Promise.all([page.waitForEvent('download'), page.locator('.topbar-more summary').click().then(() => page.getByTestId('btn-save-recipe').click())]);
   const recipePath = await recipeDownload.path();
   const recipe = JSON.parse(fs.readFileSync(recipePath!, 'utf8'));
   expect(recipe.schemaVersion).toBe('dexsculpt.recipe.v2');

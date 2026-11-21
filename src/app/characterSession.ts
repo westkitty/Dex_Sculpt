@@ -1262,11 +1262,11 @@ export class CharacterSession {
 
   // --- Morph Target Controls ---
 
-  setMorphWeight(name: string, value: number, pushHistory = false): void {
+  setMorphWeight(name: string, value: number, pushHistory = false, historyFrom?: number): void {
     const info = this.morphs.find((m) => m.name === name);
     if (!info) return;
     const clamped = Math.max(0, Math.min(1, value));
-    const prev = info.value;
+    const prev = historyFrom ?? info.value;
 
     const apply = (v: number) => {
       info.value = v;
@@ -1533,6 +1533,16 @@ export class CharacterSession {
   associateCatalogRecord(assetId: string, silent = false): CatalogRecord | null {
     const rec = getCatalogRecord(assetId);
     if (!rec) return null;
+
+    // Catalogue provenance must never be assigned from an unrelated GLB.
+    const expectedHash = rec.processed_glb_sha256?.toLowerCase();
+    const currentHash = this.sourceSha256.toLowerCase();
+    if (!expectedHash || expectedHash !== currentHash) {
+      if (!silent) {
+        this.onToast('Catalog identity does not match this GLB. Import the matching source file first.', 'warn');
+      }
+      return null;
+    }
     this.linkedAssetId = rec.asset_id;
     this.skeletonFamily = rec.skeleton_family ?? this.skeletonFamily;
     this.licenseId = rec.license_id;
