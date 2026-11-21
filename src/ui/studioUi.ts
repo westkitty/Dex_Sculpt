@@ -1853,7 +1853,7 @@ export class StudioUI {
       } else if (key === 'b') {
         this.session.setBeforeAfterOriginal(!this.session.beforeAfterOriginal);
       } else if (key === '?') {
-        this.modalKind = this.modalKind === 'shortcuts' ? 'none' : 'shortcuts';
+        this.modalKind = 'shortcuts';
         this.renderModal();
       }
     });
