@@ -106,9 +106,19 @@ test('gallery has one main landmark, compact fallback, and responsive native det
 
   for (const width of [375, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
-    expect(
-      await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
-      `gallery overflow at ${width}px`
+    const overflowInfo = await page.evaluate(() => ({
+      overflowing: document.documentElement.scrollWidth > innerWidth,
+      culprits: [...document.querySelectorAll<HTMLElement>('body *')]
+        .filter(el => el.getBoundingClientRect().right > innerWidth + 1)
+        .slice(0, 8)
+        .map(el => ({
+          tag: el.tagName.toLowerCase(),
+          className: String(el.className).slice(0, 80),
+          right: Math.round(el.getBoundingClientRect().right)
+        }))
+    }));
+    expect(overflowInfo.overflowing,
+      `gallery overflow at ${width}px: ${JSON.stringify(overflowInfo.culprits)}`
     ).toBe(false);
   }
 
